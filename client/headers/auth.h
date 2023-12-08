@@ -1,6 +1,20 @@
 #include <string.h>
 
-void handleLogin(int socketfd, char *username, char *password, char message[]){
+#define LOGIN_SUCCESS_MESSAGE "You have logged in successfully!!\n"
+#define LOGIN_FAIL_MESSAGE "Your username or password is incorrect!!\n"
+#define LOGIN_ALREADY_MESSAGE "Your account is being used in another address!!\n"
+
+/**
+ * @function handleLogin: handle the login process
+ * 
+ * @param socketfd : socket to connect 
+ * @param username : username to login
+ * @param password : password to login
+ * @param message : message to send to the socket
+ * @return : result of the login process
+ */
+int handleLogin(int socketfd, char *username, char *password, char message[]){
+    //message = LOGIN + username + password
     strcpy(message, "LOGIN");
     strcat(message, " ");
     strcat(message, username);
@@ -9,6 +23,20 @@ void handleLogin(int socketfd, char *username, char *password, char message[]){
     send(socketfd, message, 255, 0);
 
     message[0] = '\0';
-    recv(socketfd, message, 1024, 0);
-    printf("%s", message);
+    int recv_lent = recv(socketfd, message, 1024, 0);
+    message[recv_lent] = '\0';
+    printf("%s\n", message);
+    if(strcmp(message, "1100") == 0){
+        printf("%s\n", LOGIN_SUCCESS_MESSAGE);
+        return 1100;
+    }else if(strcmp(message, "1110") == 0){
+        printf("%s\n", LOGIN_SUCCESS_MESSAGE);
+        return 1100;
+    }else if(strcmp(message, "2100") == 0){
+        printf("%s\n", LOGIN_FAIL_MESSAGE);
+        return 2100;
+    }else if(strcmp(message, "2101") == 0){
+        printf("%s\n", LOGIN_ALREADY_MESSAGE);
+        return 2101;
+    }
 }

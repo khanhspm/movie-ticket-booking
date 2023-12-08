@@ -59,7 +59,27 @@ int main(int argc, char *argv[]) {
                     memset(&username, 0, sizeof(username));
                     memset(&password, 0, sizeof(password));
                     viewLogin(username, password);
-                    handleLogin(sockfd, username, password, message);
+                    int a_login = handleLogin(sockfd, username, password, message); // result after login
+                    printf("a_login: %d\n", a_login);
+
+                    // if user login
+                    if(a_login == 1100){
+                        int user_choice;
+                        do{
+                            viewUser();
+                            printf("Choice: ");
+                            scanf("%d", &user_choice);
+                            clearKeyboardBuffer();
+                        }while(user_choice != 0);
+                    }else if(a_login == 1100){   // if admin login
+                        int admin_choice;
+                        do{
+                            viewAdmin();
+                            printf("Choice: ");
+                            scanf("%d", &admin_choice);
+                            clearKeyboardBuffer();
+                        }while(admin_choice != 0);
+                    }
                     break;
                 }
                 case 2:

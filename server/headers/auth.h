@@ -1,28 +1,30 @@
 #include <string.h>
 #include "../../lib/user.h"
 
-#define LOGIN_SUCCESS 1100
-#define LOGIN_SUCCESS_MESSAGE "You have logged in successfully!!\n"
-#define LOGIN_FAIL 2100
-#define LOGIN_FAIL_MESSAGE "Your username or password is incorrect!!\n"
-#define LOGIN_ALREADY 2101
-#define LOGIN_ALREADY_MESSAGE "Your account is being used in another address\n"
+#define LOGIN_SUCCESS_USER "1100"
+#define LOGIN_SUCCESS_ADMIN "1110"
+#define LOGIN_FAIL "2100"
+#define LOGIN_ALREADY "2101"
 
 /**
- * @function checkLogin: checking account exist and is bannedned.
+ * @function checkLogin: check login status
  * 
- * @param head: Node 
- * @param username: A input string.
- * 
-*/
+ * @param socketfd : socket to connect
+ * @param head : node of the head
+ * @param username : username to login
+ * @param password : password to login
+ * @param total_account_logined : total account logged in
+ * @param list_account_logined : list account logged in
+ * @return int 
+ */
 int checkLogin(int socketfd, node head, char *username, char *password, int total_account_logined, char *list_account_logined[]){
 
     // Check account have loggined in different address or yet
     if(total_account_logined != 0){
         for(int i = 0; i < total_account_logined; i++){
             if(strcmp(list_account_logined[i], username) == 0){
-                printf("%d\n", LOGIN_ALREADY);
-                send(socketfd, LOGIN_ALREADY_MESSAGE, sizeof(LOGIN_ALREADY_MESSAGE), 0);
+                printf("%s\n", LOGIN_ALREADY);
+                send(socketfd, LOGIN_ALREADY, sizeof(LOGIN_ALREADY), 0);
                 return 2;
             }
         }
@@ -33,14 +35,20 @@ int checkLogin(int socketfd, node head, char *username, char *password, int tota
     while(p != NULL){
         printf("%s\n", p->data.username);
         if((strcmp(username, p->data.username) == 0) && (strcmp(password, p->data.password) == 0)){
-            printf("%d\n", LOGIN_SUCCESS);
-            send(socketfd, LOGIN_SUCCESS_MESSAGE, sizeof(LOGIN_SUCCESS_MESSAGE), 0);
+            if(p->data.role == 1){
+                printf("%s\n", LOGIN_SUCCESS_ADMIN);
+                send(socketfd, LOGIN_SUCCESS_ADMIN, sizeof(LOGIN_SUCCESS_ADMIN), 0);
+            }else if(p->data.role == 0){
+                printf("%s\n", LOGIN_SUCCESS_USER);
+                send(socketfd, LOGIN_SUCCESS_USER, sizeof(LOGIN_SUCCESS_USER), 0);
+            }
+            
             return 1;
         }
         p = p->next;
     }
 
-    printf("%d\n", LOGIN_FAIL);
-    send(socketfd, LOGIN_FAIL_MESSAGE, sizeof(LOGIN_FAIL_MESSAGE), 0);
+    printf("%s\n", LOGIN_FAIL);
+    send(socketfd, LOGIN_FAIL, sizeof(LOGIN_FAIL), 0);
     return 0;
 }
