@@ -7,12 +7,14 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include "headers/auth.h"
 
+#define CONNECT_SUCCESS "Connected to HTV_SPM server\n"
 #define BACKLOG 20  // Number of allowed connections
 #define BUFF_SIZE 1024
 
-
-
+char *list_account_logined[BACKLOG];
+int total_account_logined = 0;
 
 // Function to receive request from client then reply to the client and echo code result 
 void *echo(void *);
@@ -70,28 +72,66 @@ int main(int argc, char **argv){
 }
 
 void *echo(void* arg) {
+    node h = NULL;
+    char string[1024];
+    FILE *fp = fopen("data/account.txt", "r");
+    if(fp == NULL){
+        perror("Error: ");
+        exit(EXIT_FAILURE);
+    }
 
+    while(fgets(string, 255, fp) != NULL){
+        user x;
+        if(sscanf(string, "%s\t%s\t%d\n", x.username, x.password, &x.role) == 3){
+            addNode(&h, x);
+        }
+    }
+
+    fclose(fp);
+    node l = h;
+    while(l != NULL){
+        printf("%s\t%s\t%d\n", l->data.username, l->data.password, l->data.role);
+        l = l->next;
+    }
+    if(h == NULL) {
+        printf("Can not get data!!\n");
+        exit(EXIT_FAILURE);
+    }
+    
     int connfd = *((int*) arg);
-    int sent_bytes, received_bytes;
-    char buff[BUFF_SIZE + 1];
 
     connfd = *((int*) arg);
     free(arg);
     pthread_detach(pthread_self());
 
+    send(connfd, CONNECT_SUCCESS, sizeof(CONNECT_SUCCESS), 0);
+    printf("100\n");
+
     while(1){
-        received_bytes = recv(connfd, buff, BUFF_SIZE, 0);
-    if(received_bytes < 0){
-        perror("\nError: ");
-    }else if(received_bytes == 0){
-        printf("Conection closed\n");
-        break;
-    }else{
-        sent_bytes = send(connfd, buff, received_bytes, 0);
-        if(sent_bytes < 0){
-            perror("\nError: ");
+        char *type, *username, *password;
+        char message[1024];
+        int rec_u = recv(connfd, message, sizeof(message), 0);
+        if(rec_u < 0){
+            perror("Error: ");
+        }else if(rec_u == 0){
+            break;
         }
-    }
+        printf("%ld\n", strlen(message));
+        message[rec_u-1] = '\0';
+
+        type = strtok(message, " ");
+
+        if(strcmp(type, "LOGIN") == 0){
+            username = strtok(NULL, " ");
+            password = strtok(NULL, " ");
+            int check = checkLogin(connfd, h, username, password, total_account_logined, list_account_logined);
+            if(check == 2){
+                list_account_logined[total_account_logined] = username;
+                printf("%s\n", list_account_logined[total_account_logined]);
+                total_account_logined++;
+            }
+        }
+        
     }
 
     close(connfd);

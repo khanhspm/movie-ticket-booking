@@ -5,8 +5,17 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "headers/menu.h"
+#include "headers/auth.h"
 
 #define BUFSIZE 1024
+
+void clearKeyboardBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {
+        // Đọc và loại bỏ các ký tự còn lại trong bộ đệm bàn phím
+    }
+}
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -33,26 +42,31 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    printf("Connected to server\n");
-
+    char conn_mess[1024];
+    recv(sockfd, conn_mess, sizeof(conn_mess), 0);
+    printf("\n\n%s\n\n", conn_mess);
+    int choice;
     while (1) {
-        printf("Enter message: ");
-        fgets(sendBuff, BUFSIZE, stdin);
+        
+        do{
+            viewWelcome();
+            printf("Choice: ");
+            scanf("%d", &choice);
+            clearKeyboardBuffer();
+            switch (choice) {
+                case 1: {
+                    char username[BUFSIZE], password[BUFSIZE], message[BUFSIZE];
+                    memset(&username, 0, sizeof(username));
+                    memset(&password, 0, sizeof(password));
+                    viewLogin(username, password);
+                    handleLogin(sockfd, username, password, message);
+                    break;
+                }
+                case 2:
+                case 3: exit(1);
+            }
+        }while(choice != 0);
 
-        if(strlen(sendBuff) == 1){
-            break;
-        }
-
-        send(sockfd, sendBuff, strlen(sendBuff), 0);
-
-        n = recv(sockfd, rcvBuff, BUFSIZE, 0);
-        if (n <= 0) {
-            printf("Connection closed\n");
-            break;
-        }
-
-        rcvBuff[n] = '\0';
-        printf("Received: %s\n", rcvBuff);
     }
 
     close(sockfd);

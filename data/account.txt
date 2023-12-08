@@ -1,0 +1,3 @@
+username    password    role
+admin   admin   1
+user    user    0
