@@ -129,7 +129,7 @@ void *echo(void* arg) {
             username = strtok(NULL, " ");
             password = strtok(NULL, " ");
             int check = checkLogin(connfd, h, username, password, total_account_logined, list_account_logined);
-            if(check == 2){
+            if(check == 1){
                 list_account_logined[total_account_logined] = username;
                 printf("%s\n", list_account_logined[total_account_logined]);
                 total_account_logined++;
