@@ -5,6 +5,8 @@
 #define LOGIN_SUCCESS_ADMIN "1110"
 #define LOGIN_FAIL "2100"
 #define LOGIN_ALREADY "2101"
+#define LOGOUT_SUCCESS "1102"
+#define LOGOUT_FAIL "2103"
 
 /**
  * @function checkLogin: check login status
@@ -51,4 +53,15 @@ int checkLogin(int socketfd, node head, char *username, char *password, int tota
     printf("%s\n", LOGIN_FAIL);
     send(socketfd, LOGIN_FAIL, sizeof(LOGIN_FAIL), 0);
     return 0;
+}
+
+void logout(int *login_status, int socketfd, char *username, int total_account_loggined,  char *list_account_logined[]){
+    if(*login_status == 0){
+        printf("%s\n", LOGOUT_FAIL);
+        send(socketfd, LOGOUT_FAIL, sizeof(LOGOUT_FAIL), 0);
+    }else{
+        *login_status = 0;
+        printf("%s\n", LOGOUT_SUCCESS);
+        send(socketfd, LOGOUT_SUCCESS, sizeof(LOGOUT_SUCCESS), 0);
+    }
 }

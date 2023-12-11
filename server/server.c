@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include "headers/auth.h"
+#include "headers/IOsocket.h"
 
 #define CONNECT_SUCCESS "Connected to HTV_SPM server\n"
 #define BACKLOG 20  // Number of allowed connections
@@ -111,9 +112,10 @@ void *echo(void* arg) {
     printf("100\n");
 
     while(1){
-        char *type, *username, *password;
         char message[1024];
+
         int rec_u = recv(connfd, message, sizeof(message), 0); // received REQUEST from client
+
         if(rec_u < 0){
             perror("Error: ");
         }else if(rec_u == 0){
@@ -122,10 +124,11 @@ void *echo(void* arg) {
         printf("%ld\n", strlen(message));
         message[rec_u-1] = '\0';
 
-        type = strtok(message, " "); // get TYPE request
+        int type_request = getTypeRequest(message);
 
         // if TYPE is LOGIN
-        if(strcmp(type, "LOGIN") == 0){
+        if(type_request == 1){
+            char *username, *password;
             username = strtok(NULL, " ");
             password = strtok(NULL, " ");
             int check = checkLogin(connfd, h, username, password, total_account_logined, list_account_logined);
@@ -134,6 +137,10 @@ void *echo(void* arg) {
                 printf("%s\n", list_account_logined[total_account_logined]);
                 total_account_logined++;
             }
+        }else if(type_request == 2){
+            // REGISTER
+        }else if(type_request == 3){
+            logout(connfd, h, username, total_account_logined, list_account_logined);
         }
         
     }

@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
     recv(sockfd, conn_mess, sizeof(conn_mess), 0);
     printf("\n\n%s\n\n", conn_mess);
     int choice;
+    int *login_status = 0;
     while (1) {
         
         do{
@@ -59,11 +60,10 @@ int main(int argc, char *argv[]) {
                     memset(&username, 0, sizeof(username));
                     memset(&password, 0, sizeof(password));
                     viewLogin(username, password);
-                    int a_login = handleLogin(sockfd, username, password, message); // result after login
-                    printf("a_login: %d\n", a_login);
+                    *login_status = handleLogin(sockfd, username, password, message); // result after login
 
                     // if user login
-                    if(a_login == 1100){
+                    if(*login_status == 1100){
                         int user_choice;
                         do{
                             viewUser();
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
                             scanf("%d", &user_choice);
                             clearKeyboardBuffer();
                         }while(user_choice != 0);
-                    }else if(a_login == 1100){   // if admin login
+                    }else if(*login_status == 1100){   // if admin login
                         int admin_choice;
                         do{
                             viewAdmin();
@@ -79,11 +79,15 @@ int main(int argc, char *argv[]) {
                             scanf("%d", &admin_choice);
                             clearKeyboardBuffer();
                         }while(admin_choice != 0);
+                    }else{
+                        break;
                     }
-                    break;
                 }
-                case 2:
+                case 2: break;
                 case 3: exit(1);
+                default: {
+                    printf("Unknown request type!\n\n");
+                }
             }
         }while(choice != 0);
 
