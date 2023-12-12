@@ -23,9 +23,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int sockfd, n;
+    int sockfd;
     struct sockaddr_in servaddr;
-    char sendBuff[BUFSIZE], rcvBuff[BUFSIZE];
 
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         perror("\nERROR: ");
@@ -56,10 +55,11 @@ int main(int argc, char *argv[]) {
             clearKeyboardBuffer();
             switch (choice) {
                 case 1: {
-                    char username[BUFSIZE], password[BUFSIZE], message[BUFSIZE];
-                    memset(&username, 0, sizeof(username));
-                    memset(&password, 0, sizeof(password));
+                    char *username, *password, message[BUFSIZE];
+                    username = (char *)malloc(255 * sizeof(char));
+                    password = (char *)malloc(255 * sizeof(char));
                     viewLogin(username, password);
+                    login_status = (int *)malloc(sizeof(int));
                     *login_status = handleLogin(sockfd, username, password, message); // result after login
 
                     // if user login
@@ -71,22 +71,32 @@ int main(int argc, char *argv[]) {
                             scanf("%d", &user_choice);
                             clearKeyboardBuffer();
                         }while(user_choice != 0);
-                    }else if(*login_status == 1100){   // if admin login
+                    }else if(*login_status == 1110){   // if admin login
                         int admin_choice;
                         do{
                             viewAdmin();
                             printf("Choice: ");
                             scanf("%d", &admin_choice);
                             clearKeyboardBuffer();
+                            switch(admin_choice) {
+                                case 4: {
+                                    admin_choice = handleLogout(sockfd, message);
+                                    printf("%d\n", admin_choice);
+                                    break;
+                                }
+                            }
                         }while(admin_choice != 0);
-                    }else{
-                        break;
                     }
+                    break;
                 }
                 case 2: break;
-                case 3: exit(1);
+                case 3: {
+                    printf("\n\nThanks for coming to HTV-SPM!!\n\n");
+                    exit(0);
+                }
                 default: {
                     printf("Unknown request type!\n\n");
+                    break;
                 }
             }
         }while(choice != 0);

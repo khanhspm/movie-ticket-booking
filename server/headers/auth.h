@@ -60,6 +60,14 @@ void logout(int *login_status, int socketfd, char *username, int total_account_l
         printf("%s\n", LOGOUT_FAIL);
         send(socketfd, LOGOUT_FAIL, sizeof(LOGOUT_FAIL), 0);
     }else{
+        for(int i = 0; i < total_account_loggined; i++){
+            if(strcmp(list_account_logined[i], username) == 0){
+                for(int j = i; j < total_account_loggined; j++){
+                    list_account_logined[j] = list_account_logined[i+1];
+                }
+            }
+        }
+        total_account_loggined--;
         *login_status = 0;
         printf("%s\n", LOGOUT_SUCCESS);
         send(socketfd, LOGOUT_SUCCESS, sizeof(LOGOUT_SUCCESS), 0);

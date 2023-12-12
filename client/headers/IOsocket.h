@@ -33,8 +33,6 @@
 #define REGISTER_FAIL_MESSAGE "Username has been existed!!\n"
 #define LOGOUT_SUCCESS_MESSAGE "You have been successfully logged out!!\n"
 #define LOGOUT_FAIL_MESSAGE "You have not logined yet!!\n"
-#define LOGOUT_SUCCESS_MESSAGE "You have been successfully logged out!!\n"
-#define LOGOUT_FAIL_MESSAGE "You have not loggied yet!!\n"
 #define ADD_FILM_SUCCESS_MESSAGE "Add new film successfully!!\n"
 #define ADD_FILM_FAIL_MESSAGE "The title of the film has already been exist!!\n"
 #define POST_FILM_SUCCESS_MESSAGE "Post new film successfully!!\n"
@@ -57,8 +55,8 @@
 #define INVALID_MESSAGE_MESSAGE "The request is invalid!!\n"
 
 
-int getResultRequest(int socketfd, char message[]){
-    send(socketfd, message, sizeof(message), 0);
+int getResultRequest(int socketfd, char *message){
+    send(socketfd, message, 255, 0);
 
     message[0] = '\0';
     int recv_len = recv(socketfd, message, sizeof(message), 0);
@@ -78,7 +76,10 @@ int getResultRequest(int socketfd, char message[]){
         return 2101;
     }else if(strcmp(message, LOGOUT_SUCCESS) == 0){
         printf("%s\n", LOGOUT_SUCCESS_MESSAGE);
-        return 1102
+        return 1102;
+    }else if(strcmp(message, LOGOUT_FAIL) == 0){
+        printf("%s\n", LOGOUT_FAIL_MESSAGE);
+        return 2103;
     }else if(strcmp(message, REGISTER_SUCCESS) == 0){
         printf("%s\n", REGISTER_SUCCESS_MESSAGE);
         return 1101;

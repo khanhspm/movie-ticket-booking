@@ -14,8 +14,9 @@
 #define BACKLOG 20  // Number of allowed connections
 #define BUFF_SIZE 1024
 
-char *list_account_logined[BACKLOG];
 int total_account_logined = 0;
+char *list_account_logined[BACKLOG];
+
 
 // Function to receive request from client then reply to the client and echo code result 
 void *echo(void *);
@@ -116,19 +117,10 @@ void *echo(void* arg) {
     while(1){
         char message[1024];
 
-        int rec_u = recv(connfd, message, sizeof(message), 0); // received REQUEST from client
-
-        if(rec_u < 0){
-            perror("Error: ");
-        }else if(rec_u == 0){
-            break;
-        }
-        printf("%ld\n", strlen(message));
-        message[rec_u-1] = '\0';
-
-        int type_request = getTypeRequest(message);
-            char *username, *password;
-
+        int type_request = getTypeRequest(connfd, message);
+        char *username, *password;
+        username = (char *)malloc(255 * sizeof(char));
+        password = (char *)malloc(255 * sizeof(char));
 
         // if TYPE is LOGIN
         if(type_request == 1){
@@ -137,14 +129,15 @@ void *echo(void* arg) {
             int check = checkLogin(connfd, h, username, password, total_account_logined, list_account_logined);
             if(check == 1){
                 list_account_logined[total_account_logined] = username;
-                printf("%s\n", list_account_logined[total_account_logined]);
                 total_account_logined++;
                 *login_status = 1;
             }
         }else if(type_request == 2){
             // REGISTER
         }else if(type_request == 3){
-            logout(login_status ,connfd, username, total_account_logined, list_account_logined);
+            logout(login_status, connfd, username, total_account_logined, list_account_logined);
+            free(username);
+            free(password);
         }
         
     }

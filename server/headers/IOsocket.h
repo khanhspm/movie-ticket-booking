@@ -12,7 +12,15 @@
 #define CHOOSE "CHOOSE"
 #define TICKET "TICKET"
 
-int getTypeRequest(char request[]){
+int getTypeRequest(int socketfd, char request[]){
+    int rec_u = recv(socketfd, request, 1024, 0); // received REQUEST from client
+
+    if(rec_u < 0){
+        perror("Error: ");
+    }else if(rec_u == 0){
+        return 0;
+    }
+    request[rec_u-1] = '\0';
     char *type;
     type = strtok(request, " ");
     if(strcmp(type, LOGIN) == 0){
@@ -43,3 +51,5 @@ int getTypeRequest(char request[]){
         return 13;
     }
 }
+
+int 
