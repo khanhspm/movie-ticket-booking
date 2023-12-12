@@ -111,6 +111,8 @@ void *echo(void* arg) {
     send(connfd, CONNECT_SUCCESS, sizeof(CONNECT_SUCCESS), 0);
     printf("100\n");
 
+    int *login_status = 0;
+
     while(1){
         char message[1024];
 
@@ -125,10 +127,11 @@ void *echo(void* arg) {
         message[rec_u-1] = '\0';
 
         int type_request = getTypeRequest(message);
+            char *username, *password;
+
 
         // if TYPE is LOGIN
         if(type_request == 1){
-            char *username, *password;
             username = strtok(NULL, " ");
             password = strtok(NULL, " ");
             int check = checkLogin(connfd, h, username, password, total_account_logined, list_account_logined);
@@ -136,11 +139,12 @@ void *echo(void* arg) {
                 list_account_logined[total_account_logined] = username;
                 printf("%s\n", list_account_logined[total_account_logined]);
                 total_account_logined++;
+                *login_status = 1;
             }
         }else if(type_request == 2){
             // REGISTER
         }else if(type_request == 3){
-            logout(connfd, h, username, total_account_logined, list_account_logined);
+            logout(login_status ,connfd, username, total_account_logined, list_account_logined);
         }
         
     }
