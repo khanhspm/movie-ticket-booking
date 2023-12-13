@@ -14,14 +14,14 @@
 #define BACKLOG 20  // Number of allowed connections
 #define BUFF_SIZE 1024
 
-int total_account_logined = 0;
-char *list_account_logined[BACKLOG];
-
+listLoginedAccount myArray;
 
 // Function to receive request from client then reply to the client and echo code result 
 void *echo(void *);
 
 int main(int argc, char **argv){
+
+    myArray = createListLoginedUser(myArray);
 
     if(argc != 2){
         printf("Usage: ./server <number port>\n");
@@ -105,14 +105,14 @@ void *echo(void* arg) {
     
     int connfd = *((int*) arg);
 
-    connfd = *((int*) arg);
     free(arg);
     pthread_detach(pthread_self());
 
     send(connfd, CONNECT_SUCCESS, sizeof(CONNECT_SUCCESS), 0);
-    printf("100\n");
+    printf("1000\n");
 
     int *login_status = 0;
+    login_status = (int *) malloc(sizeof(int));
 
     while(1){
         char message[1024];
@@ -122,24 +122,19 @@ void *echo(void* arg) {
         username = (char *)malloc(255 * sizeof(char));
         password = (char *)malloc(255 * sizeof(char));
 
-        // if TYPE is LOGIN
         if(type_request == 1){
             username = strtok(NULL, " ");
             password = strtok(NULL, " ");
-            int check = checkLogin(connfd, h, username, password, total_account_logined, list_account_logined);
+            int check = checkLogin(connfd, h, username, password, myArray);
+            printf("%d\n", check);
             if(check == 1){
-                list_account_logined[total_account_logined] = username;
-                total_account_logined++;
+                addToListLoginedAccount(&myArray, username);
                 *login_status = 1;
             }
         }else if(type_request == 2){
-            // REGISTER
-        }else if(type_request == 3){
-            logout(login_status, connfd, username, total_account_logined, list_account_logined);
-            free(username);
-            free(password);
+            // Register
         }
-        
+
     }
 
     close(connfd);

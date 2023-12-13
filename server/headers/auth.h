@@ -1,5 +1,6 @@
 #include <string.h>
 #include "../../lib/user.h"
+#include "../../lib/loginedUser.h"
 
 #define LOGIN_SUCCESS_USER "1100"
 #define LOGIN_SUCCESS_ADMIN "1110"
@@ -7,6 +8,11 @@
 #define LOGIN_ALREADY "2101"
 #define LOGOUT_SUCCESS "1102"
 #define LOGOUT_FAIL "2103"
+
+listLoginedAccount createListLoginedUser(listLoginedAccount arr){
+    freeListLoginedAccount(&arr);
+    return createListLoginedAccount();
+}
 
 /**
  * @function checkLogin: check login status
@@ -19,17 +25,12 @@
  * @param list_account_logined : list account logged in
  * @return int 
  */
-int checkLogin(int socketfd, node head, char *username, char *password, int total_account_logined, char *list_account_logined[]){
+int checkLogin(int socketfd, node head, char *username, char *password, listLoginedAccount arr){
 
     // Check account have loggined in different address or yet
-    if(total_account_logined != 0){
-        for(int i = 0; i < total_account_logined; i++){
-            if(strcmp(list_account_logined[i], username) == 0){
-                printf("%s\n", LOGIN_ALREADY);
-                send(socketfd, LOGIN_ALREADY, sizeof(LOGIN_ALREADY), 0);
-                return 2;
-            }
-        }
+    int check_logined = searchListLoginedAccount(&arr, username);
+    if(check_logined > 0){
+        return 2;
     }
 
     struct Node* p = head;
@@ -55,21 +56,21 @@ int checkLogin(int socketfd, node head, char *username, char *password, int tota
     return 0;
 }
 
-void logout(int *login_status, int socketfd, char *username, int total_account_loggined,  char *list_account_logined[]){
-    if(*login_status == 0){
-        printf("%s\n", LOGOUT_FAIL);
-        send(socketfd, LOGOUT_FAIL, sizeof(LOGOUT_FAIL), 0);
-    }else{
-        for(int i = 0; i < total_account_loggined; i++){
-            if(strcmp(list_account_logined[i], username) == 0){
-                for(int j = i; j < total_account_loggined; j++){
-                    list_account_logined[j] = list_account_logined[i+1];
-                }
-            }
-        }
-        total_account_loggined--;
-        *login_status = 0;
-        printf("%s\n", LOGOUT_SUCCESS);
-        send(socketfd, LOGOUT_SUCCESS, sizeof(LOGOUT_SUCCESS), 0);
-    }
-}
+// void logout(int *login_status, int socketfd, char *username, int total_account_loggined,  char *list_account_logined[]){
+//     if(*login_status == 0){
+//         printf("%s\n", LOGOUT_FAIL);
+//         send(socketfd, LOGOUT_FAIL, sizeof(LOGOUT_FAIL), 0);
+//     }else{
+//         for(int i = 0; i < total_account_loggined; i++){
+//             if(strcmp(list_account_logined[i], username) == 0){
+//                 for(int j = i; j < total_account_loggined; j++){
+//                     list_account_logined[j] = list_account_logined[i+1];
+//                 }
+//             }
+//         }
+//         total_account_loggined--;
+//         *login_status = 0;
+//         printf("%s\n", LOGOUT_SUCCESS);
+//         send(socketfd, LOGOUT_SUCCESS, sizeof(LOGOUT_SUCCESS), 0);
+//     }
+// }

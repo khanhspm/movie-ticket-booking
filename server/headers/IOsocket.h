@@ -51,5 +51,3 @@ int getTypeRequest(int socketfd, char request[]){
         return 13;
     }
 }
-
-int 
