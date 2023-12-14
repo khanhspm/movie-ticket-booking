@@ -1,6 +1,5 @@
 username    password    role
 admin   admin   1
 user    user    0
-khanh	khanh123	0
-hoantv	hoantv123	0
-(null)	(null)	0
+hoan	hoant	0
+khanhspm	khanhspm200	0

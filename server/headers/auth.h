@@ -8,6 +8,9 @@
 #define LOGIN_ALREADY "2101"
 #define LOGOUT_SUCCESS "1102"
 #define LOGOUT_FAIL "2103"
+#define REGISTER_SUCCESS "1101"
+#define REGISTER_FAIL "2102"
+
 
 listLoginedAccount createListLoginedUser(listLoginedAccount arr){
     freeListLoginedAccount(&arr);
@@ -56,34 +59,72 @@ int checkLogin(int socketfd, node head, char *username, char *password, listLogi
     return 0;
 }
 
-int handleRegister(char *username, char *password) {
-    FILE *fp = fopen("data/account.txt", "a"); 
+// Add a function to check if a username already exists
+int checkUsernameExistence(char *username) {
+    FILE *fp = fopen("data/account.txt", "r");
     if (fp == NULL) {
-        perror("Error: ");
+        perror("Error opening file: ");
         return 0; // fail
     }
 
-    
-    fprintf(fp, "%s\t%s\t%d\n", username, password, 0); 
+    char line[256];
+    while (fgets(line, sizeof(line), fp) != NULL) {
+        char existingUsername[256];
+        sscanf(line, "%s", existingUsername);
+
+        if (strcmp(existingUsername, username) == 0) {
+            fclose(fp);
+            return 1; // Username already exists
+        }
+    }
+
     fclose(fp);
-    return 1; // successful
+    return 0; // Username does not exist
 }
 
-// void logout(int *login_status, int socketfd, char *username, int total_account_loggined,  char *list_account_logined[]){
-//     if(*login_status == 0){
-//         printf("%s\n", LOGOUT_FAIL);
-//         send(socketfd, LOGOUT_FAIL, sizeof(LOGOUT_FAIL), 0);
-//     }else{
-//         for(int i = 0; i < total_account_loggined; i++){
-//             if(strcmp(list_account_logined[i], username) == 0){
-//                 for(int j = i; j < total_account_loggined; j++){
-//                     list_account_logined[j] = list_account_logined[i+1];
-//                 }
-//             }
-//         }
-//         total_account_loggined--;
-//         *login_status = 0;
-//         printf("%s\n", LOGOUT_SUCCESS);
-//         send(socketfd, LOGOUT_SUCCESS, sizeof(LOGOUT_SUCCESS), 0);
-//     }
-// }
+// Chức năng đăng ký với mã trả lời thích hợp
+int handleRegister(char *username, char *password, char *resultMessage) {
+    FILE *fp = fopen("data/account.txt", "a");
+    if (fp == NULL) {
+        perror("Error opening file: ");
+        return 0; // fail
+    }
+
+    //check thong diep tra ve tu server
+    printf("server response: %s\n", resultMessage);
+
+    // Validate username and password
+    if (username == NULL || password == NULL) {
+        printf("Invalid input parameters\n");
+        fclose(fp);
+        return 0; // fail
+    }
+
+    // Check if the username already exists in the file
+    if (checkUsernameExistence(username)) {
+        printf("Username already exists\n");
+        fclose(fp);
+        strcpy(resultMessage, "REGISTER_FAIL Username already exists");
+        return 0; // fail
+    }
+
+    // Write user information to file
+    fprintf(fp, "%s\t%s\t%d\n", username, password, 0);
+
+    if (!checkUsernameExistence(username)) {
+    // Dọn dẹp và đóng
+    fclose(fp);
+
+    strcpy(resultMessage, "REGISTER_SUCCESS You have successfully registered");
+    return 1; // Thành công
+    }
+
+    // // Clean up and close 
+    // fclose(fp);
+
+    // strcpy(resultMessage, "REGISTER_SUCCESS You have successfully registered");
+    // return 1; // successful
+}
+
+
+

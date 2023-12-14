@@ -11,6 +11,9 @@
 #define VIEWCHAIR "VIEWCHAIR"
 #define CHOOSE "CHOOSE"
 #define TICKET "TICKET"
+#define REGISTER_SUCCESS "1101"
+#define REGISTER_FAIL_EXIST "2102"
+
 
 int getTypeRequest(int socketfd, char request[]){
     int rec_u = recv(socketfd, request, 1024, 0); // received REQUEST from client
