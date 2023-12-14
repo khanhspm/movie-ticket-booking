@@ -89,7 +89,13 @@ int main(int argc, char *argv[]) {
                     }
                     break;
                 }
-                case 2: break;
+                case 2: 
+                    char *newUsername, *newPassword, message[BUFSIZE];
+                    newUsername = (char *)malloc(255 * sizeof(char));
+                    newPassword = (char *)malloc(255 * sizeof(char));
+                    viewRegister(newUsername, newPassword);
+                    handleRegister(sockfd, newUsername, newPassword, message);
+                    break;
                 case 3: {
                     printf("\n\nThanks for coming to HTV-SPM!!\n\n");
                     exit(0);

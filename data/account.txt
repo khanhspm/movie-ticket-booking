@@ -1,3 +1,14 @@
 username    password    role
 admin   admin   1
 user    user    0
+hoan	hoantv	0
+khanh	khanhspm	0
+tien	tien123	0
+tavanhoan	tavanhoan1907	0
+macvankhanh	1234567890	0
+hoan789	13467	0
+asdfghjkl	asdfghjkl	0
+trung	trung678	0
+ngo	ngo123	0
+ngo123	123456789	0
+ngocbaifc	123456789	0
