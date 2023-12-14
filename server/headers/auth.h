@@ -122,4 +122,19 @@ int handleRegister(char *username, char *password, char *resultMessage) {
 }
 
 
+int handleLogout(int sockfd, char *username) {
+    // Thực hiện xử lý đăng xuất trong cơ sở dữ liệu hoặc danh sách đăng nhập
+    // removeFromListLoginedAccount(&myArray, username);
+
+    // Gửi mã trả lời cho client
+    send(sockfd, LOGOUT_SUCCESS, sizeof(LOGOUT_SUCCESS), 0);
+    // Thực hiện các bước cần thiết sau khi đăng xuất
+
+    // Ví dụ: Cập nhật danh sách đăng nhập, đóng kết nối, v.v.
+    return 1; // Thành công
+}
+
+
+
+
 

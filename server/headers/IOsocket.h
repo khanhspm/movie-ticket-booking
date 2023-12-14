@@ -1,6 +1,8 @@
 #define LOGIN "LOGIN"
 #define REGISTER "REGISTER"
+#define REGISTER_SUCCESS "1101"
 #define LOGOUT "LOGOUT"
+#define LOGOUT_SUCCESS "1102"
 #define NEW_FILM "NEW_FILM"
 #define POST "POST"
 #define EDIT "EDIT"
@@ -11,8 +13,6 @@
 #define VIEWCHAIR "VIEWCHAIR"
 #define CHOOSE "CHOOSE"
 #define TICKET "TICKET"
-#define REGISTER_SUCCESS "1101"
-#define REGISTER_FAIL_EXIST "2102"
 
 
 int getTypeRequest(int socketfd, char request[]){
@@ -50,7 +50,7 @@ int getTypeRequest(int socketfd, char request[]){
         return 11;
     }else if(strcmp(type, TICKET) == 0){
         return 12;
-    }else{
+    }else if(strcmp(type, LOGOUT) == 0){
         return 13;
     }
 }

@@ -13,7 +13,7 @@
 void clearKeyboardBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {
-        // Đọc và loại bỏ các ký tự còn lại trong bộ đệm bàn phím
+        // Read and remove remaining characters in the keyboard buffer
     }
 }
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     int choice;
     int *login_status = 0;
     while (1) {
-        
+
         do{
             viewWelcome();
             printf("Choice: ");
@@ -70,7 +70,19 @@ int main(int argc, char *argv[]) {
                             printf("Choice: ");
                             scanf("%d", &user_choice);
                             clearKeyboardBuffer();
-                        }while(user_choice != 0);
+                            switch (user_choice) {
+    
+                            case 4: {
+                                handleLogout(sockfd, username);
+                                printf("LOGOUT_SUCCESS_MESSAGE!\n");
+                                *login_status = 0; // Set login_status to not logged in
+                                viewWelcome();
+                                break;
+                            }
+                        }
+                    } while (user_choice != 0);
+
+                    break;
                     }else if(*login_status == 1110){   // if admin login
                         int admin_choice;
                         do{
@@ -78,13 +90,14 @@ int main(int argc, char *argv[]) {
                             printf("Choice: ");
                             scanf("%d", &admin_choice);
                             clearKeyboardBuffer();
-                            switch(admin_choice) {
+                            switch (admin_choice){
                                 case 4: {
-                                    admin_choice = handleLogout(sockfd, message);
-                                    printf("%d\n", admin_choice);
+                                    handleLogout(sockfd, username);
+                                    viewWelcome();
                                     break;
                                 }
                             }
+
                         }while(admin_choice != 0);
                     }
                     break;

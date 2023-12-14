@@ -143,6 +143,11 @@ void *echo(void* arg) {
             } else {
                 send(connfd, REGISTER_FAIL, sizeof(REGISTER_FAIL), 0);
             }
+        } else if (type_request == 13)
+        {
+            handleLogout(connfd, username);
+            printf("LOGOUT_SUCCESS_MESSAGE!\n");
+            break;
         }
         
     }

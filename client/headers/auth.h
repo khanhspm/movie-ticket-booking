@@ -6,9 +6,13 @@
 #define LOGIN_ALREADY_MESSAGE "Your account is being used in another address!!\n"
 #define LOGOUT_SUCCESS_MESSAGE "You have been successfully logged out!!\n"
 #define LOGOUT_FAIL_MESSAGE "You have not logined yet!!\n"
+#define LOGOUT "LOGOUT"
 #define REGISTER_SUCCESS "1101"
 #define REGISTER_FAIL "2102"
 #define BUFSIZE 1024
+// #define LOGOUT "LOGOUT"
+#define LOGOUT_SUCCESS "1102"
+
 
 /**
  * @function handleLogin: handle the login process
@@ -43,7 +47,7 @@ void handleRegister(int sockfd, char *username, char *password, char *message) {
 
     // recv response from server
     int recv_len = recv(sockfd, message, sizeof(message), 0);
-     message[recv_len] = '\0';  // Đảm bảo null-terminated string
+     message[recv_len] = '\0';  
 
     // tach chuoi nhan dc thanh username va password
     char *response = strtok(message, " ");
@@ -60,19 +64,23 @@ void handleRegister(int sockfd, char *username, char *password, char *message) {
 }
 
 
-int handleLogout(int socketfd, char message[]){
-    message[0] = '\0';
-    strcpy(message, "LOGOUT");
+int handleLogout(int sockfd, char *username) {
+    char message[BUFSIZE];
+    sprintf(message, "%s %s", LOGOUT, username);
 
-    printf("%s\n", message);
+    // send request to server
+    send(sockfd, message, strlen(message), 0);
 
-    int result = getResultRequest(socketfd, message);
+    // recv response from server
+    char response[BUFSIZE];
+    recv(sockfd, response, sizeof(response), 0);
 
-    printf("%d\n", result);
-
-    if(result == 1102){
+    // Xu ly ket qua
+    if (strcmp(response, LOGOUT_SUCCESS) == 0) {
+        printf("Logout successful!\n");
+        return 1;
+    } else {
+        printf("Logout failed.\n");
         return 0;
-    }else if(result == 2103){
-        return 6;
     }
 }
