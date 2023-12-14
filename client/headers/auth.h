@@ -49,7 +49,7 @@ void handleRegister(int sockfd, char *username, char *password, char *message) {
     char *response = strtok(message, " ");
     char *result = strtok(NULL, " ");
 
-    // Check the reply code and print out the corresponding message
+    // Xu ly ket qua
     if (strcmp(message, REGISTER_SUCCESS) == 0) {
         printf("Registration successful!\n");
     } else if (strcmp(message, REGISTER_FAIL) == 0) {
