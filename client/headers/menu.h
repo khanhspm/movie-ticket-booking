@@ -19,6 +19,14 @@ void viewLogin(char username[], char password[]){
     scanf("%s", password);
 }
 
+void viewRegister(char *username, char *password) {
+    printf("Registration\n");
+    printf("Username: ");
+    scanf("%s", username);
+    printf("Password: ");
+    scanf("%s", password);
+}
+
 void viewAdmin(){
     printf("--------------Welcome to HTV-SPM------------------\n\n");
     printf("1. Add new film\n");

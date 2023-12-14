@@ -1,3 +1,6 @@
 username    password    role
 admin   admin   1
 user    user    0
+khanh	khanh123	0
+hoantv	hoantv123	0
+(null)	(null)	0

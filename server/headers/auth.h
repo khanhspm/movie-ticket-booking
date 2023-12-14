@@ -56,6 +56,19 @@ int checkLogin(int socketfd, node head, char *username, char *password, listLogi
     return 0;
 }
 
+int handleRegister(char *username, char *password) {
+    FILE *fp = fopen("data/account.txt", "a"); 
+    if (fp == NULL) {
+        perror("Error: ");
+        return 0; // fail
+    }
+
+    
+    fprintf(fp, "%s\t%s\t%d\n", username, password, 0); 
+    fclose(fp);
+    return 1; // successful
+}
+
 // void logout(int *login_status, int socketfd, char *username, int total_account_loggined,  char *list_account_logined[]){
 //     if(*login_status == 0){
 //         printf("%s\n", LOGOUT_FAIL);

@@ -89,7 +89,30 @@ int main(int argc, char *argv[]) {
                     }
                     break;
                 }
-                case 2: break;
+                case 2: {
+                    char *newUsername, *newPassword, message[BUFSIZE];
+                    newUsername = (char *)malloc(255 * sizeof(char));
+                    newPassword = (char *)malloc(255 * sizeof(char));
+                    viewRegister(newUsername, newPassword);
+                    
+                    // Send registration request to the server
+                    handleRegister(sockfd, newUsername, newPassword, message);
+
+                    // Receive and process the registration response
+                    int registrationResult = getResultRequest(sockfd, message);
+
+                    // Process the registration response
+                    if (registrationResult == 1101) {
+                        printf("Registration successful!\n");
+                        // Additional code for handling successful registration
+                    } else if (registrationResult == 2102) {
+                        printf("Registration failed! Username already exists.\n");
+                        // Additional code for handling failed registration
+                    }
+
+                    break;
+                }
+                    
                 case 3: {
                     printf("\n\nThanks for coming to HTV-SPM!!\n\n");
                     exit(0);

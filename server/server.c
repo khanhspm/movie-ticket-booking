@@ -19,6 +19,7 @@ listLoginedAccount myArray;
 // Function to receive request from client then reply to the client and echo code result 
 void *echo(void *);
 
+
 int main(int argc, char **argv){
 
     myArray = createListLoginedUser(myArray);
@@ -132,9 +133,19 @@ void *echo(void* arg) {
                 *login_status = 1;
             }
         }else if(type_request == 2){
-            // Register
-        }
+          // Register
+            username = strtok(NULL, " ");
+            password = strtok(NULL, " ");
+            int registerResult = handleRegister(username, password);
+            printf("%d\n", registerResult);
 
+            // Respond to the client based on the registration result
+            if (registerResult == 1) {
+                send(connfd, "REGISTER_SUCCESS", sizeof("REGISTER_SUCCESS"), 0);
+            } else {
+                send(connfd, "REGISTER_FAIL", sizeof("REGISTER_FAIL"), 0);
+            }
+        }
     }
 
     close(connfd);

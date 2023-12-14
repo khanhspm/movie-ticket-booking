@@ -27,6 +27,15 @@ int handleLogin(int socketfd, char *username, char *password, char message[]){
     return getResultRequest(socketfd, message);
 }
 
+void handleRegister(int sockfd, char *username, char *password, char *message) {
+    //message = REGISTER + username + password
+    strcpy(message, "REGISTER");
+    strcat(message, " ");
+    strcat(message, username);
+    strcat(message, " ");
+    strcat(message, password);
+}
+
 int handleLogout(int socketfd, char message[]){
     message[0] = '\0';
     strcpy(message, "LOGOUT");
