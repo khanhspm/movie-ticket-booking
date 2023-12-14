@@ -138,7 +138,7 @@ void *echo(void* arg) {
             printf("%d\n", registerResult);
 
             // feedback to client
-            if (registerResult == 1) {
+            if (registerResult == 1101) {
                 send(connfd, REGISTER_SUCCESS, sizeof(REGISTER_SUCCESS), 0);
             } else {
                 send(connfd, REGISTER_FAIL, sizeof(REGISTER_FAIL), 0);
