@@ -82,7 +82,7 @@ int checkUsernameExistence(char *username) {
     return 0; // Username does not exist
 }
 
-// Chức năng đăng ký với mã trả lời thích hợp
+// Add a function to handle the register process
 int handleRegister(char *username, char *password, char *resultMessage) {
     FILE *fp = fopen("data/account.txt", "a");
     if (fp == NULL) {
@@ -90,8 +90,8 @@ int handleRegister(char *username, char *password, char *resultMessage) {
         return 0; // fail
     }
 
-    //check thong diep tra ve tu server
-    printf("server response: %s\n", resultMessage);
+    // //check thong diep tra ve tu server
+    // printf("server response: %s\n", resultMessage);
 
     // Validate username and password
     if (username == NULL || password == NULL) {
@@ -105,25 +105,20 @@ int handleRegister(char *username, char *password, char *resultMessage) {
         printf("Username already exists\n");
         fclose(fp);
         strcpy(resultMessage, "REGISTER_FAIL Username already exists");
-        return 0; // fail
+        return 2102; // fail
     }
 
     // Write user information to file
     fprintf(fp, "%s\t%s\t%d\n", username, password, 0);
 
     if (!checkUsernameExistence(username)) {
-    // Dọn dẹp và đóng
     fclose(fp);
 
     strcpy(resultMessage, "REGISTER_SUCCESS You have successfully registered");
-    return 1; // Thành công
+    return 1101; // success
     }
 
-    // // Clean up and close 
-    // fclose(fp);
 
-    // strcpy(resultMessage, "REGISTER_SUCCESS You have successfully registered");
-    // return 1; // successful
 }
 
 

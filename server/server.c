@@ -131,20 +131,20 @@ void *echo(void* arg) {
                 *login_status = 1;
             }
         }else if(type_request == 2){
-           // Đăng ký
+           //register
             username = strtok(NULL, " ");
             password = strtok(NULL, " ");
             int registerResult = handleRegister(username, password, resultMessage);
             printf("%d\n", registerResult);
 
-            // Phản hồi về client dựa trên kết quả đăng ký
+            // feedback to client
             if (registerResult == 1) {
                 send(connfd, REGISTER_SUCCESS, sizeof(REGISTER_SUCCESS), 0);
             } else {
                 send(connfd, REGISTER_FAIL, sizeof(REGISTER_FAIL), 0);
             }
         }
-        // ... (xử lý các kiểu request khác)
+        
     }
 
     close(connfd);

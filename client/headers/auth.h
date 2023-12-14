@@ -30,7 +30,7 @@ int handleLogin(int socketfd, char *username, char *password, char message[]){
     return getResultRequest(socketfd, message);
 }
 
-// Chức năng đăng ký trả lời theo mã trả lời từ server
+// Send registration request to server
 void handleRegister(int sockfd, char *username, char *password, char *message) {
     strcpy(message, "REGISTER");
     strcat(message, " ");
@@ -38,17 +38,18 @@ void handleRegister(int sockfd, char *username, char *password, char *message) {
     strcat(message, " ");
     strcat(message, password);
 
-    // Gửi yêu cầu đăng ký đến server
-    send(sockfd, message, strlen(message), 0);
+    // 
+    send(sockfd, message, strlen(message) + 1, 0);
 
-    // Nhận mã trả lời từ server
-    recv(sockfd, message, sizeof(message), 0);
+    // recv response from server
+    int recv_len = recv(sockfd, message, sizeof(message), 0);
+     message[recv_len] = '\0';  // Đảm bảo null-terminated string
 
     // tach chuoi nhan dc thanh username va password
     char *response = strtok(message, " ");
     char *result = strtok(NULL, " ");
-    
-    // Kiểm tra mã trả lời và in ra thông báo tương ứng
+
+    // Check the reply code and print out the corresponding message
     if (strcmp(message, REGISTER_SUCCESS) == 0) {
         printf("Registration successful!\n");
     } else if (strcmp(message, REGISTER_FAIL) == 0) {
