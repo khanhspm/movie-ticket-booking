@@ -1,9 +1,0 @@
-username    password    role
-admin   admin   1
-user    user    0
-
-hoan	hoan123	0
-khanhspm	1234567	0
-khanh12345	asdfghj	0
-saaaaaa	assssssss	0
-asssssssssss	sad	0

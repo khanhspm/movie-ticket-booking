@@ -1,2 +1,0 @@
-id  number  name    film    location    time    seats
-1   2   khanhspm    Superman    CGV Ba Trieu    21:00   A1,A2

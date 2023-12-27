@@ -7,25 +7,33 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <stdlib.h>
-#include "headers/auth.h"
-#include "headers/IOsocket.h"
+#include "../lib/socket/socket.h"
+#include "../lib/messages/message.h"
+#include "headers/queryUser.h"
+#include "../data/connect.h"
+// #include "headers/IOsocket.h"
 
-#define CONNECT_SUCCESS "Connected to HTV_SPM server\n"
-#define BACKLOG 20  // Number of allowed connections
-#define BUFF_SIZE 1024
+#define BACKLOG 20
+
+void *handleRequest(void *);
 
 listLoginedAccount myArray;
 
-// Function to receive request from client then reply to the client and echo code result 
-void *echo(void *);
+node h = NULL;
+
 int main(int argc, char **argv){
+    if(argc != 2){
+        printf("Usage: ./server_out <number port>\n");
+        exit(1);
+    }
 
     myArray = createListLoginedUser(myArray);
 
-    if(argc != 2){
-        printf("Usage: ./server <number port>\n");
-        exit(1);
-    }
+    MYSQL *conn;
+    connectDatabase(&conn);
+
+    user x;
+    selectUser(conn, &h, x);
 
     int listenfd, *connfd;
     struct sockaddr_in server; // Server's address information
@@ -59,93 +67,56 @@ int main(int argc, char **argv){
     while (1) {
         connfd = malloc(sizeof(int));
         *connfd = accept(listenfd, (struct sockaddr*) client, &sin_size);
+
         if (*connfd == -1) {
             perror("\nError: ");
         }
 
         // For each client, spawn a thread, and the thread handles the new client
-        pthread_create(&tid, NULL, &echo, connfd);
+        pthread_create(&tid, NULL, &handleRequest, connfd);
     }
 
     close(listenfd);
 
     return 0;
+
 }
 
-void *echo(void* arg) {
-    node h = NULL;
-    char string[1024];
-    FILE *fp = fopen("data/account.txt", "r");
-    if(fp == NULL){
-        perror("Error: ");
-        exit(EXIT_FAILURE);
-    }
-
-    //get data from the file account.txt
-    while(fgets(string, 255, fp) != NULL){
-        user x;
-        if(sscanf(string, "%s\t%s\t%d\n", x.username, x.password, &x.role) == 3){
-            addNode(&h, x);
-        }
-    }
-
-    fclose(fp);
-
-    node l = h;
-    // print all account to screen
-    while(l != NULL){
-        printf("%s\t%s\t%d\n", l->data.username, l->data.password, l->data.role);
-        l = l->next;
-    }
-    if(h == NULL) {
-        printf("Can not get data!!\n");
-        exit(EXIT_FAILURE);
-    }
-    
+void *handleRequest(void* arg){
     int connfd = *((int*) arg);
-
     free(arg);
     pthread_detach(pthread_self());
-
-    send(connfd, CONNECT_SUCCESS, sizeof(CONNECT_SUCCESS), 0);
-    printf("1000\n");
-
-    int *login_status = 0;
-    login_status = (int *) malloc(sizeof(int));
+    if(connfd == -1){
+        perror("\nError: ");
+    }else{
+        printf("1000\n");
+        send(connfd, "1000", 255, 0);
+    }
 
     while(1){
-        char message[1024];
-        char resultMessage[1024];
-        int type_request = getTypeRequest(connfd, message);
-        char *username, *password;
-        username = (char *)malloc(255 * sizeof(char));
-        password = (char *)malloc(255 * sizeof(char));
-
-        if(type_request == 1){
-            username = strtok(NULL, " ");
-            password = strtok(NULL, " ");
-            int check = checkLogin(connfd, h, username, password, myArray);
-            printf("%d\n", check);
+        char *message, *type;
+        message = (char *)malloc(255 * sizeof(char));
+        type = (char *)malloc(255 * sizeof(char));
+        recvMessage(connfd, message);
+        if(strcmp(message, "EXIT") == 0){
+            break;
+        }
+        // printf("%s\n", message);
+        type = getTypeMessage(message);
+        // printf("%s\n", type);
+        if(strcmp(type, "LOGIN") == 0){
+            char *username, *password;
+            username = (char *)malloc(255 * sizeof(char));
+            password = (char *)malloc(255 * sizeof(char));
+            getLoginMessage(&username, &password);
+            int check = checkLogin(h, username, password, myArray);
             if(check == 1){
                 addToListLoginedAccount(&myArray, username);
-                *login_status = 1;
-            }
-        }else if(type_request == 2){
-           //register
-            username = strtok(NULL, " ");
-            password = strtok(NULL, " ");
-            int registerResult = handleRegister(username, password, resultMessage);
-            printf("%d\n", registerResult);
-
-            // feedback to client
-            if (registerResult == 1101) {
-                send(connfd, REGISTER_SUCCESS, sizeof(REGISTER_SUCCESS), 0);
-            } else {
-                send(connfd, REGISTER_FAIL, sizeof(REGISTER_FAIL), 0);
+                printf("%d\n", searchListLoginedAccount(&myArray, username));
             }
         }
-        
     }
 
     close(connfd);
+
 }

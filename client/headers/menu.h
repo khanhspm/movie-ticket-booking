@@ -2,7 +2,6 @@ void viewWelcome(){
     printf("--------------Welcome to HTV-SPM------------------\n\n");
     printf("1. Login to HTV-SPM\n");
     printf("2. Register for HTV-SPM\n");
-    printf("3. Logout\n");
     printf("3. Exit HTV-SPM\n\n");
     printf("---------------------------------------------------\n");
 }

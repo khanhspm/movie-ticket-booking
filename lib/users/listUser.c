@@ -1,15 +1,6 @@
-struct User{
-    char username[255];
-    char password[255];
-    int role;
-};
-typedef struct User user;
-
-struct Node{
-	user data;
-	struct Node *next;
-};
-typedef struct Node* node;
+#include "user.h"
+#include <stdlib.h>
+#include <stddef.h>
 
 /**
  * @function checkEmptyList: checking list of nodes is NULL

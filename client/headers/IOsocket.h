@@ -32,7 +32,6 @@
 #define REGISTER_SUCCESS_MESSAGE "You have registered successfully!!\n"
 #define REGISTER_FAIL_MESSAGE "Username has been existed!!\n"
 #define LOGOUT_SUCCESS_MESSAGE "You have been successfully logged out!!\n"
-#define LOGOUT_FAIL_MESSAGE "You have not logined yet!!\n"
 #define ADD_FILM_SUCCESS_MESSAGE "Add new film successfully!!\n"
 #define ADD_FILM_FAIL_MESSAGE "The title of the film has already been exist!!\n"
 #define POST_FILM_SUCCESS_MESSAGE "Post new film successfully!!\n"

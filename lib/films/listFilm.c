@@ -1,16 +1,7 @@
-struct Film{
-    int id;
-    char title[255];
-    char category[255];
-    char show_time[255];
-};
-typedef struct Film film;
-
-struct Node{
-	film data;
-	struct Node *next;
-};
-typedef struct Node* node;
+#include <string.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include "film.h"
 
 /**
  * @function checkEmptyList: checking list of nodes is NULL
@@ -19,21 +10,21 @@ typedef struct Node* node;
  * 
  * @return: empty list
 */
-int checkEmptyList(node list){
+int checkEmptyListFilm(nodeFilm list){
 	return list == NULL;
 }
 
 /**
- * @function addNewNode: add a new node to the list when list is empty
+ * @function addNewNodeFilm: add a new node to the list when list is empty
  * 
  * @param head: head of list
  * @param x: node to add
 */
-void addNewNode(node* head, film x){
-    struct Node* p = (struct Node*)malloc(sizeof(struct Node));
+void addNewNodeFilm(nodeFilm* head, film x){
+    struct NodeFilm* p = (struct NodeFilm*)malloc(sizeof(struct NodeFilm));
     p->data = x;
     p->next = NULL;
-    if(checkEmptyList(*head)){
+    if(checkEmptyListFilm(*head)){
         *head = p;
     }
 }
@@ -44,15 +35,15 @@ void addNewNode(node* head, film x){
  * @param head: head of list
  * @param x: node to add
 */
-void addNode(node* head, film x){
-    if(checkEmptyList(*head)){
-        addNewNode(head, x);
+void addNodeFilm(nodeFilm* head, film x){
+    if(checkEmptyListFilm(*head)){
+        addNewNodeFilm(head, x);
     }else{
-        struct Node* a = *head;
+        struct NodeFilm* a = *head;
         while(a->next != NULL){
             a = a->next;
         }
-        struct Node* p = (struct Node*)malloc(sizeof(struct Node));
+        struct NodeFilm* p = (struct NodeFilm*)malloc(sizeof(struct NodeFilm));
         p->data = x;
         p->next = NULL;
         a->next = p;
@@ -65,13 +56,13 @@ void addNode(node* head, film x){
  * @param head : node head of list
  * @param title : the title needed to search
  */
-void searchTitle(node head, char title[]){
+void searchTitle(nodeFilm head, char title[]){
     int a = 0;
     if(Empty(head)){
         printf("No data!\n");
         return;
     }else{
-        struct Node* p = head;
+        struct NodeFilm* p = head;
         while(p != NULL){
             if(strcmp(title, p->data.title) == 0){
                 a++;

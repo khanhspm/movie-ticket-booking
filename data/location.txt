@@ -1,4 +1,0 @@
-id  name
-1   CGV Ba Trieu
-2   Vincom Pham Ngoc Thach
-3   Beta Thanh Xuan
