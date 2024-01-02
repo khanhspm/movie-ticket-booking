@@ -5,11 +5,13 @@
 #include "../../lib/users/listUser.h"
 
 void selectUser(MYSQL *connection, node* h, user x);
+
 listLoginedAccount createListLoginedAccount();
 void addToListLoginedAccount(listLoginedAccount *arr, const char *value);
 void freeListLoginedAccount(listLoginedAccount *arr);
 int searchListLoginedAccount(const listLoginedAccount *arr, const char *value);
 listLoginedAccount createListLoginedUser(listLoginedAccount arr);
+
 int checkLogin(node head, char *username, char *password, listLoginedAccount arr);
 
 #endif

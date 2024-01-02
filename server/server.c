@@ -110,10 +110,19 @@ void *handleRequest(void* arg){
             password = (char *)malloc(255 * sizeof(char));
             getLoginMessage(&username, &password);
             int check = checkLogin(h, username, password, myArray);
-            if(check == 1){
+            if(check == 0){
+                sendResult(connfd, 2011);
+            }else if(check == 1){
                 addToListLoginedAccount(&myArray, username);
-                printf("%d\n", searchListLoginedAccount(&myArray, username));
+                sendResult(connfd, 1011);
+            }else if(check == 2){
+                addToListLoginedAccount(&myArray, username);
+                sendResult(connfd, 1010);
+            }else{
+                sendResult(connfd, 2012);
             }
+        }else if(strcmp(type, "TITLE") == 0){
+            printf("%s\n", type);
         }
     }
 

@@ -8,6 +8,7 @@
 #include "../lib/socket/socket.h"
 #include "../lib/messages/message.h"
 #include "headers/menu.h"
+#include "headers/IOsocket.h"
 // #include "headers/auth.h"
 
 #define BUFSIZE 1024
@@ -47,7 +48,7 @@ int main(int argc, char **argv) {
     recv(sockfd, conn_mess, sizeof(conn_mess), 0);
     printf("\n\n%s\n\n", conn_mess);
     int choice;
-    // int *login_status = 0;
+    int *login_status = 0;
     while (1) {
         
         do{
@@ -65,33 +66,49 @@ int main(int argc, char **argv) {
                     makeLoginMessage(username, password, message);
                     printf("%s\n", message);
                     sendMessage(sockfd, message);
-                    // login_status = (int *)malloc(sizeof(int));
-
-                    // // if user login
-                    // if(*login_status == 1100){
-                    //     int user_choice;
-                    //     do{
-                    //         viewUser();
-                    //         printf("Choice: ");
-                    //         scanf("%d", &user_choice);
-                    //         clearKeyboardBuffer();
-                    //     }while(user_choice != 0);
-                    // }else if(*login_status == 1110){   // if admin login
-                    //     int admin_choice;
-                    //     do{
-                    //         viewAdmin();
-                    //         printf("Choice: ");
-                    //         scanf("%d", &admin_choice);
-                    //         clearKeyboardBuffer();
-                    //         switch(admin_choice) {
-                    //             case 4: {
-                    //                 admin_choice = handleLogout(sockfd, message);
-                    //                 printf("%d\n", admin_choice);
-                    //                 break;
-                    //             }
-                    //         }
-                    //     }while(admin_choice != 0);
-                    // }
+                    login_status = (int *)malloc(sizeof(int));
+                    *login_status = getResultRequest(sockfd);
+                    // if user login
+                    if(*login_status == 1010){
+                        int user_choice;
+                        do{
+                            viewUser();
+                            printf("Choice: ");
+                            scanf("%d", &user_choice);
+                            clearKeyboardBuffer();
+                            switch(user_choice) {
+                                case 1:{
+                                    char *title;
+                                    title = (char *)malloc(255 * sizeof(char));
+                                    free(message);
+                                    message = (char *)malloc(255 * sizeof(char));
+                                    getTitleFilm(title);
+                                    makeSearchFilmByTitleMessage(title, message);
+                                    printf("%s\n", message);
+                                    sendMessage(sockfd, message);
+                                    break;
+                                }
+                                case 5:{
+                                    break;
+                                }
+                            }
+                        }while(user_choice != 0);
+                    }else if(*login_status == 1110){   // if admin login
+                        int admin_choice;
+                        do{
+                            viewAdmin();
+                            printf("Choice: ");
+                            scanf("%d", &admin_choice);
+                            clearKeyboardBuffer();
+                            switch(admin_choice) {
+                                case 4: {
+                                    // admin_choice = handleLogout(sockfd, message);
+                                    // printf("%d\n", admin_choice);
+                                    break;
+                                }
+                            }
+                        }while(admin_choice != 0);
+                    }
                     break;
                 }
                 // case 2: {

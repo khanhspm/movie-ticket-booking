@@ -31,7 +31,7 @@ void viewAdmin(){
     printf("--------------Welcome to HTV-SPM------------------\n\n");
     printf("1. Add new film\n");
     printf("2. Announcing film \n");
-    printf("3. Edit announced file\n");
+    printf("3. Edit announced film\n");
     printf("4. Logout\n\n");
     printf("---------------------------------------------------\n");
 }
@@ -66,10 +66,11 @@ void addNewFilm(char title[], char category[], char show_time[]){
 
 void browseFilm(){
     printf("--------------Welcome to HTV-SPM------------------\n\n");
-    printf("1. Browse film follow category\n");
-    printf("2. Browse film follow theater\n");
-    printf("3. Browse film follow show time\n");
-    printf("4. Return\n\n");
+    printf("1. Browse film follow title\n");
+    printf("2. Browse film follow category\n");
+    printf("3. Browse film follow theater\n");
+    printf("4. Browse film follow show time\n");
+    printf("5. Return\n\n");
     printf("---------------------------------------------------\n");
 }
 

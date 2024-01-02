@@ -9,6 +9,7 @@ OUTPUT_SERVER = server_out
 SRC_CLIENT = client/client.c
 SRC_SERVER = server/server.c
 SRC_QUERYUSER = server/headers/queryUser.c
+# SRC_FUNCTION = server/headers/function.c
 SRC_CATEGORY = lib/categories/listCategory.c
 SRC_CINEMA = lib/cinemas/listCinema.c
 SRC_MESSAGE = lib/messages/message.c

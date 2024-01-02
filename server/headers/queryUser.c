@@ -4,9 +4,9 @@
 #include "../../lib/loginedUser.h"
 #include "../../lib/users/listUser.h"
 
-#define LOGIN_SUCCESS_USER "1100"
-#define LOGIN_SUCCESS_ADMIN "1110"
-#define LOGIN_FAIL "2100"
+#define LOGIN_SUCCESS_USER "1010"
+#define LOGIN_SUCCESS_ADMIN "1011"
+#define LOGIN_FAIL "2011"
 #define LOGIN_ALREADY "2101"
 #define LOGOUT_SUCCESS "1102"
 #define LOGOUT_FAIL "2103"
@@ -90,21 +90,21 @@ int checkLogin(node head, char *username, char *password, listLoginedAccount arr
 
     // Check account have loggined in different address or yet
     int check_logined = searchListLoginedAccount(&arr, username);
-    if(check_logined > 0){
-        return 2;
+    printf("%d\n", check_logined);
+    if(check_logined >= 0){
+        return 3;
     }
 
     struct Node* p = head;
     while(p != NULL){
-        printf("%s\n", p->data.username);
         if((strcmp(username, p->data.username) == 0) && (strcmp(password, p->data.password) == 0)){
             if(p->data.role_id == 1){
                 printf("%s\n", LOGIN_SUCCESS_ADMIN);
+                return 1;
             }else if(p->data.role_id == 0){
                 printf("%s\n", LOGIN_SUCCESS_USER);
-            }
-            
-            return 1;
+                return 2;
+            }            
         }
         p = p->next;
     }

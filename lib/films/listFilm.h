@@ -1,6 +1,8 @@
 #ifndef LISTFILM_H
 #define LISTFILM_H
 
+#include "film.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 
