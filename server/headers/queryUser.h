@@ -13,5 +13,5 @@ int searchListLoginedAccount(const listLoginedAccount *arr, const char *value);
 listLoginedAccount createListLoginedUser(listLoginedAccount arr);
 
 int checkLogin(node head, char *username, char *password, listLoginedAccount arr);
-
+int registerUser(MYSQL *connection, user newUser);
 #endif

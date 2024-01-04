@@ -17,15 +17,18 @@ void getLoginMessage(char **username, char **password){
     *password = strtok(NULL, "\r\n");
 }
 
-void makeRegisterMessage(char *username, char *password, char *message){
+void makeRegisterMessage(char *name,char *username, char *password, char *message){
     strcpy(message, "REGISTER\r\n");
+    strcat(message, name);
+    strcat(message, "\r\n");
     strcat(message, username);
     strcat(message, "\r\n");
     strcat(message, password);
     strcat(message, "\r\n");
 }
 
-void getRegisterMessage(char **username, char **password){
+void getRegisterMessage(char **name, char **username, char **password){
+    *name = strtok(NULL, "\r\n");
     *username = strtok(NULL, "\r\n");
     *password = strtok(NULL, "\r\n");
 }

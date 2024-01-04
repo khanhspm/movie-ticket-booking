@@ -32,37 +32,74 @@
 #define BOOK_TICKET_SUCCESS 1307
 #define BOOK_TICKET_FAIL 2304
 
-
-
-void handleRequest(char *type, int connfd, listLoginedAccount *arr, node h, MYSQL *connection, user x){
-    if(strcmp(type, "LOGIN") == 0){
+void handleRequest(char *type, int connfd, listLoginedAccount *arr, node h, MYSQL *connection, user x)
+{
+    if (strcmp(type, "LOGIN") == 0)
+    {
         char *username, *password;
         username = (char *)malloc(255 * sizeof(char));
         password = (char *)malloc(255 * sizeof(char));
         getLoginMessage(&username, &password);
         int check = checkLogin(h, username, password, arr);
-        if(check == 0){
-            sendResult(connfd, LOGIN_FAIL);   
-        }else if(check == 1){
+        if (check == 0)
+        {
+            sendResult(connfd, LOGIN_FAIL);
+        }
+        else if (check == 1)
+        {
             addToListLoginedAccount(arr, username);
             printf("1\n");
             sendResult(connfd, LOGIN_SUCCESS_ADMIN);
-        }else if(check == 2){
+        }
+        else if (check == 2)
+        {
             addToListLoginedAccount(arr, username);
             sendResult(connfd, LOGIN_SUCCESS_USER);
-        }else{
+        }
+        else
+        {
             printf("3\n");
             sendResult(connfd, LOGIN_ALREADY);
         }
-    }else if(strcmp(type, "LOGOUT") == 0){
+    }
+    else if (strcmp(type, "LOGOUT") == 0)
+    {
+    }
+    else if (strcmp(type, "REGISTER") == 0)
+    {
+        char *name, *username, *password;
+        getRegisterMessage(&name, &username, &password); // Lấy thông tin đăng ký
 
-    }else if(strcmp(type, "REGISTER") == 0){
+        user newUser;
+        // Thiết lập thông tin cho newUser
+        strcpy(newUser.name, name);
+        strcpy(newUser.username, username);
+        strcpy(newUser.password, password);
+        newUser.role_id = 0; // Ví dụ: role 0 cho người dùng thông thường
 
-    }else if(strcmp(type, "NEW_FILM") == 0){
+        int result = registerUser(connection, newUser);
+        if (result == 1)
+        {
+            sendResult(connfd, REGISTER_SUCCESS);
+        }
+        else
+        {
+            sendResult(connfd, REGISTER_FAIL);
+        }
 
-    }else if(strcmp(type, "POST") == 0){
-
-    }else if(strcmp(type, "EDIT") == 0){
-
+        free(name);
+        free(username);
+        free(password);
+    }
+    else if (strcmp(type, "NEW_FILM") == 0)
+    {
+    }
+    else if (strcmp(type, "POST") == 0)
+    {
+    }
+    else if (strcmp(type, "EDIT") == 0)
+    {
     }
 }
+
+//clean code chua chay duoc

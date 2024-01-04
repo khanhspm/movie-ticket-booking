@@ -29,7 +29,7 @@ all: $(OUTPUT_CLIENT) $(OUTPUT_SERVER)
 
 # Link the object files to create the final executables
 $(OUTPUT_SERVER): $(SRC_SERVER) $(SRC_QUERYUSER) $(SRC_USER)
-	$(CC) -pthread -o $(OUTPUT_SERVER) $(SRC_SERVER) $(SRC_QUERYUSER) $(SRC_CATEGORY) $(SRC_CINEMA) $(SRC_MESSAGE) $(SRC_PREMIEREDTIME) $(SRC_PREMIEREDTIMEFILM) $(SRC_ROOM) $(SRC_SEAT) $(SRC_SOCKET) $(SRC_TICKET) $(SRC_USER) -I/opt/homebrew/Cellar/mysql/8.2.0_1/include -L/opt/homebrew/Cellar/mysql/8.2.0_1/lib -lmysqlclient
+	$(CC) -pthread -o $(OUTPUT_SERVER) $(SRC_SERVER) $(SRC_QUERYUSER) $(SRC_CATEGORY) $(SRC_CINEMA) $(SRC_MESSAGE) $(SRC_PREMIEREDTIME) $(SRC_PREMIEREDTIMEFILM) $(SRC_ROOM) $(SRC_SEAT) $(SRC_SOCKET) $(SRC_TICKET) $(SRC_USER) -I/usr/include/mysql -L/usr/lib/x86_64-linux-gnu -lmysqlclient
 
 $(OUTPUT_CLIENT): $(SRC_CLIENT)
 	$(CC) -pthread -o $(OUTPUT_CLIENT) $(SRC_CLIENT) $(SRC_SOCKET) $(SRC_MESSAGE) -I/ -lm 

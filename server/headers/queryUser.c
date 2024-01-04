@@ -10,8 +10,7 @@
 #define LOGIN_ALREADY "2101"
 #define LOGOUT_SUCCESS "1102"
 #define LOGOUT_FAIL "2103"
-#define REGISTER_SUCCESS "1101"
-#define REGISTER_FAIL "2102"
+
 
 void selectUser(MYSQL *connection, node* h, user x){
     mysql_query(connection, "SELECT * FROM users");
@@ -112,3 +111,28 @@ int checkLogin(node head, char *username, char *password, listLoginedAccount arr
     printf("%s\n", LOGIN_FAIL);
     return 0;
 }
+
+int registerUser(MYSQL *connection, user newUser) {
+    char query[1024];
+
+    // Kiểm tra xem username đã tồn tại chưa
+    sprintf(query, "SELECT username FROM users WHERE username = '%s'", newUser.username);
+    mysql_query(connection, query);
+    MYSQL_RES *result = mysql_store_result(connection);
+    if (mysql_num_rows(result) > 0) { // Nếu tìm thấy username
+        mysql_free_result(result);
+        return 0; // Đăng ký thất bại do trùng tên người dùng
+    }
+    mysql_free_result(result);
+
+    // Thực hiện thêm người dùng mới
+sprintf(query, "INSERT INTO users (name, username, password, role_id) VALUES ('%s','%s', '%s', %ld)", newUser.name, newUser.username, newUser.password, newUser.role_id);
+    if (mysql_query(connection, query)) {
+        fprintf(stderr, "Register Error: %s\n", mysql_error(connection));
+        return 0; // Thất bại
+    } else {
+        return 1; // Thành công
+    }
+}
+
+

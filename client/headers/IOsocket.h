@@ -25,6 +25,8 @@
 #define CHOOSE_CHAIR_FAIL 2303
 #define BOOK_TICKET_SUCCESS 1307
 #define BOOK_TICKET_FAIL 2304
+#define CHANGE_PASSWORD_SUCCESS 1110
+#define CHANGE_PASSWORD_FAIL 2110
 
 #define LOGIN_SUCCESS_MESSAGE "You have logged in successfully!!\n"
 #define LOGIN_FAIL_MESSAGE "Your username or password is incorrect!!\n"
@@ -52,6 +54,8 @@
 #define BOOK_TICKET_SUCCESS_MESSAGE "Booking ticket successfully!!\n"
 #define BOOK_TICKET_FAIL_MESSAGE "Booking ticket failed!!\n"
 #define INVALID_MESSAGE_MESSAGE "The request is invalid!!\n"
+#define CHANGE_PASSWORD_SUCCESS ""
+#define CHANGE_PASSWORD_FAIL "" 
 
 
 int getResultRequest(int socketfd){

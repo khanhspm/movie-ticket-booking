@@ -19,8 +19,11 @@ void viewLogin(char username[], char password[]){
     scanf("%s", password);
 }
 
-void viewRegister(char *username, char *password) {
+void viewRegister(char *name, char *username, char *password) {
     printf("Registration\n");
+    printf("Full Name: ");
+    memset(name, 0, 255);
+    fgets(name, 255, stdin);    // lay ca dau cach
     printf("Username: ");
     scanf("%s", username);
     printf("Password: ");
@@ -42,6 +45,7 @@ void viewUser(){
     printf("2. Search film \n");
     printf("3. Book ticket\n");
     printf("4. Logout\n\n");
+    printf("5. Change Password\n")
     printf("---------------------------------------------------\n");
 }
 

@@ -9,19 +9,22 @@
 #include "../lib/messages/message.h"
 #include "headers/menu.h"
 #include "headers/IOsocket.h"
-// #include "headers/auth.h"
 
 #define BUFSIZE 1024
 
-void clearKeyboardBuffer() {
+void clearKeyboardBuffer()
+{
     int c;
-    while ((c = getchar()) != '\n' && c != EOF) {
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
         // Đọc và loại bỏ các ký tự còn lại trong bộ đệm bàn phím
     }
 }
 
-int main(int argc, char **argv) {
-    if(argc != 3){
+int main(int argc, char **argv)
+{
+    if (argc != 3)
+    {
         printf("Usage: ./client_out <ip address> <number port>\n");
         exit(1);
     }
@@ -29,7 +32,8 @@ int main(int argc, char **argv) {
     int sockfd;
     struct sockaddr_in servaddr;
 
-    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+    {
         perror("\nERROR: ");
         return 0;
     }
@@ -39,7 +43,8 @@ int main(int argc, char **argv) {
     servaddr.sin_addr.s_addr = inet_addr(argv[1]);
     servaddr.sin_port = htons(atoi(argv[2]));
 
-    if (connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) == -1) {
+    if (connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) == -1)
+    {
         perror("\nERROR: ");
         return 0;
     }
@@ -49,90 +54,125 @@ int main(int argc, char **argv) {
     printf("\n\n%s\n\n", conn_mess);
     int choice;
     int *login_status = 0;
-    while (1) {
-        
-        do{
+    while (1)
+    {
+
+        do
+        {
             viewWelcome();
             printf("Choice: ");
             scanf("%d", &choice);
             clearKeyboardBuffer();
-            switch (choice) {
-                case 1: {
-                    char *username, *password, *message;
-                    username = (char *)malloc(255 * sizeof(char));
-                    password = (char *)malloc(255 * sizeof(char));
-                    message = (char *)malloc(255 * sizeof(char));
-                    viewLogin(username, password);
-                    makeLoginMessage(username, password, message);
-                    printf("%s\n", message);
-                    sendMessage(sockfd, message);
-                    login_status = (int *)malloc(sizeof(int));
-                    *login_status = getResultRequest(sockfd);
-                    // if user login
-                    if(*login_status == 1010){
-                        int user_choice;
-                        do{
-                            viewUser();
-                            printf("Choice: ");
-                            scanf("%d", &user_choice);
-                            clearKeyboardBuffer();
-                            switch(user_choice) {
-                                case 1:{
-                                    char *title;
-                                    title = (char *)malloc(255 * sizeof(char));
-                                    free(message);
-                                    message = (char *)malloc(255 * sizeof(char));
-                                    getTitleFilm(title);
-                                    makeSearchFilmByTitleMessage(title, message);
-                                    printf("%s\n", message);
-                                    sendMessage(sockfd, message);
-                                    break;
-                                }
-                                case 5:{
-                                    break;
-                                }
-                            }
-                        }while(user_choice != 0);
-                    }else if(*login_status == 1110){   // if admin login
-                        int admin_choice;
-                        do{
-                            viewAdmin();
-                            printf("Choice: ");
-                            scanf("%d", &admin_choice);
-                            clearKeyboardBuffer();
-                            switch(admin_choice) {
-                                case 4: {
-                                    // admin_choice = handleLogout(sockfd, message);
-                                    // printf("%d\n", admin_choice);
-                                    break;
-                                }
-                            }
-                        }while(admin_choice != 0);
-                    }
-                    break;
+            switch (choice)
+            {
+            case 1:
+            {
+                char *username, *password, *message;
+                username = (char *)malloc(255 * sizeof(char));
+                password = (char *)malloc(255 * sizeof(char));
+                message = (char *)malloc(255 * sizeof(char));
+                viewLogin(username, password);
+                makeLoginMessage(username, password, message);
+                printf("%s\n", message);
+                sendMessage(sockfd, message);
+                login_status = (int *)malloc(sizeof(int));
+                *login_status = getResultRequest(sockfd);
+                // if user login
+                if (*login_status == 1010)
+                {
+                    int user_choice;
+                    do
+                    {
+                        viewUser();
+                        printf("Choice: ");
+                        scanf("%d", &user_choice);
+                        clearKeyboardBuffer();
+                        switch (user_choice)
+                        {
+                        case 1:
+                        {
+                            char *title;
+                            title = (char *)malloc(255 * sizeof(char));
+                            free(message);
+                            message = (char *)malloc(255 * sizeof(char));
+                            getTitleFilm(title);
+                            makeSearchFilmByTitleMessage(title, message);
+                            printf("%s\n", message);
+                            sendMessage(sockfd, message);
+                            break;
+                        }
+                        case 5:
+                        {
+                            break;
+                        }
+                        }
+                    } while (user_choice != 0);
                 }
-                // case 2: {
-                //     char *newUsername, *newPassword, message[BUFSIZE];
-                //     newUsername = (char *)malloc(255 * sizeof(char));
-                //     newPassword = (char *)malloc(255 * sizeof(char));
-                //     viewRegister(newUsername, newPassword);
-                //     handleRegister(sockfd, newUsername, newPassword, message);
-                //     break;
-                // }
-                case 3: {
-                    printf("\n\nThanks for coming to HTV-SPM!!\n\n");
-                    sendMessage(sockfd, "EXIT");
-                    close(sockfd);
-                    return 0;
-                    exit(0);
+                else if (*login_status == 1110)
+                { // if admin login
+                    int admin_choice;
+                    do
+                    {
+                        viewAdmin();
+                        printf("Choice: ");
+                        scanf("%d", &admin_choice);
+                        clearKeyboardBuffer();
+                        switch (admin_choice)
+                        {
+                        case 4:
+                        {
+                            // admin_choice = handleLogout(sockfd, message);
+                            // printf("%d\n", admin_choice);
+                            break;
+                        }
+                        }
+                    } while (admin_choice != 0);
                 }
-                default: {
-                    printf("Unknown request type!\n\n");
-                    break;
-                }
+                break;
             }
-        }while(choice != 0);
+            case 2:
+            { // Đăng ký
+                char *newName, *newUsername, *newPassword, *message;
+                newName = (char *)malloc(255 * sizeof(char));
+                newUsername = (char *)malloc(255 * sizeof(char));
+                newPassword = (char *)malloc(255 * sizeof(char));
+                message = (char *)malloc(255 * sizeof(char));
 
+                viewRegister(newName, newUsername, newPassword);                 // Hiển thị form đăng ký và lấy thông tin
+                makeRegisterMessage(newName, newUsername, newPassword, message); // Tạo thông điệp đăng ký
+                sendMessage(sockfd, message);                                    // Gửi thông điệp đến server
+
+                int result = recvResult(sockfd); // Nhận kết quả từ server
+                if (result == REGISTER_SUCCESS)
+                {
+                    printf(REGISTER_SUCCESS_MESSAGE);
+                }
+                else
+                {
+                    printf(REGISTER_FAIL_MESSAGE);
+                }
+                free(newName);
+                free(newUsername);
+                free(newPassword);
+                free(message);
+                break;
+            }
+
+            case 3:
+            {
+                printf("\n\nThanks for coming to HTV-SPM!!\n\n");
+                sendMessage(sockfd, "EXIT");
+                close(sockfd);
+                return 0;
+                exit(0);
+            }
+            default:
+            {
+                printf("Unknown request type!\n\n");
+                break;
+            }
+            }
+        } while (choice != 0);
     }
 
     close(sockfd);
