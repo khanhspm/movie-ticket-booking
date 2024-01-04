@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/khanhspm/Documents/Network_Programing/project/movie-ticket-booking/server/headers",
+      "program": "/Users/khanhspm/Documents/Network_Programing/project/movie-ticket-booking/server/headers/build/Debug/outDebug"
+    }
+  ]
+}

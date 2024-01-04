@@ -9,17 +9,21 @@
 #include <stdlib.h>
 #include "../lib/socket/socket.h"
 #include "../lib/messages/message.h"
-#include "headers/queryUser.h"
+// #include "headers/queryUser.h"
+#include "headers/function.h"
+#include "headers/queryFilm.h"
 #include "../data/connect.h"
 // #include "headers/IOsocket.h"
 
 #define BACKLOG 20
 
-void *handleRequest(void *);
+void *handleCommunicate(void *);
 
 listLoginedAccount myArray;
 
 node h = NULL;
+nodeFilm f = NULL;
+MYSQL *conn;
 
 int main(int argc, char **argv){
     if(argc != 2){
@@ -29,11 +33,13 @@ int main(int argc, char **argv){
 
     myArray = createListLoginedUser(myArray);
 
-    MYSQL *conn;
     connectDatabase(&conn);
 
     user x;
     selectUser(conn, &h, x);
+
+    film y;
+    selectFilm(conn, &f, y);
 
     int listenfd, *connfd;
     struct sockaddr_in server; // Server's address information
@@ -73,7 +79,7 @@ int main(int argc, char **argv){
         }
 
         // For each client, spawn a thread, and the thread handles the new client
-        pthread_create(&tid, NULL, &handleRequest, connfd);
+        pthread_create(&tid, NULL, &handleCommunicate, connfd);
     }
 
     close(listenfd);
@@ -82,7 +88,7 @@ int main(int argc, char **argv){
 
 }
 
-void *handleRequest(void* arg){
+void *handleCommunicate(void* arg){
     int connfd = *((int*) arg);
     free(arg);
     pthread_detach(pthread_self());
@@ -104,26 +110,13 @@ void *handleRequest(void* arg){
         // printf("%s\n", message);
         type = getTypeMessage(message);
         // printf("%s\n", type);
-        if(strcmp(type, "LOGIN") == 0){
-            char *username, *password;
-            username = (char *)malloc(255 * sizeof(char));
-            password = (char *)malloc(255 * sizeof(char));
-            getLoginMessage(&username, &password);
-            int check = checkLogin(h, username, password, myArray);
-            if(check == 0){
-                sendResult(connfd, 2011);
-            }else if(check == 1){
-                addToListLoginedAccount(&myArray, username);
-                sendResult(connfd, 1011);
-            }else if(check == 2){
-                addToListLoginedAccount(&myArray, username);
-                sendResult(connfd, 1010);
-            }else{
-                sendResult(connfd, 2012);
-            }
-        }else if(strcmp(type, "TITLE") == 0){
-            printf("%s\n", type);
-        }
+        // if(strcmp(type, "TITLE") == 0){
+        //     char *title;
+        //     title = (char *)malloc(255 * sizeof(char));
+        //     getSearchFilmByTitleMessage(&title);
+        //     searchTitle(f, title);
+        // }
+        handleRequest(conn, type, connfd, myArray, h);
     }
 
     close(connfd);

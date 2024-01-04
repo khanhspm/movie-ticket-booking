@@ -33,9 +33,13 @@ void getLoginMessage(char **username, char **password);
  * @param password :password for register
  * @param message : the message to send to server
  */
-void makeRegisterMessage(char *username, char *password, char *message);
+void makeRegisterMessage(char *name,char *username, char *password, char *message);
 
-void getRegisterMessage(char **username, char **password);
+void getRegisterMessage(char **name, char **username, char **password);
+
+void makeChangePasswordMessage(char *username, char *oldPassword, char *newPassword, char *message);
+
+void getChangePasswordMessage(char **username, char **oldPassword, char **newPassword);
 
 /**
  * @brief Make LOGOUT message to send to server

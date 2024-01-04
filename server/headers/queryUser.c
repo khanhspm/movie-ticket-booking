@@ -68,6 +68,16 @@ int searchListLoginedAccount(const listLoginedAccount *arr, const char *value) {
     return -1; 
 }
 
+void deleteFromListLoginedAccount(listLoginedAccount *arr, const char *value) {
+    int index = searchListLoginedAccount(arr, value);
+
+    if (index != -1) {
+        free(arr->data[index]);  
+        arr->data[index] = arr->data[arr->size - 1];  
+        arr->size--;
+    }
+
+}
 
 listLoginedAccount createListLoginedUser(listLoginedAccount arr){
     freeListLoginedAccount(&arr);
@@ -101,7 +111,7 @@ int checkLogin(node head, char *username, char *password, listLoginedAccount arr
             if(p->data.role_id == 1){
                 printf("%s\n", LOGIN_SUCCESS_ADMIN);
                 return 1;
-            }else if(p->data.role_id == 0){
+            }else if(p->data.role_id == 2){
                 printf("%s\n", LOGIN_SUCCESS_USER);
                 return 2;
             }            
@@ -111,4 +121,52 @@ int checkLogin(node head, char *username, char *password, listLoginedAccount arr
 
     printf("%s\n", LOGIN_FAIL);
     return 0;
+}
+
+int registerUser(MYSQL *connection, user newUser) {
+    char query[1024];
+
+    // Kiểm tra xem username đã tồn tại chưa
+    sprintf(query, "SELECT username FROM users WHERE username = '%s'", newUser.username);
+    mysql_query(connection, query);
+    MYSQL_RES *result = mysql_store_result(connection);
+    if (mysql_num_rows(result) > 0) { // Nếu tìm thấy username
+        mysql_free_result(result);
+        return 0; // Đăng ký thất bại do trùng tên người dùng
+    }
+    mysql_free_result(result);
+
+    // Thực hiện thêm người dùng mới
+sprintf(query, "INSERT INTO users (name, username, password, role_id) VALUES ('%s','%s', '%s', %ld)", newUser.name, newUser.username, newUser.password, newUser.role_id);
+    if (mysql_query(connection, query)) {
+        fprintf(stderr, "Register Error: %s\n", mysql_error(connection));
+        return 0; // Thất bại
+    } else {
+        return 1; // Thành công
+    }
+}
+
+int changePassword(MYSQL *connection, char *username, char *oldPassword, char *newPassword) {
+    // Kiểm tra mật khẩu cũ có chính xác không
+    char query[1024];
+    sprintf(query, "SELECT password FROM users WHERE username = '%s'", username);
+    mysql_query(connection, query);
+    MYSQL_RES *result = mysql_store_result(connection);
+    MYSQL_ROW row = mysql_fetch_row(result);
+    if (!row || strcmp(row[0], oldPassword) != 0) {
+        mysql_free_result(result);
+        printf("fghjk");
+        return 0; // Mật khẩu cũ không chính xác
+    }
+    printf("%s",row[0]);
+    mysql_free_result(result);
+
+    // Cập nhật mật khẩu mới
+    sprintf(query, "UPDATE users SET password = '%s' WHERE username = '%s'", newPassword, username);
+    if (mysql_query(connection, query)) {
+        printf("kkk");
+        return 0; // Thất bại
+    }
+
+    return 1; // Thành công
 }

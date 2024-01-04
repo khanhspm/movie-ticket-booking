@@ -1,81 +1,72 @@
-void viewWelcome(){
-    printf("--------------Welcome to HTV-SPM------------------\n\n");
-    printf("1. Login to HTV-SPM\n");
-    printf("2. Register for HTV-SPM\n");
-    printf("3. Exit HTV-SPM\n\n");
-    printf("---------------------------------------------------\n");
-}
+#ifndef MENU_H
+#define MENU_H
 
-/**
- * @function viewLogin: view the login information
- * 
- * @param username : the username to login
- * @param password : the password to login
- */
-void viewLogin(char username[], char password[]){
-    printf("Username: ");
-    scanf("%s", username);
-    printf("Password: ");
-    scanf("%s", password);
-}
+#define LOGIN_SUCCESS_USER 1010
+#define LOGIN_SUCCESS_ADMIN 1011
+#define LOGIN_FAIL 2011
+#define LOGIN_ALREADY 2012
+#define LOGOUT_SUCCESS 1030
+#define REGISTER_SUCCESS 1020
+#define REGISTER_FAIL 2021
+#define ADD_FILM_SUCCESS 1040
+#define ADD_FILM_FAIL 2041
+#define POST_FILM_SUCCESS 1050
+#define POST_FILM_FAIL 2051
+#define EDIT_FILM_SUCCESS 1060
+#define EDIT_FILM_FAIL 2061
+#define NO_EDIT_FILM 2062
+#define BROWSE_CATEGORY_SUCCESS 1070
+#define BROWSE_THEATER_SUCCESS 1071
+#define BROWSE_TIME_SUCCESS 1072
+#define BROWSE_FAIL 2071
+#define FIND_FILM_SUCCESS 1073
+#define FIND_FILM_FAIL 2072
+#define VIEW_CHAIR_SUCCESS 1080
+#define VIEW_CHAIR_FAIL 2081
+#define CHOOSE_CHAIR_SUCCESS 1090
+#define CHOOSE_CHAIR_FAIL 2091
+#define BOOK_TICKET_SUCCESS 1100
+#define BOOK_TICKET_FAIL 2101
+#define CHANGE_PASSWORD_SUCCESS 1110
+#define CHANGE_PASSWORD_FAIL 2110
 
-void viewRegister(char *username, char *password) {
-    printf("Registration\n");
-    printf("Username: ");
-    scanf("%s", username);
-    printf("Password: ");
-    scanf("%s", password);
-}
+#define LOGIN_SUCCESS_MESSAGE "You have logged in successfully!!\n"
+#define LOGIN_FAIL_MESSAGE "Your username or password is incorrect!!\n"
+#define LOGIN_ALREADY_MESSAGE "Your account is being used in another address!!\n"
+#define REGISTER_SUCCESS_MESSAGE "You have registered successfully!!\n"
+#define REGISTER_FAIL_MESSAGE "Username has been existed!!\n"
+#define LOGOUT_SUCCESS_MESSAGE "You have been successfully logged out!!\n"
+#define ADD_FILM_SUCCESS_MESSAGE "Add new film successfully!!\n"
+#define ADD_FILM_FAIL_MESSAGE "The title of the film has already been exist!!\n"
+#define POST_FILM_SUCCESS_MESSAGE "Post new film successfully!!\n"
+#define POST_FILM_FAIL_MESSAGE "The time to show the film has already been exist!!\n"
+#define EDIT_FILM_SUCCESS_MESSAGE "Edit information of the film successfully!!\n"
+#define EDIT_FILM_FAIL_MESSAGE "Edit fail because the show time of the film has already been exist!!\n"
+#define NO_EDIT_FILM_MESSAGE "Edit fail because no information change!!\n"
+#define BROWSE_CATEGORY_SUCCESS_MESSAGE "Browse follow category "
+#define BROWSE_THEATER_SUCCESS_MESSAGE "Browse follow theater "
+#define BROWSE_TIME_SUCCESS_MESSAGE "Browse follow time "
+#define BROWSE_FAIL_MESSAGE "No film has been found!!\n"
+#define FIND_FILM_SUCCESS_MESSAGE "Find film follow title "
+#define FIND_FILM_FAIL_MESSAGE "No film has been found!!\n"
+#define VIEW_CHAIR_SUCCESS_MESSAGE "MAP CHAIR\n"
+#define VIEW_CHAIR_FAIL_MESSAGE "Has not empty chair in map\n"
+#define CHOOSE_CHAIR_SUCCESS_MESSAGE "Choose successfully "
+#define CHOOSE_CHAIR_FAIL_MESSAGE "This chair is not empty chair. Please choose again!!\n"
+#define BOOK_TICKET_SUCCESS_MESSAGE "Booking ticket successfully!!\n"
+#define BOOK_TICKET_FAIL_MESSAGE "Booking ticket failed!!\n"
+#define INVALID_MESSAGE_MESSAGE "The request is invalid!!\n"
+#define CHANGE_PASSWORD_SUCCESS_MESSAGE "Changed password successfully\n"
+#define CHANGE_PASSWORD_FAIL_MESSAGE "Changed password fail!!\n" 
 
-void viewAdmin(){
-    printf("--------------Welcome to HTV-SPM------------------\n\n");
-    printf("1. Add new film\n");
-    printf("2. Announcing film \n");
-    printf("3. Edit announced film\n");
-    printf("4. Logout\n\n");
-    printf("---------------------------------------------------\n");
-}
+void viewWelcome();
+void viewLogin(char username[], char password[]);
+void viewRegister(char *name, char *username, char *password);
+void viewAdmin();
+void viewUser();
+void addNewFilm(char title[], char category[], char show_time[]);
+void browseFilm();
+void getTitleFilm(char title[]);
+void viewChangePassword(char *oldPassword, char *newPassword);
 
-void viewUser(){
-    printf("--------------Welcome to HTV-SPM------------------\n\n");
-    printf("1. Browse film catalogs\n");
-    printf("2. Search film \n");
-    printf("3. Book ticket\n");
-    printf("4. Logout\n\n");
-    printf("---------------------------------------------------\n");
-}
-
-/**
- * @function addNewFilm: add new film to database
- * 
- * @param title : name of new film
- * @param category : category of new film
- * @param show_time : show time of new film
- */
-void addNewFilm(char title[], char category[], char show_time[]){
-    printf("Title: ");
-    title[0] = '\0';
-    fgets(title, 255, stdin);
-    printf("Category: ");
-    category[0] = '\0';
-    fgets(category, 255, stdin);
-    printf("Show time: ");
-    show_time[0] = '\0';
-    fgets(show_time, 255, stdin);    
-}
-
-void browseFilm(){
-    printf("--------------Welcome to HTV-SPM------------------\n\n");
-    printf("1. Browse film follow title\n");
-    printf("2. Browse film follow category\n");
-    printf("3. Browse film follow theater\n");
-    printf("4. Browse film follow show time\n");
-    printf("5. Return\n\n");
-    printf("---------------------------------------------------\n");
-}
-
-void getTitleFilm(char title[]){
-    printf("Title: ");
-    title[0] = '\0';
-    fgets(title, 255, stdin);
-}
+#endif

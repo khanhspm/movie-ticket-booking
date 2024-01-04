@@ -4,65 +4,123 @@
 #include "../../lib/socket/socket.h"
 #include "../../lib/messages/message.h"
 #include "queryUser.h"
+#include "function.h"
 
-#define LOGIN_SUCCESS_USER 1100
-#define LOGIN_SUCCESS_ADMIN 1110
-#define LOGIN_FAIL 2100
-#define LOGIN_ALREADY 2101
-#define LOGOUT_SUCCESS 1102
-#define REGISTER_SUCCESS 1101
-#define REGISTER_FAIL 2102
-#define ADD_FILM_SUCCESS 1200
-#define ADD_FILM_FAIL 2200
-#define POST_FILM_SUCCESS 1201
-#define POST_FILM_FAIL 2201
-#define EDIT_FILM_SUCCESS 1202
-#define EDIT_FILM_FAIL 2202
-#define NO_EDIT_FILM 2203
-#define BROWSE_CATEGORY_SUCCESS 1301
-#define BROWSE_THEATER_SUCCESS 1302
-#define BROWSE_TIME_SUCCESS 1303
-#define BROWSE_FAIL 2300
-#define FIND_FILM_SUCCESS 1304
-#define FIND_FILM_FAIL 2301
-#define VIEW_CHAIR_SUCCESS 1305
-#define VIEW_CHAIR_FAIL 2302
-#define CHOOSE_CHAIR_SUCCESS 1306
-#define CHOOSE_CHAIR_FAIL 2303
-#define BOOK_TICKET_SUCCESS 1307
-#define BOOK_TICKET_FAIL 2304
+#define LOGIN_SUCCESS_USER 1010
+#define LOGIN_SUCCESS_ADMIN 1011
+#define LOGIN_FAIL 2011
+#define LOGIN_ALREADY 2012
+#define LOGOUT_SUCCESS 1030
+#define REGISTER_SUCCESS 1020
+#define REGISTER_FAIL 2021
+#define ADD_FILM_SUCCESS 1040
+#define ADD_FILM_FAIL 2041
+#define POST_FILM_SUCCESS 1050
+#define POST_FILM_FAIL 2051
+#define EDIT_FILM_SUCCESS 1060
+#define EDIT_FILM_FAIL 2061
+#define NO_EDIT_FILM 2062
+#define BROWSE_CATEGORY_SUCCESS 1070
+#define BROWSE_THEATER_SUCCESS 1071
+#define BROWSE_TIME_SUCCESS 1072
+#define BROWSE_FAIL 2071
+#define FIND_FILM_SUCCESS 1073
+#define FIND_FILM_FAIL 2072
+#define VIEW_CHAIR_SUCCESS 1080
+#define VIEW_CHAIR_FAIL 2081
+#define CHOOSE_CHAIR_SUCCESS 1090
+#define CHOOSE_CHAIR_FAIL 2091
+#define BOOK_TICKET_SUCCESS 1100
+#define BOOK_TICKET_FAIL 2101
+#define CHANGE_PASSWORD_SUCCESS 1110
+#define CHANGE_PASSWORD_FAIL 2110
 
-
-
-void handleRequest(char *type, int connfd, listLoginedAccount *arr, node h, MYSQL *connection, user x){
+void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h){
+    char *username, *password;
     if(strcmp(type, "LOGIN") == 0){
-        char *username, *password;
         username = (char *)malloc(255 * sizeof(char));
         password = (char *)malloc(255 * sizeof(char));
-        getLoginMessage(&username, &password);
-        int check = checkLogin(h, username, password, arr);
-        if(check == 0){
-            sendResult(connfd, LOGIN_FAIL);   
-        }else if(check == 1){
-            addToListLoginedAccount(arr, username);
-            printf("1\n");
-            sendResult(connfd, LOGIN_SUCCESS_ADMIN);
-        }else if(check == 2){
-            addToListLoginedAccount(arr, username);
-            sendResult(connfd, LOGIN_SUCCESS_USER);
-        }else{
-            printf("3\n");
-            sendResult(connfd, LOGIN_ALREADY);
-        }
+        handleLogin(connfd, arr, h, username, password);
     }else if(strcmp(type, "LOGOUT") == 0){
-
+        handleLogout(connfd, arr, username, password);
     }else if(strcmp(type, "REGISTER") == 0){
-
+        handleRegister(conn, connfd);
     }else if(strcmp(type, "NEW_FILM") == 0){
 
     }else if(strcmp(type, "POST") == 0){
 
     }else if(strcmp(type, "EDIT") == 0){
 
+    }else if(strcmp(type, "TITLE") == 0){
+
+    }else if (strcmp(type, "CHANGE_PASSWORD") == 0){
+        handleChangePassword(connfd, conn);
+    }
+}
+
+void handleLogin(int connfd, listLoginedAccount arr, node h, char *username, char *password){
+    getLoginMessage(&username, &password);
+    int check = checkLogin(h, username, password, arr);
+    printf("%d\n", check);
+    if(check == 0){
+        sendResult(connfd, LOGIN_FAIL);   
+    }else if(check == 1){
+        addToListLoginedAccount(&arr, username);
+        sendResult(connfd, LOGIN_SUCCESS_ADMIN);
+    }else if(check == 2){
+        addToListLoginedAccount(&arr, username);
+        sendResult(connfd, LOGIN_SUCCESS_USER);
+    }else{
+        sendResult(connfd, LOGIN_ALREADY);
+    }
+}
+
+void handleLogout(int connfd, listLoginedAccount arr, char *username, char *password){
+    deleteFromListLoginedAccount(&arr, username);
+    free(username);
+    free(password);
+    username = NULL;
+    password = NULL;
+    sendResult(connfd, LOGOUT_SUCCESS);
+}
+
+void handleRegister(MYSQL *conn, int connfd){
+    char *name, *username, *password;
+    name = (char *)malloc(255 * sizeof(char));
+    username = (char *)malloc(255 * sizeof(char));
+    password = (char *)malloc(255 * sizeof(char));
+    getRegisterMessage(&name, &username, &password);
+
+    // Thiết lập newUser
+    user newUser;
+    strcpy(newUser.name, name);
+    strcpy(newUser.username, username);
+    strcpy(newUser.password, password);
+    newUser.role_id = 2; // Mặc định là user
+
+    // Gọi hàm đăng ký và xử lý kết quả
+    int result = registerUser(conn, newUser);
+    printf("KQ %d",result);
+    if (result == 1){
+        sendResult(connfd, REGISTER_SUCCESS);
+    }else{
+        sendResult(connfd, REGISTER_FAIL);
+    }
+}
+
+void handleChangePassword(int connfd, MYSQL *conn){
+    char *username, *oldPassword, *newPassword;
+    username = (char *)malloc(255 * sizeof(char));
+    oldPassword = (char *)malloc(255 * sizeof(char));
+    newPassword = (char *)malloc(255 * sizeof(char));
+    getChangePasswordMessage(&username, &oldPassword, &newPassword); // Hàm này cần được viết để phân tích tin nhắn
+
+    int result = changePassword(conn, username, oldPassword, newPassword);
+    printf("%d\n", result);
+    if (result == 1){
+        sendResult(connfd, CHANGE_PASSWORD_SUCCESS);
+    }
+    else{
+        sendResult(connfd, CHANGE_PASSWORD_FAIL);
     }
 }

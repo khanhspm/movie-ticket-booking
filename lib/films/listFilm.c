@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -58,7 +59,7 @@ void addNodeFilm(nodeFilm* head, film x){
  */
 void searchTitle(nodeFilm head, char title[]){
     int a = 0;
-    if(Empty(head)){
+    if(checkEmptyListFilm(head)){
         printf("No data!\n");
         return;
     }else{
@@ -66,7 +67,7 @@ void searchTitle(nodeFilm head, char title[]){
         while(p != NULL){
             if(strcmp(title, p->data.title) == 0){
                 a++;
-                printf("%d. %s %s %s\n", a, p->data.title, p->data.category, p->data.show_time);
+                printf("%d. %s %ld %ld\n", a, p->data.title, p->data.category_id, p->data.show_time);
             }
             p = p->next;
         }
