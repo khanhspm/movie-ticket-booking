@@ -37,6 +37,9 @@ void makeRegisterMessage(char *name, char *username, char *password, char *messa
 
 void getRegisterMessage(char **name, char **username, char **password);
 
+void makeChangePasswordMessage(char *username, char *oldPassword, char *newPassword, char *message);
+
+void getChangePasswordMessage(char **username, char **oldPassword, char **newPassword);
 /**
  * @brief Make LOGOUT message to send to server
  * 

@@ -44,10 +44,20 @@ void viewUser(){
     printf("1. Browse film catalogs\n");
     printf("2. Search film \n");
     printf("3. Book ticket\n");
-    printf("4. Logout\n\n");
-    printf("5. Change Password\n")
+    printf("4. Logout\n");
+    printf("5. Change Password\n");
     printf("---------------------------------------------------\n");
 }
+
+void viewChangePassword(char *oldPassword, char *newPassword) {
+    printf("Change Password\n");
+    printf("Old Password: ");
+    scanf("%s", oldPassword);
+    printf("New Password: ");
+    scanf("%s", newPassword);
+}
+
+
 
 /**
  * @function addNewFilm: add new film to database

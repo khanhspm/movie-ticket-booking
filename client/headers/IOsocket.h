@@ -54,8 +54,8 @@
 #define BOOK_TICKET_SUCCESS_MESSAGE "Booking ticket successfully!!\n"
 #define BOOK_TICKET_FAIL_MESSAGE "Booking ticket failed!!\n"
 #define INVALID_MESSAGE_MESSAGE "The request is invalid!!\n"
-#define CHANGE_PASSWORD_SUCCESS ""
-#define CHANGE_PASSWORD_FAIL "" 
+#define CHANGE_PASSWORD_SUCCESS_MESSAGE "Changed password successfully\n"
+#define CHANGE_PASSWORD_FAIL_MESSAGE "Changed password fail!!\n" 
 
 
 int getResultRequest(int socketfd){

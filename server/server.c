@@ -14,6 +14,9 @@
 
 #define REGISTER_SUCCESS 1101
 #define REGISTER_FAIL 2102
+#define CHANGE_PASSWORD_SUCCESS 1110
+#define CHANGE_PASSWORD_FAIL 2110
+
 #define BACKLOG 20
 
 void *handleRequest(void *);
@@ -36,10 +39,8 @@ int main(int argc, char **argv)
     connectDatabase(&conn);
 
     user x;
-    printf("Server started !\n");
 
     selectUser(conn, &h, x);
-    printf("Connected SQL\n");
 
     int listenfd, *connfd;
     struct sockaddr_in server;  // Server's address information
@@ -88,7 +89,6 @@ int main(int argc, char **argv)
     }
 
     close(listenfd);
-
 
     return 0;
 }
@@ -169,6 +169,7 @@ void *handleRequest(void *arg)
 
             // Gọi hàm đăng ký và xử lý kết quả
             int result = registerUser(conn, newUser);
+            printf("KQ %d",result);
             if (result == 1)
             {
                 sendResult(connfd, REGISTER_SUCCESS);
@@ -177,10 +178,26 @@ void *handleRequest(void *arg)
             {
                 sendResult(connfd, REGISTER_FAIL);
             }
-
-            
         }
+        else if (strcmp(type, "CHANGE_PASSWORD") == 0)
+        {
+            char *username, *oldPassword, *newPassword;
+            username = (char *)malloc(255 * sizeof(char));
+            oldPassword = (char *)malloc(255 * sizeof(char));
+            newPassword = (char *)malloc(255 * sizeof(char));
+            getChangePasswordMessage(&username, &oldPassword, &newPassword); // Hàm này cần được viết để phân tích tin nhắn
 
+            int result = changePassword(conn, username, oldPassword, newPassword);
+            printf("%d\n", result);
+            if (result == 1)
+            {
+                sendResult(connfd, CHANGE_PASSWORD_SUCCESS);
+            }
+            else
+            {
+                sendResult(connfd, CHANGE_PASSWORD_FAIL);
+            }
+        }
     }
 
     close(connfd);

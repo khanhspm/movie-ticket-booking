@@ -14,4 +14,5 @@ listLoginedAccount createListLoginedUser(listLoginedAccount arr);
 
 int checkLogin(node head, char *username, char *password, listLoginedAccount arr);
 int registerUser(MYSQL *connection, user newUser);
+int changePassword(MYSQL *connection, char *username, char *oldPassword, char *newPassword);
 #endif
