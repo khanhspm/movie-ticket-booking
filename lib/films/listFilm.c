@@ -72,5 +72,9 @@ int searchTitle(nodeFilm head, char title[], nodeFilm* addf){
             p = p->next;
         }
     }
+<<<<<<< HEAD
+=======
+    if(a == 0) printf("The film you need search is not exist!\n");
+>>>>>>> d5d1d4c (make handleSearchFilm)
     return a;
 }

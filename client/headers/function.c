@@ -154,6 +154,10 @@ void handleRegister(int sockfd){
 
 void handleSearchByTitle(int sockfd, char *title, char *message){
     title = (char *)malloc(255 * sizeof(char));
+<<<<<<< HEAD
+=======
+    free(message);
+>>>>>>> d5d1d4c (make handleSearchFilm)
     message = (char *)malloc(255 * sizeof(char));
     getTitleFilm(title);
     makeSearchFilmByTitleMessage(title, message);
@@ -163,6 +167,10 @@ void handleSearchByTitle(int sockfd, char *title, char *message){
     int result = recvResult(sockfd);
     if(result == FIND_FILM_SUCCESS){
         printf("%s\n", FIND_FILM_SUCCESS_MESSAGE);
+<<<<<<< HEAD
+=======
+        free(message);
+>>>>>>> d5d1d4c (make handleSearchFilm)
         message = (char *)malloc(255 * sizeof(char));
         recvMessage(sockfd, message);
         printf("%s\n", message);

@@ -1,0 +1,5 @@
+Makefile
+.vscode
+client_out
+server_out
+./data

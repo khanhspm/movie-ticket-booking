@@ -149,5 +149,9 @@ void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c){
             addf = addf->next;
         }
         sendMessage(connfd, message);
+<<<<<<< HEAD
+=======
+        free(message);
+>>>>>>> d5d1d4c (make handleSearchFilm)
     }
 }
