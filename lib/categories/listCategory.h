@@ -1,6 +1,8 @@
 #ifndef LISTCATEGORY_H
 #define LISTCATEGORY_H
 
+#include "category.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 
@@ -25,5 +27,7 @@ void addNewNodeCategory(nodeCategory* head, category x);
  * @param x: node to add
 */
 void addNodeCategory(nodeCategory* head, category x);
+
+int searchCategory(nodeCategory head, char name[]);
 
 #endif

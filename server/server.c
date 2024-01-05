@@ -9,11 +9,8 @@
 #include <stdlib.h>
 #include "../lib/socket/socket.h"
 #include "../lib/messages/message.h"
-// #include "headers/queryUser.h"
 #include "headers/function.h"
-#include "headers/queryFilm.h"
 #include "../data/connect.h"
-// #include "headers/IOsocket.h"
 
 #define BACKLOG 20
 
@@ -23,6 +20,7 @@ listLoginedAccount myArray;
 
 node h = NULL;
 nodeFilm f = NULL;
+nodeCategory c = NULL;
 MYSQL *conn;
 
 int main(int argc, char **argv){
@@ -40,6 +38,9 @@ int main(int argc, char **argv){
 
     film y;
     selectFilm(conn, &f, y);
+
+    category catg;
+    selectCategory(conn, &c, catg);
 
     int listenfd, *connfd;
     struct sockaddr_in server; // Server's address information
@@ -110,13 +111,8 @@ void *handleCommunicate(void* arg){
         // printf("%s\n", message);
         type = getTypeMessage(message);
         // printf("%s\n", type);
-        // if(strcmp(type, "TITLE") == 0){
-        //     char *title;
-        //     title = (char *)malloc(255 * sizeof(char));
-        //     getSearchFilmByTitleMessage(&title);
-        //     searchTitle(f, title);
-        // }
-        handleRequest(conn, type, connfd, myArray, h);
+
+        handleRequest(conn, type, connfd, myArray, h, f, c);
     }
 
     close(connfd);

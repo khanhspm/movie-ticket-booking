@@ -8,30 +8,29 @@
 void clearKeyboardBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {
-        // Đọc và loại bỏ các ký tự còn lại trong bộ đệm bàn phím
+
     }
 }
 
+void handleLogout(int sockfd);
 void handleSearchByTitle(int sockfd, char *title, char *message);
 void handleRequestUser(int sockfd, char *username, char *password, char *message, int *login_status);
 void handleRequestAdmin(int sockfd, char *username, char *password, char *message, int *login_status);
 void handleChangePassword(int sockfd, char *username, char *message);
+void handleBrowseFilm(int sockfd);
 
 void handleLogin(int sockfd, char *username, char *password, char *message, int *login_status){
     viewLogin(username, password);
     makeLoginMessage(username, password, message);
     sendMessage(sockfd, message);
     *login_status = recvResult(sockfd);
-}
-
-void handleSearchByTitle(int sockfd, char *title, char *message){
-    title = (char *)malloc(255 * sizeof(char));
-    free(message);
-    message = (char *)malloc(255 * sizeof(char));
-    getTitleFilm(title);
-    makeSearchFilmByTitleMessage(title, message);
-    printf("%s\n", message);
-    sendMessage(sockfd, message);
+    if(*login_status == LOGIN_FAIL){
+        printf("%s\n", LOGIN_FAIL_MESSAGE);
+    }else if(*login_status == LOGIN_ALREADY){
+        printf("%s\n", LOGIN_ALREADY_MESSAGE);
+    }else{
+        printf("%s\n", LOGIN_SUCCESS_MESSAGE);
+    }
 }
 
 void handleRequestUser(int sockfd, char *username, char *password, char *message, int *login_status){
@@ -42,9 +41,22 @@ void handleRequestUser(int sockfd, char *username, char *password, char *message
         scanf("%d", &user_choice);
         clearKeyboardBuffer();
         switch(user_choice) {
+            case 1:{
+                handleBrowseFilm(sockfd);
+                break;
+            }
             case 2:{
                 char *title;
                 handleSearchByTitle(sockfd, title, message);
+                break;
+            }
+            case 3:{
+                //handleBookTicket();
+                break;
+            }
+            case 4:{
+                handleLogout(sockfd);
+                user_choice = 0;
                 break;
             }
             case 5:{
@@ -64,13 +76,35 @@ void handleRequestAdmin(int sockfd, char *username, char *password, char *messag
         scanf("%d", &admin_choice);
         clearKeyboardBuffer();
         switch(admin_choice) {
+            case 1:{
+                //handleAddNewFilm();
+                break;
+            }
+            case 2:{
+                //handleAnnouncingFilm();
+                break;
+            }
+            case 3:{
+                //handleEditAnnouncedFilm();
+                break;
+            }
             case 4: {
-                // admin_choice = handleLogout(sockfd, message);
-                // printf("%d\n", admin_choice);
+                handleLogout(sockfd);
+                admin_choice = 0;
                 break;
             }
         }
     } while(admin_choice != 0);
+}
+
+void handleLogout(int sockfd){
+    char *message;
+    message = (char *)malloc(255 * sizeof(char));
+    makeLogoutMessage(message);
+    sendMessage(sockfd, message);
+    int result = recvResult(sockfd);
+    printf("%d\n", result);
+    printf(LOGOUT_SUCCESS_MESSAGE);
 }
 
 void handleChangePassword(int sockfd, char *username, char *message){
@@ -80,7 +114,6 @@ void handleChangePassword(int sockfd, char *username, char *message){
     viewChangePassword(oldPassword, newPassword);
     makeChangePasswordMessage(username, oldPassword, newPassword, message);
     sendMessage(sockfd, message);
-    printf("%s\n", message);
 
     int result = recvResult(sockfd);
     printf("%d\n", result);
@@ -117,4 +150,53 @@ void handleRegister(int sockfd){
     free(newUsername);
     free(newPassword);
     free(message);
+}
+
+void handleSearchByTitle(int sockfd, char *title, char *message){
+    title = (char *)malloc(255 * sizeof(char));
+    free(message);
+    message = (char *)malloc(255 * sizeof(char));
+    getTitleFilm(title);
+    makeSearchFilmByTitleMessage(title, message);
+    printf("%s\n", message);
+    sendMessage(sockfd, message);
+
+    int result = recvResult(sockfd);
+    if(result == FIND_FILM_SUCCESS){
+        printf("%s\n", FIND_FILM_SUCCESS_MESSAGE);
+        free(message);
+        message = (char *)malloc(255 * sizeof(char));
+        recvMessage(sockfd, message);
+        printf("%s\n", message);
+    }else if(result == FIND_FILM_FAIL){
+        printf("%s\n", FIND_FILM_FAIL_MESSAGE);
+    }
+}
+
+void handleBrowseFilm(int sockfd){
+    int browse_choose;
+    do{
+        browseFilm();
+        printf("Choice: ");
+        scanf("%d", &browse_choose);
+        clearKeyboardBuffer();
+        switch(browse_choose){
+            case 1:{
+                //handleBrowseFollowCategory();
+                break;
+            }
+            case 2:{
+                //handleBrowseFollowCinema();
+                break;
+            }
+            case 3:{
+                //handleBrowseFollowShowTime();
+                break;
+            }
+            case 4:{
+                browse_choose = 0;
+                break;
+            }
+        }
+    }while(browse_choose != 0);
 }

@@ -57,20 +57,21 @@ void addNodeFilm(nodeFilm* head, film x){
  * @param head : node head of list
  * @param title : the title needed to search
  */
-void searchTitle(nodeFilm head, char title[]){
+int searchTitle(nodeFilm head, char title[], nodeFilm* addf){
     int a = 0;
     if(checkEmptyListFilm(head)){
         printf("No data!\n");
-        return;
+        return -1;
     }else{
         struct NodeFilm* p = head;
         while(p != NULL){
             if(strcmp(title, p->data.title) == 0){
                 a++;
-                printf("%d. %s %ld %ld\n", a, p->data.title, p->data.category_id, p->data.show_time);
+                addNodeFilm(addf, p->data);
             }
             p = p->next;
         }
     }
     if(a == 0) printf("The film you need search is not exist!\n");
+    return a;
 }

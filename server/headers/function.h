@@ -5,8 +5,10 @@
 #include "../../lib/socket/socket.h"
 #include "../../lib/messages/message.h"
 #include "queryUser.h"
+#include "queryFilm.h"
+#include "queryCategory.h"
 
-void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h);
+void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h, nodeFilm f, nodeCategory c);
 
 void handleLogin(int connfd, listLoginedAccount arr, node h, char *username, char *password);
 
@@ -16,6 +18,6 @@ void handleChangePassword(int connfd, MYSQL *conn);
 
 void handleLogout(int connfd, listLoginedAccount arr, char *username, char *password);
 
-// void hanldeSearchByTitle();
+void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c);
 
 #endif

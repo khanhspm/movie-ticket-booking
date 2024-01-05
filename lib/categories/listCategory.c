@@ -49,3 +49,18 @@ void addNodeCategory(nodeCategory* head, category x){
         a->next = p;
     }
 }
+
+int searchCategory(nodeCategory head, char name[]){
+    if(checkEmptyListCategory(head)){
+        return 0;
+    }else{
+        struct NodeCategory* p = head;
+        while(p != NULL){
+            if(strcmp(name, p->data.name) == 0){
+                return p->data.id;
+            }
+            p = p->next;
+        }
+    }
+    return -1;
+}

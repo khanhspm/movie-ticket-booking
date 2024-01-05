@@ -34,6 +34,6 @@ void addNodeFilm(nodeFilm* head, film x);
  * @param head : node head of list
  * @param title : the title needed to search
  */
-void searchTitle(nodeFilm head, char title[]);
+int searchTitle(nodeFilm head, char title[], nodeFilm* addf);
 
 #endif

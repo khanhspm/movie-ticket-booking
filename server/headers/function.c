@@ -4,6 +4,8 @@
 #include "../../lib/socket/socket.h"
 #include "../../lib/messages/message.h"
 #include "queryUser.h"
+#include "queryFilm.h"
+#include "queryCategory.h"
 #include "function.h"
 
 #define LOGIN_SUCCESS_USER 1010
@@ -35,7 +37,7 @@
 #define CHANGE_PASSWORD_SUCCESS 1110
 #define CHANGE_PASSWORD_FAIL 2110
 
-void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h){
+void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h, nodeFilm f, nodeCategory c){
     char *username, *password;
     if(strcmp(type, "LOGIN") == 0){
         username = (char *)malloc(255 * sizeof(char));
@@ -52,7 +54,7 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
     }else if(strcmp(type, "EDIT") == 0){
 
     }else if(strcmp(type, "TITLE") == 0){
-
+        handleSearchFilm(connfd, f, c);
     }else if (strcmp(type, "CHANGE_PASSWORD") == 0){
         handleChangePassword(connfd, conn);
     }
@@ -122,5 +124,31 @@ void handleChangePassword(int connfd, MYSQL *conn){
     }
     else{
         sendResult(connfd, CHANGE_PASSWORD_FAIL);
+    }
+}
+
+void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c){
+    char *title;
+    title = (char *)malloc(255 * sizeof(char));
+    getSearchFilmByTitleMessage(&title);
+    nodeFilm addf = NULL;
+    int seru = searchTitle(f, title, &addf);
+    if(addf == NULL || seru <= 0){
+        sendResult(connfd, FIND_FILM_FAIL);
+    }else{
+        sendResult(connfd,FIND_FILM_SUCCESS);
+        int a = 0;
+        char *message = (char *)malloc(20480 * sizeof(char));
+        while(addf != NULL){
+            a++;
+            sprintf(message, "STT: %d\n", a);
+            sprintf(message + strlen(message), "Title: %s\n", addf->data.title);
+            sprintf(message + strlen(message), "Category: %s\n", getCategory(addf->data.category_id, c));
+            sprintf(message + strlen(message), "Show time: %ld\n", addf->data.show_time);
+            sprintf(message + strlen(message), "Description: %s\n", addf->data.description);
+            addf = addf->next;
+        }
+        sendMessage(connfd, message);
+        free(message);
     }
 }

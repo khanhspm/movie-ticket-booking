@@ -17,7 +17,6 @@ void getLoginMessage(char **username, char **password){
     *password = strtok(NULL, "\r\n");
 }
 
-// Handle Client
 void makeRegisterMessage(char *name,char *username, char *password, char *message){
     strcpy(message, "REGISTER\r\n");
     strcat(message, name);
@@ -28,14 +27,12 @@ void makeRegisterMessage(char *name,char *username, char *password, char *messag
     strcat(message, "\r\n");
 }
 
-// Handle Server
 void getRegisterMessage(char **name, char **username, char **password){
     *name = strtok(NULL, "\r\n");
     *username = strtok(NULL, "\r\n");
     *password = strtok(NULL, "\r\n");
 }
 
-// Handle Client
 void makeChangePasswordMessage(char *username, char *oldPassword, char *newPassword, char *message) {
     strcpy(message, "CHANGE_PASSWORD\r\n");
     strcat(message, username);
@@ -46,13 +43,11 @@ void makeChangePasswordMessage(char *username, char *oldPassword, char *newPassw
     strcat(message, "\r\n");
 }
 
-// Handle Server
 void getChangePasswordMessage(char **username, char **oldPassword, char **newPassword) {
     *username = strtok(NULL, "\r\n");
     *oldPassword = strtok(NULL, "\r\n");
     *newPassword = strtok(NULL, "\r\n");
 }
-
 
 void makeLogoutMessage(char *message){
     strcpy(message, "LOGOUT\r\n");
