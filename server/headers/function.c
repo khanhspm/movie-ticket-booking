@@ -149,6 +149,5 @@ void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c){
             addf = addf->next;
         }
         sendMessage(connfd, message);
-        free(message);
     }
 }
