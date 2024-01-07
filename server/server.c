@@ -104,6 +104,7 @@ void *handleCommunicate(void* arg){
         char *message, *type;
         message = (char *)malloc(255 * sizeof(char));
         type = (char *)malloc(255 * sizeof(char));
+        
         recvMessage(connfd, message);
         if(strcmp(message, "EXIT") == 0){
             break;

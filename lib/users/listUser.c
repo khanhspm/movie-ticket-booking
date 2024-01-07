@@ -1,6 +1,9 @@
+#include <stdio.h>
+#include <string.h>
 #include "user.h"
 #include <stdlib.h>
 #include <stddef.h>
+
 
 /**
  * @function checkEmptyList: checking list of nodes is NULL
@@ -46,5 +49,21 @@ void addNode(node* head, user x){
         p->data = x;
         p->next = NULL;
         a->next = p;
+    }
+}
+
+void changeNodePassword(node* head, char username[], char newPassword[]){
+    if(checkEmptyList(*head)){
+        printf("Empty list\n");
+    } else {
+        struct Node* p = *head;
+        while(p != NULL){
+            if(strcmp(p->data.username, username) == 0){
+                printf("Trước khi thay đổi: %s\n", p->data.password);
+                strcpy(p->data.password, newPassword);
+                printf("Sau khi thay đổi: %s\n", p->data.password);
+            }
+            p = p->next;
+        }
     }
 }

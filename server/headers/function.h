@@ -12,12 +12,14 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
 
 void handleLogin(int connfd, listLoginedAccount arr, node h, char *username, char *password);
 
-void handleRegister(MYSQL *conn, int connfd);
+void handleRegister(MYSQL *conn, int connfd, node* h);
 
-void handleChangePassword(int connfd, MYSQL *conn);
+void handleChangePassword(int connfd, MYSQL *conn, node *h);
 
 void handleLogout(int connfd, listLoginedAccount arr, char *username, char *password);
 
 void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c);
 
+void handleAddNewFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCategory c);
+void handleBrowseFollowCategory(int connfd, nodeFilm f, nodeCategory c);
 #endif

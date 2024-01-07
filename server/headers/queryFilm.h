@@ -8,4 +8,5 @@
 void selectFilm(MYSQL *connection, nodeFilm* h, film x);
 char* getCategory(int id, nodeCategory head);
 
+void addFilm(MYSQL *connection, film x);
 #endif

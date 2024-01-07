@@ -53,20 +53,26 @@ void makeLogoutMessage(char *message){
     strcpy(message, "LOGOUT\r\n");
 }
 
-void makeAddNewFilmMessage(char *title, char *category, char *show_time, char *message){
+void makeShowCategoryMessage(char *message){
+    strcpy(message, "SHOW_CATEGORY\r\n");
+}
+void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char *description ,char *message){
     strcpy(message, "NEW_FILM\r\n"); 
     strcat(message, title);
     strcat(message, "\r\n");
-    strcat(message, category);
+    strcat(message, category_id);
     strcat(message, "\r\n");
     strcat(message, show_time);
     strcat(message, "\r\n");
+    strcat(message, description);
+    strcat(message, "\r\n");
 }
 
-void getAddNewFilmMessage(char **title, char **category, char **show_time){
+void getAddNewFilmMessage(char **title, char **category_id, char **show_time, char **description){
     *title = strtok(NULL, "\r\n");
-    *category = strtok(NULL, "\r\n");
+    *category_id = strtok(NULL, "\r\n");
     *show_time = strtok(NULL, "\r\n");
+    *description = strtok(NULL, "\r\n");
 }
 
 void makeSearchFilmByTitleMessage(char *title, char *message){
@@ -77,4 +83,13 @@ void makeSearchFilmByTitleMessage(char *title, char *message){
 
 void getSearchFilmByTitleMessage(char **title){
     *title = strtok(NULL, "\r\n");
+}
+
+void makeBrowseFollowCategoryMessage(char *category_id, char *message){
+    strcpy(message, "CATEGORY\r\n");
+    strcat(message, category_id);
+    strcat(message, "\r\n");
+}
+void getCategoryIDMessage(char **category_id){
+    *category_id = strtok(NULL, "\r\n");
 }

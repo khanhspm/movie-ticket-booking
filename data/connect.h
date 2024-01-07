@@ -2,7 +2,7 @@
 
 #define SERVER "localhost"
 #define USER "root"
-#define PASSWORD "mvk652002"
+#define PASSWORD "hoantv2002"
 #define DATABASE "ticketbooking"
 
 void connectDatabase(MYSQL **connection) {

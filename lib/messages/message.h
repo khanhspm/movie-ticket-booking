@@ -34,11 +34,9 @@ void getLoginMessage(char **username, char **password);
  * @param message : the message to send to server
  */
 void makeRegisterMessage(char *name,char *username, char *password, char *message);
-
 void getRegisterMessage(char **name, char **username, char **password);
 
 void makeChangePasswordMessage(char *username, char *oldPassword, char *newPassword, char *message);
-
 void getChangePasswordMessage(char **username, char **oldPassword, char **newPassword);
 
 /**
@@ -48,12 +46,15 @@ void getChangePasswordMessage(char **username, char **oldPassword, char **newPas
  */
 void makeLogoutMessage(char *message);
 
-void makeAddNewFilmMessage(char *title, char *category, char *show_time, char *message);
-
-void getAddNewFilmMessage(char **title, char **category, char **show_time);
+void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char *description ,char *message);
+void getAddNewFilmMessage(char **title, char **category_id, char **show_time, char **description);
 
 void makeSearchFilmByTitleMessage(char *title, char *message);
-
 void getSearchFilmByTitleMessage(char **title);
 
+void makeShowCategoryMessage(char *message);
+
+void makeBrowseFollowCategoryMessage(char *category_id, char *message);
+
+void getCategoryIDMessage(char **category_id);
 #endif

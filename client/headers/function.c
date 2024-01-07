@@ -19,6 +19,8 @@ void handleRequestAdmin(int sockfd, char *username, char *password, char *messag
 void handleChangePassword(int sockfd, char *username, char *message);
 void handleBrowseFilm(int sockfd);
 
+void handleAddNewFilm(int sockfd);
+
 void handleLogin(int sockfd, char *username, char *password, char *message, int *login_status){
     viewLogin(username, password);
     makeLoginMessage(username, password, message);
@@ -77,7 +79,7 @@ void handleRequestAdmin(int sockfd, char *username, char *password, char *messag
         clearKeyboardBuffer();
         switch(admin_choice) {
             case 1:{
-                //handleAddNewFilm();
+                handleAddNewFilm(sockfd);
                 break;
             }
             case 2:{
@@ -173,6 +175,55 @@ void handleSearchByTitle(int sockfd, char *title, char *message){
     }
 }
 
+void handleAddNewFilm(int sockfd){
+    char *title, *category_id, *show_time, *description, *message;
+
+    title = (char *)malloc(255 * sizeof(char));
+    category_id = (char *)malloc(255 * sizeof(char));
+    show_time = (char *)malloc(255 * sizeof(char));
+    description = (char *)malloc(2048 * sizeof(char));
+    message = (char *)malloc(255 * sizeof(char));
+
+    addNewFilm(sockfd, title, category_id, show_time, description);
+    makeAddNewFilmMessage(title, category_id, show_time, description, message);
+    sendMessage(sockfd, message);
+
+    int result = recvResult(sockfd);
+    if(result == ADD_FILM_SUCCESS){
+        printf("%s\n", ADD_FILM_SUCCESS_MESSAGE);
+    }else if(result == ADD_FILM_FAIL){
+        printf("%s\n", ADD_FILM_FAIL_MESSAGE);
+    }
+}
+
+void handleBrowseFollowCategory(int sockfd){
+    char *category_id, *message;
+    category_id = (char *)malloc(255 * sizeof(char));
+    message = (char *)malloc(255 * sizeof(char));
+
+    //in ra danh sach cac category
+    makeShowCategoryMessage(message);
+    sendMessage(sockfd, message);
+    recvMessage(sockfd, message);
+    printf("%s\n", message);
+
+    getCategoryIDMessage(&category_id);
+    makeBrowseFollowCategoryMessage(category_id, message);
+    sendMessage(sockfd, message);
+
+    int result = recvResult(sockfd);
+    if(result == BROWSE_CATEGORY_SUCCESS){
+        printf("%s\n", BROWSE_CATEGORY_SUCCESS_MESSAGE);
+        free(message);
+        message = (char *)malloc(255 * sizeof(char));
+        recvMessage(sockfd, message); 
+
+        printf("%s\n", message); //in list film theo category
+    }else if(result == BROWSE_FAIL){
+        printf("%s\n", BROWSE_FAIL_MESSAGE);
+    }
+}
+
 void handleBrowseFilm(int sockfd){
     int browse_choose;
     do{
@@ -182,7 +233,7 @@ void handleBrowseFilm(int sockfd){
         clearKeyboardBuffer();
         switch(browse_choose){
             case 1:{
-                //handleBrowseFollowCategory();
+                handleBrowseFollowCategory(sockfd);
                 break;
             }
             case 2:{

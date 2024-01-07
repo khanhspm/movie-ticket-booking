@@ -28,4 +28,5 @@ void addNewNode(node* head, user x);
 */
 void addNode(node* head, user x);
 
+void changeNodePassword(node *head, char username[], char newPassword[]);
 #endif

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "menu.h"
+#include "../../lib/socket/socket.h"
+#include "../../lib/messages/message.h"
 
 void viewWelcome(){
     printf("--------------Welcome to HTV-SPM------------------\n\n");
@@ -61,16 +63,31 @@ void viewUser(){
  * @param category : category of new film
  * @param show_time : show time of new film
  */
-void addNewFilm(char title[], char category[], char show_time[]){
+void addNewFilm(int sockfd, char title[], char category_id[], char show_time[], char description[]){
     printf("Title: ");
     title[0] = '\0';
     fgets(title, 255, stdin);
-    printf("Category: ");
-    category[0] = '\0';
-    fgets(category, 255, stdin);
+
+    char *message = (char *)malloc(255 * sizeof(char));
+    makeShowCategoryMessage(message);
+    sendMessage(sockfd, message);
+    recvMessage(sockfd, message);
+
+    printf("Category: \n");
+    printf("%s\n", message);
+    printf("Choice: ");
+    category_id[0] = '\0';
+    fgets(category_id, 255, stdin);
+
+
     printf("Show time: ");
     show_time[0] = '\0';
     fgets(show_time, 255, stdin);    
+    
+    printf("Description: ");
+    description[0] = '\0';
+    fgets(description, 2048, stdin);
+    
 }
 
 void browseFilm(){
@@ -80,6 +97,12 @@ void browseFilm(){
     printf("3. Browse film follow show time\n");
     printf("4. Return\n\n");
     printf("---------------------------------------------------\n");
+}
+
+void getCategoryID(char **category_id){
+    printf("Choice : ");
+    *category_id = (char *)malloc(255 * sizeof(char));
+    fgets(*category_id, 255, stdin);
 }
 
 void getTitleFilm(char title[]){

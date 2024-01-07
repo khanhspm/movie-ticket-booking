@@ -30,4 +30,6 @@ void addNodeCategory(nodeCategory* head, category x);
 
 int searchCategory(nodeCategory head, char name[]);
 
+char *displayCategory(nodeCategory head);
+
 #endif
