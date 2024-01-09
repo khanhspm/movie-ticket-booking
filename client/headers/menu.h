@@ -73,4 +73,5 @@ void getTitleFilm(char title[]);
 void viewChangePassword(char *oldPassword, char *newPassword);
 
 void getCategoryID(char **category_id);
+void getCinemaID(char **cinema_id);
 #endif

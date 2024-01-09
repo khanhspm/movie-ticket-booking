@@ -1,6 +1,8 @@
 #ifndef LISTPREMIERED_H
 #define LISTPREMIERED_H
 
+#include "premieredTime.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 

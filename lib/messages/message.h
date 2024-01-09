@@ -54,7 +54,13 @@ void getSearchFilmByTitleMessage(char **title);
 
 void makeShowCategoryMessage(char *message);
 
+void makeShowCinemaMessage(char *message);
+
 void makeBrowseFollowCategoryMessage(char *category_id, char *message);
 
+void makeBrowseFollowCinemaMessage(char *cinema_id, char *message);
+
 void getCategoryIDMessage(char **category_id);
+
+void getCinemaIDMessage(char **cinema_id);
 #endif

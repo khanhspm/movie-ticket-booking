@@ -1,5 +1,5 @@
 struct Cinema{
-    int id;
+    unsigned long id;
     char name[255];
     char address[255];
 };

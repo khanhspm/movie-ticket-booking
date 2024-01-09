@@ -49,3 +49,25 @@ void addNodePremieredTimeFilm(nodePremieredTimeFilm* head, premieredTimeFilm x){
         a->next = p;
     }
 }
+
+int *searchPremieredTimeFilm(nodePremieredTimeFilm head, unsigned long cinema_id_search)
+{
+    int* arr = (int*)malloc(sizeof(int));
+    int i = 0;
+
+    if (checkEmptyListPremieredTimeFilm(head))
+    {
+        return 0;
+    }
+    struct NodePremieredTimeFilm *a = head;
+    while (a != NULL)
+    {
+        if (a->data.cinema_id == cinema_id_search)
+        {
+            arr[i] = a->data.film_id;
+            i++;
+        }
+        a = a->next;
+    }
+    return arr;
+}

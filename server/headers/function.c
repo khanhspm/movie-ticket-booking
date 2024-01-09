@@ -7,6 +7,9 @@
 #include "queryFilm.h"
 #include "queryCategory.h"
 #include "function.h"
+#include "queryCinema.h"
+#include "queryPremieredTime.h"
+#include "queryPremieredTimeFilm.h"
 
 #define LOGIN_SUCCESS_USER 1010
 #define LOGIN_SUCCESS_ADMIN 1011
@@ -37,7 +40,7 @@
 #define CHANGE_PASSWORD_SUCCESS 1110
 #define CHANGE_PASSWORD_FAIL 2110
 
-void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h, nodeFilm f, nodeCategory c)
+void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h, nodeFilm f, nodeCategory c, nodeCinema ci, nodePremieredTime pt, nodePremieredTimeFilm ptf)
 {
     char *username, *password;
     if (strcmp(type, "LOGIN") == 0)
@@ -57,12 +60,20 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
     {
         sendMessage(connfd, displayCategory(c));
     }
+    else if (strcmp(type, "SHOW_CINEMA") == 0)
+    {
+        sendMessage(connfd,displayCinema(ci));
+    }
     else if (strcmp(type, "NEW_FILM") == 0)
     {
         handleAddNewFilm(conn, connfd, f, c);
     }
-    else if (strcmp(type, "CATEGORY") == 0){
+    else if (strcmp(type, "BROWSE_CATEGORY") == 0){
         handleBrowseFollowCategory(connfd, f, c);
+    }
+    else if (strcmp(type,"BROWSE_CINEMA") == 0)
+    {
+        handleBrowseFollowCinema(connfd, f, ci, ptf);
     }
     else if (strcmp(type, "POST") == 0)
     {
@@ -254,4 +265,35 @@ void handleBrowseFollowCategory(int connfd, nodeFilm f, nodeCategory c){
     }
 
     
+}
+
+void handleBrowseFollowCinema(int connfd, nodeFilm f, nodeCinema c, nodePremieredTimeFilm ptf){
+    //chuyen kieu char ve unsigned long
+    char *cinema_id;
+    cinema_id = (char *)malloc(255 * sizeof(char));
+    getCinemaIDMessage(&cinema_id);
+    printf("%s\n", cinema_id);
+
+    unsigned long cinema_id_search;
+    cinema_id_search = strtoul(cinema_id, NULL, 10);
+    printf("%ld\n", cinema_id_search);
+
+    int* arr = (int*)malloc(sizeof(int));
+    arr = searchPremieredTimeFilm(ptf, cinema_id_search);
+    if(arr == NULL){
+        sendResult(connfd, BROWSE_FAIL);
+    }else{
+        char *message;
+        message = (char *)malloc(20480 * sizeof(char));
+        for(int y = 0; y < sizeof(arr); y++){
+            strcat(message, searchFilmFollowID(f , arr[y]));
+        }
+
+        printf("new %s\n", message);
+        
+        sendResult(connfd, BROWSE_THEATER_SUCCESS);
+        sendMessage(connfd, message);
+        free(message);
+    }
+
 }

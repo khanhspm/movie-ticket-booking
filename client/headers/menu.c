@@ -105,6 +105,12 @@ void getCategoryID(char **category_id){
     fgets(*category_id, 255, stdin);
 }
 
+void getCinemaID(char **cinema_id){
+    printf("Choice : ");
+    *cinema_id = (char *)malloc(255 * sizeof(char));
+    fgets(*cinema_id, 255, stdin);
+}
+
 void getTitleFilm(char title[]){
     printf("Title: ");
     title[0] = '\0';

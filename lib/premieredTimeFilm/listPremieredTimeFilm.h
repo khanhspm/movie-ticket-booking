@@ -1,6 +1,8 @@
 #ifndef LISTROOM_H
 #define LISTROOM_H
 
+#include "premieredTimeFilm.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 
@@ -25,5 +27,7 @@ void addNewNodePremieredTimeFilm(nodePremieredTimeFilm* head, premieredTimeFilm 
  * @param x: node to add
 */
 void addNodePremieredTimeFilm(nodePremieredTimeFilm* head, premieredTimeFilm x);
+
+int *searchPremieredTimeFilm(nodePremieredTimeFilm head, unsigned long cinema_id_search);
 
 #endif

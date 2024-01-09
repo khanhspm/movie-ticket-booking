@@ -230,6 +230,40 @@ void handleBrowseFollowCategory(int sockfd){
     }
 }
 
+void handleBrowseFollowCinema(int sockfd){
+    char *cinema_id, *message;
+    cinema_id = (char *)malloc(255 * sizeof(char));
+    message = (char *)malloc(255 * sizeof(char));
+
+    //in ra danh sach cac rap
+    makeShowCinemaMessage(message);
+    sendMessage(sockfd, message);
+    recvMessage(sockfd, message);
+    printf("%s\n", message);
+
+    getCinemaID(&cinema_id);
+    printf("ccc: %s\n", cinema_id);
+    printf("%ld\n", strlen(cinema_id));
+
+    makeBrowseFollowCinemaMessage(cinema_id, message);
+    printf("%s\n", message);
+    sendMessage(sockfd, message);
+    printf("send%s\n", message);
+
+    int result = recvResult(sockfd);
+    printf("gui di %d\n", result);
+    if(result == BROWSE_THEATER_SUCCESS){
+        printf("%s\n", BROWSE_THEATER_SUCCESS_MESSAGE);
+        free(message);
+        message = (char *)malloc(255 * sizeof(char));
+        recvMessage(sockfd, message); 
+
+        printf("%s\n", message); //in list film theo 
+    }else if(result == BROWSE_FAIL){
+        printf("%s\n", BROWSE_FAIL_MESSAGE);
+    }
+}
+
 void handleBrowseFilm(int sockfd){
     int browse_choose;
     do{
@@ -243,7 +277,7 @@ void handleBrowseFilm(int sockfd){
                 break;
             }
             case 2:{
-                //handleBrowseFollowCinema();
+                handleBrowseFollowCinema(sockfd);   //16h30 9/1/2023 bat dau lam.
                 break;
             }
             case 3:{

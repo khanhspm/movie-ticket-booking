@@ -54,9 +54,15 @@ void makeLogoutMessage(char *message){
     strcpy(message, "LOGOUT\r\n");
 }
 
+// chi de hien thi danh sach the loai , ko co getCategory
 void makeShowCategoryMessage(char *message){
     strcpy(message, "SHOW_CATEGORY\r\n");
 }
+
+void makeShowCinemaMessage(char *message){
+    strcpy(message, "SHOW_CINEMA\r\n");
+}
+
 void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char *description ,char *message){
     strcpy(message, "NEW_FILM\r\n"); 
     strcat(message, title);
@@ -87,11 +93,21 @@ void getSearchFilmByTitleMessage(char **title){
 }
 
 void makeBrowseFollowCategoryMessage(char *category_id, char *message){
-    strcpy(message, "CATEGORY\r\n");
+    strcpy(message, "BROWSE_CATEGORY\r\n");
     strcat(message, category_id);
+    strcat(message, "\r\n");
+}
+
+void makeBrowseFollowCinemaMessage(char *cinema_id, char *message){
+    strcpy(message, "BROWSE_CINEMA\r\n");
+    strcat(message, cinema_id);
     strcat(message, "\r\n");
 }
 
 void getCategoryIDMessage(char **category_id){
     *category_id = strtok(NULL, "\r\n");
+}
+
+void getCinemaIDMessage(char **cinema_id){
+    *cinema_id = strtok(NULL, "\r\n");
 }
