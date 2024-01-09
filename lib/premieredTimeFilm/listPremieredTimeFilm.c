@@ -1,8 +1,8 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include "premieredTimeFilm.h"
-
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 
@@ -50,7 +50,7 @@ void addNodePremieredTimeFilm(nodePremieredTimeFilm* head, premieredTimeFilm x){
     }
 }
 
-int *searchPremieredTimeFilm(nodePremieredTimeFilm head, unsigned long cinema_id_search)
+int *searchPremieredTimeFilm(nodePremieredTimeFilm head, unsigned long id_search)
 {
     int* arr = (int*)malloc(sizeof(int));
     int i = 0;
@@ -62,7 +62,7 @@ int *searchPremieredTimeFilm(nodePremieredTimeFilm head, unsigned long cinema_id
     struct NodePremieredTimeFilm *a = head;
     while (a != NULL)
     {
-        if (a->data.cinema_id == cinema_id_search)
+        if (a->data.cinema_id == id_search)
         {
             arr[i] = a->data.film_id;
             i++;

@@ -28,4 +28,6 @@ void addNewNodePremieredTime(nodePremieredTime* head, premieredTime x);
 */
 void addNodePremieredTime(nodePremieredTime* head, premieredTime x);
 
+char *displayPremieredTime(nodePremieredTime head);
+
 #endif

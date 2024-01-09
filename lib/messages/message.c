@@ -63,6 +63,10 @@ void makeShowCinemaMessage(char *message){
     strcpy(message, "SHOW_CINEMA\r\n");
 }
 
+void makeShowPremieredTimeMessage(char *message){
+    strcpy(message, "SHOW_PREMIERED_TIME\r\n");
+}
+
 void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char *description ,char *message){
     strcpy(message, "NEW_FILM\r\n"); 
     strcat(message, title);
@@ -104,10 +108,20 @@ void makeBrowseFollowCinemaMessage(char *cinema_id, char *message){
     strcat(message, "\r\n");
 }
 
+void makeBrowseFollowPremieredTimeMessage(char *premiered_time_id, char *message){
+    strcpy(message, "BROWSE_PREMIERED_TIME\r\n");
+    strcat(message, premiered_time_id);
+    strcat(message, "\r\n");
+}
+
 void getCategoryIDMessage(char **category_id){
     *category_id = strtok(NULL, "\r\n");
 }
 
 void getCinemaIDMessage(char **cinema_id){
     *cinema_id = strtok(NULL, "\r\n");
+}
+
+void getPremieredTimeIDMessage(char **premiered_time_id){
+    *premiered_time_id = strtok(NULL, "\r\n");
 }

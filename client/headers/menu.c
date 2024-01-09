@@ -99,6 +99,7 @@ void browseFilm(){
     printf("---------------------------------------------------\n");
 }
 
+// Begin duyet phim
 void getCategoryID(char **category_id){
     printf("Choice : ");
     *category_id = (char *)malloc(255 * sizeof(char));
@@ -110,6 +111,14 @@ void getCinemaID(char **cinema_id){
     *cinema_id = (char *)malloc(255 * sizeof(char));
     fgets(*cinema_id, 255, stdin);
 }
+
+void getPremieredTimeID (char **premiered_time_id){
+    printf("Choice : ");
+    *premiered_time_id = (char *)malloc(255 * sizeof(char));
+    fgets(*premiered_time_id, 255, stdin);
+}
+
+//end duyet phim
 
 void getTitleFilm(char title[]){
     printf("Title: ");

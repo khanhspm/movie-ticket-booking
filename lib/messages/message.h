@@ -63,4 +63,10 @@ void makeBrowseFollowCinemaMessage(char *cinema_id, char *message);
 void getCategoryIDMessage(char **category_id);
 
 void getCinemaIDMessage(char **cinema_id);
+
+void makeShowPremieredTimeMessage(char *message);
+
+void makeBrowseFollowPremieredTimeMessage(char *premiered_time_id, char *message);
+
+void getPremieredTimeIDMessage(char **premiered_time_id);
 #endif

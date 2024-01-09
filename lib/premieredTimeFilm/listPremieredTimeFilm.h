@@ -28,6 +28,6 @@ void addNewNodePremieredTimeFilm(nodePremieredTimeFilm* head, premieredTimeFilm 
 */
 void addNodePremieredTimeFilm(nodePremieredTimeFilm* head, premieredTimeFilm x);
 
-int *searchPremieredTimeFilm(nodePremieredTimeFilm head, unsigned long cinema_id_search);
+int *searchPremieredTimeFilm(nodePremieredTimeFilm head, unsigned long id_search);
 
 #endif

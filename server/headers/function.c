@@ -64,6 +64,10 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
     {
         sendMessage(connfd,displayCinema(ci));
     }
+    else if (strcmp(type, "SHOW_PREMIERED_TIME") == 0)
+    {
+        sendMessage(connfd,displayPremieredTime(pt));
+    }
     else if (strcmp(type, "NEW_FILM") == 0)
     {
         handleAddNewFilm(conn, connfd, f, c);
@@ -74,6 +78,9 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
     else if (strcmp(type,"BROWSE_CINEMA") == 0)
     {
         handleBrowseFollowCinema(connfd, f, ci, ptf);
+    }
+    else if (strcmp(type, "BROWSE_PREMIERED_TIME") == 0){
+        handleBrowseFollowPremieredTime(connfd, f, pt, ptf);
     }
     else if (strcmp(type, "POST") == 0)
     {
@@ -241,6 +248,8 @@ void handleAddNewFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCategory c)
     }
 }
 
+
+//begin duyet phim theo 3 cach
 void handleBrowseFollowCategory(int connfd, nodeFilm f, nodeCategory c){
     //chuyen kieu char ve unsigned long
     char *category_id;
@@ -297,3 +306,35 @@ void handleBrowseFollowCinema(int connfd, nodeFilm f, nodeCinema c, nodePremiere
     }
 
 }
+
+void handleBrowseFollowPremieredTime(int connfd, nodeFilm f, nodePremieredTime pt, nodePremieredTimeFilm ptf){
+    //chuyen kieu char ve unsigned long
+    char *premiered_time_id;
+    premiered_time_id = (char *)malloc(255 * sizeof(char));
+    getPremieredTimeIDMessage(&premiered_time_id);
+    printf("%s\n", premiered_time_id);
+
+    unsigned long premiered_time_id_search;
+    premiered_time_id_search = strtoul(premiered_time_id, NULL, 10);
+    printf("%ld\n", premiered_time_id_search);
+
+    int* arr = (int*)malloc(sizeof(int));
+    arr = searchPremieredTimeFilm(ptf, premiered_time_id_search);
+    if(arr == NULL){
+        sendResult(connfd, BROWSE_FAIL);
+    }else{
+        char *message;
+        message = (char *)malloc(20480 * sizeof(char));
+        for(int y = 0; y < sizeof(arr); y++){
+            strcat(message, searchFilmFollowID(f , arr[y]));
+        }
+
+        printf("new %s\n", message);
+        
+        sendResult(connfd, BROWSE_TIME_SUCCESS);
+        sendMessage(connfd, message);
+        free(message);
+    }
+}
+
+// end duyet phim
