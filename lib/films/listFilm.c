@@ -65,13 +65,12 @@ int searchTitle(nodeFilm head, char title[], nodeFilm* addf){
     }else{
         struct NodeFilm* p = head;
         while(p != NULL){
-            if(strcmp(title, p->data.title) == 0){
+            if(strstr(p->data.title, title) != NULL){
                 a++;
                 addNodeFilm(addf, p->data);
             }
             p = p->next;
         }
     }
-    if(a == 0) printf("The film you need search is not exist!\n");
     return a;
 }
