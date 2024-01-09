@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 
 char* getTypeMessage(char *message){
     return strtok(message, "\r\n");
@@ -90,6 +91,7 @@ void makeBrowseFollowCategoryMessage(char *category_id, char *message){
     strcat(message, category_id);
     strcat(message, "\r\n");
 }
+
 void getCategoryIDMessage(char **category_id){
     *category_id = strtok(NULL, "\r\n");
 }

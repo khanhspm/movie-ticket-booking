@@ -61,7 +61,7 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
     {
         handleAddNewFilm(conn, connfd, f, c);
     }
-    else if (strcmp(type, "BROWSE_CATEGORY") == 0){
+    else if (strcmp(type, "CATEGORY") == 0){
         handleBrowseFollowCategory(connfd, f, c);
     }
     else if (strcmp(type, "POST") == 0)
@@ -235,9 +235,11 @@ void handleBrowseFollowCategory(int connfd, nodeFilm f, nodeCategory c){
     char *category_id;
     category_id = (char *)malloc(255 * sizeof(char));
     getCategoryIDMessage(&category_id);
+    printf("%s\n", category_id);
 
     unsigned long category_id_search;
     category_id_search = strtoul(category_id, NULL, 10);
+    printf("%ld\n", category_id_search);
 
     char *message;
     message = (char *)malloc(20480 * sizeof(char));

@@ -207,11 +207,17 @@ void handleBrowseFollowCategory(int sockfd){
     recvMessage(sockfd, message);
     printf("%s\n", message);
 
-    getCategoryIDMessage(&category_id);
+    getCategoryID(&category_id);
+    printf("ccc: %s\n", category_id);
+    printf("%ld\n", strlen(category_id));
     makeBrowseFollowCategoryMessage(category_id, message);
+    printf("%s\n", message);
     sendMessage(sockfd, message);
+    printf("send%s\n", message);
+
 
     int result = recvResult(sockfd);
+    printf("gui di %d\n", result);
     if(result == BROWSE_CATEGORY_SUCCESS){
         printf("%s\n", BROWSE_CATEGORY_SUCCESS_MESSAGE);
         free(message);
