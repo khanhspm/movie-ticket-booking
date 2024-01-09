@@ -40,13 +40,13 @@ listLoginedAccount createListLoginedAccount() {
     return arr;
 }
 
-void addToListLoginedAccount(listLoginedAccount *arr, const char *value) {
+void addToListLoginedAccount(listLoginedAccount *arr, char **value) {
     if (arr->size >= arr->capacity) {
         arr->capacity += INCREMENT;
         arr->data = realloc(arr->data, arr->capacity * sizeof(char *));
     }
-    arr->data[arr->size] = malloc((strlen(value) + 1) * sizeof(char));
-    strcpy(arr->data[arr->size], value);
+    arr->data[arr->size] = malloc((strlen(*value) + 1) * sizeof(char));
+    strcpy(arr->data[arr->size], *value);
     arr->size++;
 }
 
@@ -59,16 +59,16 @@ void freeListLoginedAccount(listLoginedAccount *arr) {
     arr->capacity = 0;
 }
 
-int searchListLoginedAccount(const listLoginedAccount *arr, const char *value) {
+int searchListLoginedAccount(const listLoginedAccount *arr, char **value) {
     for (size_t i = 0; i < arr->size; i++) {
-        if (strcmp(arr->data[i], value) == 0) {
+        if (strcmp(arr->data[i], *value) == 0) {
             return i; 
         }
     }
     return -1; 
 }
 
-void deleteFromListLoginedAccount(listLoginedAccount *arr, const char *value) {
+void deleteFromListLoginedAccount(listLoginedAccount *arr, char **value) {
     int index = searchListLoginedAccount(arr, value);
 
     if (index != -1) {
@@ -96,10 +96,10 @@ listLoginedAccount createListLoginedUser(listLoginedAccount arr){
  * @param list_account_logined : list account logged in
  * @return int 
  */
-int checkLogin(node head, char *username, char *password, listLoginedAccount arr){
+int checkLogin(node head, char **username, char *password, listLoginedAccount *arr){
 
     // Check account have loggined in different address or yet
-    int check_logined = searchListLoginedAccount(&arr, username);
+    int check_logined = searchListLoginedAccount(arr, username);
     printf("%d\n", check_logined);
     if(check_logined >= 0){
         return 3;
@@ -107,7 +107,7 @@ int checkLogin(node head, char *username, char *password, listLoginedAccount arr
 
     struct Node* p = head;
     while(p != NULL){
-        if((strcmp(username, p->data.username) == 0) && (strcmp(password, p->data.password) == 0)){
+        if((strcmp(*username, p->data.username) == 0) && (strcmp(password, p->data.password) == 0)){
             if(p->data.role_id == 1){
                 printf("%s\n", LOGIN_SUCCESS_ADMIN);
                 return 1;

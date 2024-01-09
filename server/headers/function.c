@@ -37,14 +37,13 @@
 #define CHANGE_PASSWORD_SUCCESS 1110
 #define CHANGE_PASSWORD_FAIL 2110
 
-void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h, nodeFilm f, nodeCategory c){
-    char *username, *password;
+void handleRequest(MYSQL *conn, char *type, int connfd, char **username, char *password, listLoginedAccount *arr, node h, nodeFilm f, nodeCategory c){
     if(strcmp(type, "LOGIN") == 0){
-        username = (char *)malloc(255 * sizeof(char));
-        password = (char *)malloc(255 * sizeof(char));
         handleLogin(connfd, arr, h, username, password);
+        printf("username: %s\n", *username);
     }else if(strcmp(type, "LOGOUT") == 0){
-        handleLogout(connfd, arr, username, password);
+        printf("username: %s\n", *username);
+        handleLogout(connfd, arr, username);
     }else if(strcmp(type, "REGISTER") == 0){
         handleRegister(conn, connfd);
     }else if(strcmp(type, "NEW_FILM") == 0){
@@ -60,29 +59,26 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
     }
 }
 
-void handleLogin(int connfd, listLoginedAccount arr, node h, char *username, char *password){
-    getLoginMessage(&username, &password);
+void handleLogin(int connfd, listLoginedAccount *arr, node h, char **username, char *password){
+    getLoginMessage(username, &password);
     int check = checkLogin(h, username, password, arr);
     printf("%d\n", check);
     if(check == 0){
         sendResult(connfd, LOGIN_FAIL);   
     }else if(check == 1){
-        addToListLoginedAccount(&arr, username);
+        addToListLoginedAccount(arr, username);
         sendResult(connfd, LOGIN_SUCCESS_ADMIN);
     }else if(check == 2){
-        addToListLoginedAccount(&arr, username);
+        addToListLoginedAccount(arr, username);
         sendResult(connfd, LOGIN_SUCCESS_USER);
     }else{
         sendResult(connfd, LOGIN_ALREADY);
     }
 }
 
-void handleLogout(int connfd, listLoginedAccount arr, char *username, char *password){
-    deleteFromListLoginedAccount(&arr, username);
-    free(username);
-    free(password);
-    username = NULL;
-    password = NULL;
+void handleLogout(int connfd, listLoginedAccount *arr, char **username){
+    printf("%s\n", *username);
+    deleteFromListLoginedAccount(arr, username);
     sendResult(connfd, LOGOUT_SUCCESS);
 }
 

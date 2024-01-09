@@ -8,15 +8,15 @@
 #include "queryFilm.h"
 #include "queryCategory.h"
 
-void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, node h, nodeFilm f, nodeCategory c);
+void handleRequest(MYSQL *conn, char *type, int connfd, char **username, char *password, listLoginedAccount *arr, node h, nodeFilm f, nodeCategory c);
 
-void handleLogin(int connfd, listLoginedAccount arr, node h, char *username, char *password);
+void handleLogin(int connfd, listLoginedAccount *arr, node h, char **username, char *password);
 
 void handleRegister(MYSQL *conn, int connfd);
 
 void handleChangePassword(int connfd, MYSQL *conn);
 
-void handleLogout(int connfd, listLoginedAccount arr, char *username, char *password);
+void handleLogout(int connfd, listLoginedAccount *arr, char **username);
 
 void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c);
 

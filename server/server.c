@@ -100,6 +100,10 @@ void *handleCommunicate(void* arg){
         send(connfd, "1000", 255, 0);
     }
 
+    char *username, *password;
+    username = (char *)malloc(255 * sizeof(char));
+    password = (char *)malloc(255 * sizeof(char));
+
     while(1){
         char *message, *type;
         message = (char *)malloc(255 * sizeof(char));
@@ -111,8 +115,7 @@ void *handleCommunicate(void* arg){
         // printf("%s\n", message);
         type = getTypeMessage(message);
         // printf("%s\n", type);
-
-        handleRequest(conn, type, connfd, myArray, h, f, c);
+        handleRequest(conn, type, connfd, &username, password, &myArray, h, f, c);
     }
 
     close(connfd);
