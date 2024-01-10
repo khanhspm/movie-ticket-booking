@@ -1,6 +1,8 @@
 #ifndef LISTPREMIERED_H
 #define LISTPREMIERED_H
 
+#include "premieredTime.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 
@@ -25,5 +27,7 @@ void addNewNodePremieredTime(nodePremieredTime* head, premieredTime x);
  * @param x: node to add
 */
 void addNodePremieredTime(nodePremieredTime* head, premieredTime x);
+
+char *displayPremieredTime(nodePremieredTime head);
 
 #endif

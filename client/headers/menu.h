@@ -1,6 +1,9 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include "../../lib/socket/socket.h"
+#include "../../lib/messages/message.h"
+
 #define LOGIN_SUCCESS_USER 1010
 #define LOGIN_SUCCESS_ADMIN 1011
 #define LOGIN_FAIL 2011
@@ -64,9 +67,19 @@ void viewLogin(char username[], char password[]);
 void viewRegister(char *name, char *username, char *password);
 void viewAdmin();
 void viewUser();
-void addNewFilm(char title[], char category[], char show_time[]);
+void addNewFilm(int sockfd, char title[], char category_id[], char show_time[], char description[]);
 void browseFilm();
 void getTitleFilm(char title[]);
 void viewChangePassword(char *oldPassword, char *newPassword);
+
+void getCategoryID(char **category_id);
+void getCinemaID(char **cinema_id);
+
+void getPremieredTimeID (char **premiered_time_id);
+
+void getAnnouncementFilmID(char film_id[]);
+void getAnnouncementCinemaID(char cinema_id[]);
+void getAnnouncementPreTimeID(char premiered_time_id[]);
+void getAnnouncementDate(char day[], char month[], char year[], char date[]);
 
 #endif

@@ -74,3 +74,110 @@ int searchTitle(nodeFilm head, char title[], nodeFilm* addf){
     }
     return a;
 }
+
+char *searchFilmFollowCategoryID(nodeFilm head, int category_id)
+{
+    if (checkEmptyListFilm(head))
+    {
+        printf("No data!\n");
+        return "No data!\n";
+    }
+    else
+    {
+        // Đặt kích thước cho chuỗi message
+        struct NodeFilm *p = head;
+        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        char *message = (char *)malloc(bufferSize * sizeof(char));
+        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
+
+        int a = 0;
+
+        while (p != NULL)
+        {
+            if (p->data.category_id == category_id)
+            {
+                a++;
+                char temp[4096];
+                sprintf(temp, "STT: %d\n", a);
+                sprintf(temp + strlen(temp), "Title: %s\n", p->data.title);
+                sprintf(temp + strlen(temp), "Show time: %ld\n", p->data.show_time);
+                sprintf(temp + strlen(temp), "Description: %s\n\n", p->data.description);
+                strcat(message, temp);
+            }
+            // Chuyển đến node tiếp theo
+            p = p->next;
+        }
+
+        return message;
+    }
+}
+
+char *searchFilmFollowID(nodeFilm head, int id)
+{
+    if (checkEmptyListFilm(head))
+    {
+        printf("No data!\n");
+        return "No data!\n";
+    }
+    else
+    {
+        // Đặt kích thước cho chuỗi message
+        struct NodeFilm *p = head;
+        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        char *message = (char *)malloc(bufferSize * sizeof(char));
+        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
+
+        int a = 0;
+
+        while (p != NULL)
+        {
+            if (p->data.id == id)
+            {
+                a++;
+                char temp[4096];
+                sprintf(temp, "STT: %d\n", a);
+                sprintf(temp + strlen(temp), "Title: %s\n", p->data.title);
+                sprintf(temp + strlen(temp), "Show time: %ld\n", p->data.show_time);
+                sprintf(temp + strlen(temp), "Description: %s\n\n", p->data.description);
+                strcat(message, temp);
+            }
+            // Chuyển đến node tiếp theo
+            p = p->next;
+        }
+
+        return message;
+    }
+}
+
+char *displayFilm(nodeFilm head)
+{
+    if (checkEmptyListFilm(head))
+    {
+        printf("Empty list\n");
+        return "Empty list\n";
+    }
+    else
+    {
+        struct NodeFilm *p = head;
+        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        char *message = (char *)malloc(bufferSize * sizeof(char));
+
+        // Khởi tạo chuỗi message
+        strcpy(message, "STT\tTitle\tShow time\tDescription\n");
+
+        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
+
+        while (p != NULL)
+        {
+            // Nối thông tin từ mỗi node vào chuỗi message
+            char temp[4096]; // Kích thước tùy thuộc vào yêu cầu của bạn
+            sprintf(temp, "%ld\t%s\t%ld\t%s\n", p->data.id, p->data.title, p->data.show_time, p->data.description);
+            strcat(message, temp);
+
+            // Chuyển đến node tiếp theo
+            p = p->next;
+        }
+
+        return message;
+    }
+}

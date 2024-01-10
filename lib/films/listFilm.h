@@ -36,4 +36,10 @@ void addNodeFilm(nodeFilm* head, film x);
  */
 int searchTitle(nodeFilm head, char title[], nodeFilm* addf);
 
+char *searchFilmFollowCategoryID(nodeFilm head, int category_id);
+
+char *searchFilmFollowID(nodeFilm head, int id);
+
+char *displayFilm(nodeFilm head);
+
 #endif

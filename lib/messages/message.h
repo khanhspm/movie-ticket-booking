@@ -48,12 +48,35 @@ void getChangePasswordMessage(char **username, char **oldPassword, char **newPas
  */
 void makeLogoutMessage(char *message);
 
-void makeAddNewFilmMessage(char *title, char *category, char *show_time, char *message);
-
-void getAddNewFilmMessage(char **title, char **category, char **show_time);
+void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char *description ,char *message);
+void getAddNewFilmMessage(char **title, char **category_id, char **show_time, char **description);
 
 void makeSearchFilmByTitleMessage(char *title, char *message);
 
 void getSearchFilmByTitleMessage(char **title);
+
+void makeShowCategoryMessage(char *message);
+
+void makeShowCinemaMessage(char *message);
+
+void makeShowPostFilmMessage(char *message);
+
+void makeBrowseFollowCategoryMessage(char *category_id, char *message);
+
+void makeBrowseFollowCinemaMessage(char *cinema_id, char *message);
+
+void getCategoryIDMessage(char **category_id);
+
+void getCinemaIDMessage(char **cinema_id);
+
+void makeShowPremieredTimeMessage(char *message);
+
+void makeBrowseFollowPremieredTimeMessage(char *premiered_time_id, char *message);
+
+void getPremieredTimeIDMessage(char **premiered_time_id);
+
+void makeAnnounceFilmMessage(char *film_id, char *cinema_id, char *premiered_time_id, char *date, char *message);
+
+void getAnnounceFilmMessage(char **film_id, char **cinema_id, char **premiered_time_id, char **date);
 
 #endif

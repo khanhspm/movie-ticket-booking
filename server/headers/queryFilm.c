@@ -1,3 +1,5 @@
+
+#include <stdio.h>
 #include <mysql/mysql.h>
 #include <string.h>
 #include "../../lib/films/listFilm.h"
@@ -29,4 +31,11 @@ char* getCategory(int id, nodeCategory head){
         }
     }
     return NULL;
+}
+
+void addFilm(MYSQL *connection, film x)
+{
+    char query[4096];
+    snprintf(query, sizeof(query), "INSERT INTO films(title, category_id, show_time, description) VALUES('%s', %ld, %ld, '%s')", x.title, x.category_id, x.show_time, x.description);
+    mysql_query(connection, query);
 }

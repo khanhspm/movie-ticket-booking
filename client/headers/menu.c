@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "menu.h"
+#include "../../lib/socket/socket.h"
+#include "../../lib/messages/message.h"
 
 void viewWelcome(){
     printf("--------------Welcome to HTV-SPM------------------\n\n");
@@ -61,16 +63,70 @@ void viewUser(){
  * @param category : category of new film
  * @param show_time : show time of new film
  */
-void addNewFilm(char title[], char category[], char show_time[]){
+void addNewFilm(int sockfd, char title[], char category_id[], char show_time[], char description[]){
     printf("Title: ");
     title[0] = '\0';
     fgets(title, 255, stdin);
-    printf("Category: ");
-    category[0] = '\0';
-    fgets(category, 255, stdin);
+
+    char *message = (char *)malloc(255 * sizeof(char));
+    makeShowCategoryMessage(message);
+    sendMessage(sockfd, message);
+    recvMessage(sockfd, message);
+
+    printf("Category: \n");
+    printf("%s\n", message);
+    printf("Choice: ");
+    category_id[0] = '\0';
+    fgets(category_id, 255, stdin);
+
+
     printf("Show time: ");
     show_time[0] = '\0';
     fgets(show_time, 255, stdin);    
+
+    printf("Description: ");
+    description[0] = '\0';
+    fgets(description, 2048, stdin);
+
+}
+
+void getAnnouncementFilmID(char film_id[]) {
+    printf("Film ID: ");
+    film_id[0] = '\0';
+    fgets(film_id, 255, stdin);
+}
+
+void getAnnouncementCinemaID(char cinema_id[]){
+    printf("Cinema ID: ");
+    cinema_id[0] = '\0';
+    fgets(cinema_id, 255, stdin);
+}
+
+void getAnnouncementPreTimeID(char premiered_time_id[]){
+    printf("Premiered Time ID: ");
+    premiered_time_id[0] = '\0';
+    fgets(premiered_time_id, 255, stdin);
+}
+
+void getAnnouncementDate(char day[], char month[], char year[], char date[]){
+    day[0] = '\0';
+    month[0] = '\0';
+    year[0] = '\0';
+    date[0] = '\0';
+    printf("Day: ");
+    fgets(day, 255, stdin);
+    day[strcspn(day, "\n")] = '\0';
+    strcpy(date, day);
+    strcat(date, "/");
+    printf("Month: ");
+    fgets(month, 255, stdin);
+    month[strcspn(month, "\n")] = '\0';
+    strcat(date, month);
+    strcat(date, "/");
+    printf("Year: ");
+    fgets(year, 255, stdin);
+    year[strcspn(year, "\n")] = '\0';
+    strcat(date, year);
 }
 
 void browseFilm(){
@@ -81,6 +137,27 @@ void browseFilm(){
     printf("4. Return\n\n");
     printf("---------------------------------------------------\n");
 }
+
+// Begin duyet phim
+void getCategoryID(char **category_id){
+    printf("Choice : ");
+    *category_id = (char *)malloc(255 * sizeof(char));
+    fgets(*category_id, 255, stdin);
+}
+
+void getCinemaID(char **cinema_id){
+    printf("Choice : ");
+    *cinema_id = (char *)malloc(255 * sizeof(char));
+    fgets(*cinema_id, 255, stdin);
+}
+
+void getPremieredTimeID (char **premiered_time_id){
+    printf("Choice : ");
+    *premiered_time_id = (char *)malloc(255 * sizeof(char));
+    fgets(*premiered_time_id, 255, stdin);
+}
+
+//end duyet phim
 
 void getTitleFilm(char title[]){
     printf("Title: ");

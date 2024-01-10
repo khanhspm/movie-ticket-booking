@@ -21,6 +21,9 @@ listLoginedAccount myArray;
 node h = NULL;
 nodeFilm f = NULL;
 nodeCategory c = NULL;
+nodeCinema ci = NULL;
+nodePremieredTime pt = NULL;
+nodePremieredTimeFilm ptf = NULL;
 MYSQL *conn;
 
 int main(int argc, char **argv){
@@ -41,6 +44,15 @@ int main(int argc, char **argv){
 
     category catg;
     selectCategory(conn, &c, catg);
+
+    cinema cin;
+    selectCinema(conn, &ci, cin);
+
+    premieredTime ptm;
+    selectPremieredTime(conn, &pt, ptm);
+
+    premieredTimeFilm ptfl;
+    selectPremieredTimeFilm(conn, &ptf, ptfl);
 
     int listenfd, *connfd;
     struct sockaddr_in server; // Server's address information
@@ -115,7 +127,7 @@ void *handleCommunicate(void* arg){
         // printf("%s\n", message);
         type = getTypeMessage(message);
         // printf("%s\n", type);
-        handleRequest(conn, type, connfd, &username, password, &myArray, h, f, c);
+        handleRequest(conn, type, connfd, &username, password, &myArray, h, f, c, ci, pt, ptf);
     }
 
     close(connfd);

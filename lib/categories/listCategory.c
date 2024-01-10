@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -63,4 +64,39 @@ int searchCategory(nodeCategory head, char name[]){
         }
     }
     return -1;
+}
+
+char *displayCategory(nodeCategory head)
+{
+    if (checkEmptyListCategory(head))
+    {
+        printf("Empty list\n");
+        return "Empty list\n";
+    }
+    else
+    {
+        struct NodeCategory *p = head;
+        int bufferSize = 2048; // Tùy thuộc vào yêu cầu của bạn
+        char *message = (char *)malloc(bufferSize * sizeof(char));
+
+
+
+        // Khởi tạo chuỗi message
+        strcpy(message, "");
+
+        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
+
+        while (p != NULL)
+        {
+            // Nối thông tin từ mỗi node vào chuỗi message
+            char temp[512]; // Kích thước tùy thuộc vào yêu cầu của bạn
+            sprintf(temp, "%ld %s\n", p->data.id, p->data.name);
+            strcat(message, temp);
+
+            // Chuyển đến node tiếp theo
+            p = p->next;
+        }
+
+        return message;
+    }
 }

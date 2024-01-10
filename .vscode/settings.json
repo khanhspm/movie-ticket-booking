@@ -60,6 +60,7 @@
   "files.associations": {
     "*.embeddedhtml": "html",
     "socket.h": "c",
-    "message.h": "c"
+    "message.h": "c",
+    "querypremieredtimefilm.h": "c"
   }
 }

@@ -3,6 +3,7 @@ struct PremieredTimeFilm{
     unsigned long film_id;
     unsigned long premiered_time_id;
     unsigned long cinema_id;
+    char date[255];
 };
 typedef struct PremieredTimeFilm premieredTimeFilm;
 

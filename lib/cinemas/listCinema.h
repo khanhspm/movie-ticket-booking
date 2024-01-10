@@ -1,6 +1,8 @@
 #ifndef LISTCINEMA_H
 #define LISTCINEMA_H
 
+#include "cinema.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 
@@ -25,5 +27,9 @@ void addNewNodeCinema(nodeCinema* head, cinema x);
  * @param x: node to add
 */
 void addNodeCinema(nodeCinema* head, cinema x);
+
+int searchCimema(nodeCinema head, char name[]);
+
+char *displayCinema(nodeCinema head);
 
 #endif
