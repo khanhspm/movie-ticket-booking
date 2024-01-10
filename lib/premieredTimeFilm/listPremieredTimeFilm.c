@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include "premieredTimeFilm.h"
+#include "listPremieredTimeFilm.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 
@@ -90,31 +91,4 @@ int searchPremieredTimeFilmToPost(nodePremieredTimeFilm head, unsigned long film
         a = a->next;
     }
     return i;
-}
-
-char *displayPremieredTimeFilm(nodePremieredTimeFilm head) {
-    if (checkEmptyListPremieredTimeFilm == NULL) {
-        printf("Empty list\n");
-        return "Empty list\n";
-    } else {
-        struct NodePremieredTimeFilm *p = head;
-        int bufferSize = 2048;
-        char *message = (char *)malloc(bufferSize * sizeof(char));
-
-        // Khởi tạo chuỗi message
-        strcpy(message, "STT\tFilm ID\tPremiered Time ID\tCinema ID\n");
-
-        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
-        while (p != NULL) {
-            // Nối thông tin từ mỗi node vào chuỗi message
-            char temp[4096];
-            sprintf(temp, "%ld\t%ld\t%ld\t%ld\n", p->data.id, p->data.film_id, p->data.premiered_time_id, p->data.cinema_id);
-            strcat(message, temp);
-
-            // Chuyển đến node tiếp theo
-            p = p->next;
-        }
-
-        return message;
-    }
 }

@@ -138,6 +138,16 @@ void browseFilm(){
     printf("---------------------------------------------------\n");
 }
 
+void viewEditPremieredTimeFilm(){
+    printf("--------------Welcome to HTV-SPM------------------\n\n");
+    printf("1. Edit film  \n");
+    printf("2. Edit cinema \n");
+    printf("3. Edit premiered time \n");
+    printf("4. Edit date \n");
+    printf("5. Return\n\n");
+    printf("---------------------------------------------------\n");
+}
+
 // Begin duyet phim
 void getCategoryID(char **category_id){
     printf("Choice : ");

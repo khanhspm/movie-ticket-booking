@@ -67,6 +67,7 @@ void viewLogin(char username[], char password[]);
 void viewRegister(char *name, char *username, char *password);
 void viewAdmin();
 void viewUser();
+void viewEditPremieredTimeFilm();
 void addNewFilm(int sockfd, char title[], char category_id[], char show_time[], char description[]);
 void browseFilm();
 void getTitleFilm(char title[]);

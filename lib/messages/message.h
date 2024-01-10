@@ -75,4 +75,8 @@ void getPremieredTimeIDMessage(char **premiered_time_id);
 void makeAnnounceFilmMessage(char *film_id, char *cinema_id, char *premiered_time_id, char *date, char *message);
 
 void getAnnounceFilmMessage(char **film_id, char **cinema_id, char **premiered_time_id, char **date);
+
+void makeEditAnnouncedFilmMessage(char *film_id, char *cinema_id, char *premiered_time_id, char *date, char *message);
+
+void makeShowPostedFilmMessage(char *message);
 #endif

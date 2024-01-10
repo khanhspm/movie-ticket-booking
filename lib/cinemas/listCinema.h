@@ -32,4 +32,5 @@ int searchCimema(nodeCinema head, char name[]);
 
 char *displayCinema(nodeCinema head);
 
+char *searchCinemaNameById(nodeCinema head, unsigned long id);
 #endif

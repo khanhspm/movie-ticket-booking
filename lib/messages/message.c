@@ -71,6 +71,10 @@ void makeShowPostFilmMessage(char *message){
     strcpy(message, "SHOW_POST_FILM\r\n");
 }
 
+void makeShowPostedFilmMessage(char *message){
+    strcpy(message, "SHOW_POSTED_FILM\r\n");
+}
+
 void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char *description ,char *message){
     strcpy(message, "NEW_FILM\r\n"); 
     strcat(message, title);
@@ -85,6 +89,18 @@ void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char
 
 void makeAnnounceFilmMessage(char *film_id, char *cinema_id, char *premiered_time_id, char *date, char *message){
     strcpy(message, "POST_FILM\r\n");
+    strcat(message, film_id);
+    strcat(message, "\r\n");
+    strcat(message, cinema_id);
+    strcat(message, "\r\n");
+    strcat(message, premiered_time_id);
+    strcat(message, "\r\n");
+    strcat(message, date);
+    strcat(message, "\r\n");
+}
+
+void makeEditAnnouncedFilmMessage(char *film_id, char *cinema_id, char *premiered_time_id, char *date, char *message){
+    strcpy(message, "EDIT_POST_FILM\r\n");
     strcat(message, film_id);
     strcat(message, "\r\n");
     strcat(message, cinema_id);

@@ -23,6 +23,8 @@ void handleAddNewFilm(int sockfd);
 
 void handleAnnouncingFilm(int sockfd);
 
+void handleEditAnnouncedFilm(int sockfd);
+
 void handleLogin(int sockfd, char *username, char *password, char *message, int *login_status){
     viewLogin(username, password);
     makeLoginMessage(username, password, message);
@@ -89,7 +91,7 @@ void handleRequestAdmin(int sockfd, char *username, char *password, char *messag
                 break;
             }
             case 3:{
-               // handleEditAnnouncedFilm(sockfd);    // bat dau 8h30
+                handleEditAnnouncedFilm(sockfd);    // bat dau 8h30
                 break;
             }
             case 4: {
@@ -240,6 +242,51 @@ void handleAnnouncingFilm(int sockfd) {
             printf("%s\n", POST_FILM_FAIL_MESSAGE);
         }
     }
+
+void handleEditAnnouncedFilm(int sockfd){
+    // Gửi yêu cầu lấy thông tin suất chiếu hiện có
+    char *message;
+    message = (char *)malloc(100 * 1048576 * sizeof(char));
+
+    makeShowPostedFilmMessage(message);
+    sendMessage(sockfd, message);
+
+    // Nhận và hiển thị danh sách suất chiếu
+    recvMessage(sockfd, message);
+    printf("%s", message);
+    
+    int choice_edit;
+    do{
+        viewEditPremieredTimeFilm();
+        printf("Choice Edit: ");
+        scanf("%d", &choice_edit);
+        clearKeyboardBuffer();
+        switch(choice_edit) {
+            case 1:{
+                // hanldeEditFilmPremiered(sockfd); 
+                break;
+            }
+            case 2:{
+                //handleEditCinemaPremiered(sockfd);
+                break;
+            }
+            case 3:{
+                //handleEditTimePremiered(sockfd);
+                break;
+            }
+            case 4:{
+                //handleEditDatePremiered(sockfd);
+                break;
+            }case 5: {
+                choice_edit = 0;
+                break;
+            }
+        }
+    }while(choice_edit != 0);
+
+}
+
+
 
 
 void handleBrowseFollowCategory(int sockfd){

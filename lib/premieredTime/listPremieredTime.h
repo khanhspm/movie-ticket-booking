@@ -30,4 +30,5 @@ void addNodePremieredTime(nodePremieredTime* head, premieredTime x);
 
 char *displayPremieredTime(nodePremieredTime head);
 
+char *searchPremieredTimeNameById(nodePremieredTime head, unsigned long id);
 #endif

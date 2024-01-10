@@ -84,3 +84,34 @@ char *displayPremieredTime(nodePremieredTime head)
         return message;
     }
 }
+
+
+char *searchPremieredTimeNameById(nodePremieredTime head, unsigned long id) 
+{
+    if (checkEmptyListPremieredTime(head))
+    {
+        printf("Empty list\n");
+        return "Empty list\n";
+    }
+    else
+    {
+        struct NodePremieredTime *p = head;
+        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        char *message = (char *)malloc(bufferSize * sizeof(char));
+
+        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
+        while (p != NULL)
+        {
+            if (p->data.id == id)
+            {
+                // Nối thông tin từ mỗi node vào chuỗi message
+                char temp[4096]; // Kích thước tùy thuộc vào yêu cầu của bạn
+                sprintf(temp + strlen(temp), "Start time: %s\n", p->data.start_time);
+                sprintf(temp + strlen(temp), "Finish time: %s\n", p->data.finish_time);
+                strcat(message, temp);
+            }
+            p = p->next;
+        }
+        return message;
+    }
+}

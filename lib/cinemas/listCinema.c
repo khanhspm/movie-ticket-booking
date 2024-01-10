@@ -109,3 +109,24 @@ char *displayCinema(nodeCinema head)
 }
 
 
+char *searchCinemaNameById(nodeCinema head, unsigned long id) {
+    if (checkEmptyListCinema(head)) {
+        return "Empty list";
+    } else {
+        struct NodeCinema *p = head;
+        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        char *message = (char *)malloc(bufferSize * sizeof(char));
+        while (p != NULL) {
+            if (p->data.id == id) {
+                char temp[4096];
+                sprintf(temp + strlen(temp), "Cinema: %s", p->data.name);
+                sprintf(temp + strlen(temp), "Address: %s", p->data.address);
+                strcat(message, temp);
+            }
+            p = p->next;
+        }
+
+        return message;
+    }
+}
+

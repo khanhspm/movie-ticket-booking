@@ -73,6 +73,10 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
         sendMessage(connfd, displayCinema(ci));
         sendMessage(connfd, displayPremieredTime(pt));
     }
+    else if (strcmp(type, "SHOW_POSTED_FILM") == 0)
+    {
+        sendMessage(connfd, displayPremieredTimeFilm(ptf, f, ci, pt));
+    }
     else if (strcmp(type, "NEW_FILM") == 0)
     {
         handleAddNewFilm(conn, connfd, f, c);
@@ -384,3 +388,53 @@ void handleBrowseFollowPremieredTime(int connfd, nodeFilm f, nodePremieredTime p
 
 // end duyet phim
 
+char *displayPremieredTimeFilm(nodePremieredTimeFilm head, nodeFilm films, nodeCinema cinemas, nodePremieredTime times) {
+    if (checkEmptyListPremieredTimeFilm(head)) {
+        printf("Empty list\n");
+        return "Empty list\n";
+    } else {
+        struct NodePremieredTimeFilm *p = head;
+        int bufferSize = 1048576;
+        char *message = (char *)malloc(100 * bufferSize * sizeof(char));
+
+        int i = 0;
+        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
+        while (p != NULL) {
+            char *filmName, *cinemaName, *premieredTime;
+            filmName = (char *)malloc(bufferSize * sizeof(char));
+            cinemaName = (char *)malloc(bufferSize * sizeof(char));
+            premieredTime = (char *)malloc(bufferSize * sizeof(char));
+
+            i++;
+
+            // Tìm tên phim dựa trên film_id
+            strcpy(filmName, searchFilmNameById(films, p->data.film_id));
+            printf("%s\n\n", filmName);
+
+            // Tìm tên rạp dựa trên cinema_id
+            strcpy(cinemaName, searchCinemaNameById(cinemas, p->data.cinema_id));
+
+            // Tìm thời gian chiếu dựa trên premiered_time_id
+            strcpy(premieredTime, searchPremieredTimeNameById(times, p->data.premiered_time_id));
+
+            // Nối thông tin từ mỗi node vào chuỗi message
+            char *temp;
+            temp = (char *)malloc(bufferSize * sizeof(char));
+            sprintf(temp, "STT: %d\n%s%s%s%s\n", i, filmName, cinemaName, premieredTime, p->data.date);
+
+            strcat(message, temp);
+
+            free(filmName);
+            free(cinemaName);
+            free(premieredTime);
+            free(temp);
+
+            // Chuyển đến node tiếp theo
+            p = p->next;
+        }
+
+        printf("%s\n", message);
+
+        return message;
+    }
+}

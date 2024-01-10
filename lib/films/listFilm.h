@@ -38,6 +38,8 @@ int searchTitle(nodeFilm head, char title[], nodeFilm* addf);
 
 char *searchFilmFollowCategoryID(nodeFilm head, int category_id);
 
+char *searchFilmNameById(nodeFilm head, int id);
+
 char *searchFilmFollowID(nodeFilm head, int id);
 
 char *displayFilm(nodeFilm head);
