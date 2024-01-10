@@ -1,6 +1,8 @@
 #ifndef LISTSEAT_H
 #define LISTSEAT_H
 
+#include "seat.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 

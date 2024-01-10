@@ -18,6 +18,7 @@ void handleRequestUser(int sockfd, char *username, char *password, char *message
 void handleRequestAdmin(int sockfd, char *username, char *password, char *message, int *login_status);
 void handleChangePassword(int sockfd, char *username, char *message);
 void handleBrowseFilm(int sockfd);
+void handleBookingTickets(int sockfd);
 
 void handleAddNewFilm(int sockfd);
 
@@ -55,7 +56,7 @@ void handleRequestUser(int sockfd, char *username, char *password, char *message
                 break;
             }
             case 3:{
-                //handleBookTicket();
+                handleBookingTickets(sockfd);
                 break;
             }
             case 4:{
@@ -368,4 +369,20 @@ void handleBrowseFilm(int sockfd){
             }
         }
     }while(browse_choose != 0);
+}
+
+void handleBookingTickets(int sockfd){
+    char *message;
+    message = malloc(sizeof(char));
+    makeShowPostedFilmMessage(message);
+    sendMessage(sockfd, message);
+    free(message);
+    message = malloc(10000 * 1048576 * sizeof(char));
+    recvMessage(sockfd, message);
+    printf("----------------LIST ANNOUNCED FILMS ----------------\n");
+    printf("%s", message);
+    unsigned long choice;
+    printf("Choice: ");
+    scanf("%ld", &choice);
+    clearKeyboardBuffer();
 }

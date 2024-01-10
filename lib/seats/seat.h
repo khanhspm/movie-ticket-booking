@@ -3,6 +3,7 @@ struct Seat{
     char name[255];
     unsigned long room_id;
     unsigned long status;
+    unsigned long price;
 };
 typedef struct Seat seat;
 

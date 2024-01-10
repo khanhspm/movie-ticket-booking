@@ -4,8 +4,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define BUFSIZE 255
-
 void sendMessage(int fd, char *message){
     int length = htonl(strlen(message));
     send(fd, &length, sizeof(length), 0);
@@ -14,8 +12,8 @@ void sendMessage(int fd, char *message){
 
 void recvMessage(int fd, char *message){
     int length = 0;
-    char buffer[BUFSIZE];
-    memset(&buffer, 0, BUFSIZE);
+    char *buffer;
+    buffer = malloc(10000 * 1048576 * sizeof(char));
     recv(fd, &length, sizeof(length), 0);
     recv(fd, buffer, ntohl(length), 0);
     strcpy(message, buffer);

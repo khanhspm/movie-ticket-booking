@@ -49,3 +49,41 @@ void addNodeRoom(nodeRoom* head, room x){
         a->next = p;
     }
 }
+
+char* searchRoomFromID(nodeRoom* head, unsignedlong id){
+    struct NodeRoom* a = *head;
+    while(a->next != NULL){
+        if(a->data.id == id){
+            return a->data.name
+        }
+        a = a->next;
+    }
+
+    return NULL;
+}
+
+unsigned long checkRoomStatus(nodeRoom* head, unsigned long id){
+    struct NodeRoom* a = *head;
+    while(a->next != NULL){
+        if(a->data.id = id){
+            return a->data.status;
+        }
+        a = a->next;
+    }
+
+    return NULL;
+}
+
+unsigned long *searchRoomFromCinemaID(nodeRoom* head, unsigned long id){
+    unsigned long arr[1000];
+    int i = 0;
+    struct NodeRoom* a = *head;
+    while(a->next != NULL){
+        if(a->data.cinema_id == id){
+            arr[i] = a->data.id;
+            i++;
+        }
+        a = a->next;
+    }
+    return arr;
+}

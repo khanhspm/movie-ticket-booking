@@ -136,6 +136,10 @@ void makeBrowseFollowPremieredTimeMessage(char *premiered_time_id, char *message
     strcat(message, "\r\n");
 }
 
+void makeShowPostedFilmMessage(char *message){
+    strcpy(message, "SHOW_POSTED_FILM\r\n");
+}
+
 void getCategoryIDMessage(char **category_id){
     *category_id = strtok(NULL, "\r\n");
 }

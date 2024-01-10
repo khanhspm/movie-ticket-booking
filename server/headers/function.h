@@ -4,12 +4,7 @@
 #include <mysql/mysql.h>
 #include "../../lib/socket/socket.h"
 #include "../../lib/messages/message.h"
-#include "queryUser.h"
-#include "queryFilm.h"
-#include "queryCategory.h"
-#include "queryCinema.h"
-#include "queryPremieredTime.h"
-#include "queryPremieredTimeFilm.h"
+#include "query.h"
 
 void handleRequest(MYSQL *conn, char *type, int connfd, char **username, char *password, listLoginedAccount *arr, node h, nodeFilm f, nodeCategory c, nodeCinema ci, nodePremieredTime pt, nodePremieredTimeFilm ptf);
 

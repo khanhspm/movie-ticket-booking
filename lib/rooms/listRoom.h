@@ -1,6 +1,7 @@
 #ifndef LISTROOM_H
 #define LISTROOM_H
 
+#include "room.h"
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 
@@ -25,5 +26,9 @@ void addNewNodeRoom(nodeRoom* head, room x);
  * @param x: node to add
 */
 void addNodeRoom(nodeRoom* head, room x);
+
+char* searchRoomFromID(nodeRoom* head, unsignedlong id);
+unsigned long checkRoomStatus(nodeRoom* head, unsigned long id);
+unsigned long *searchRoomFromCinemaID(nodeRoom* head, unsigned long id);
 
 #endif

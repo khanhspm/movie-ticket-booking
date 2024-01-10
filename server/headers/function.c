@@ -3,13 +3,8 @@
 #include <mysql/mysql.h>
 #include "../../lib/socket/socket.h"
 #include "../../lib/messages/message.h"
-#include "queryUser.h"
-#include "queryFilm.h"
-#include "queryCategory.h"
 #include "function.h"
-#include "queryCinema.h"
-#include "queryPremieredTime.h"
-#include "queryPremieredTimeFilm.h"
+#include "query.h"
 
 #define LOGIN_SUCCESS_USER 1010
 #define LOGIN_SUCCESS_ADMIN 1011
@@ -66,6 +61,9 @@ void handleRequest(MYSQL *conn, char *type, int connfd, char **username, char *p
         sendMessage(connfd, displayFilm(f));
         sendMessage(connfd, displayCinema(ci));
         sendMessage(connfd, displayPremieredTime(pt));
+    }
+    else if(strcmp(type, "SHOW_POSTED_FILM") == 0){
+        sendMessage(connfd, selectPostedFilm(conn));
     }
     else if (strcmp(type, "NEW_FILM") == 0)
     {
@@ -355,5 +353,3 @@ void handleBrowseFollowPremieredTime(int connfd, nodeFilm f, nodePremieredTime p
         free(message);
     }
 }
-
-// end duyet phim

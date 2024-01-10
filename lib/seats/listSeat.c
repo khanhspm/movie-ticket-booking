@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -47,5 +48,27 @@ void addNodeSeat(nodeSeat* head, seat x){
         p->data = x;
         p->next = NULL;
         a->next = p;
+    }
+}
+
+void displayEmptySeat(nodeSeat* head, unsigned long room_id){
+    struct NodeSeat* p = *head;
+    int i = 1;
+    while(p->next != NULL){
+        if(p->data.room_id == room_id){
+            if(p->data.status == 0){
+                printf("[%3s]\t", p->data.name);
+                i++;
+                if(i % 10 == 0){
+                    printf("\n");
+                }
+            }else{
+                printf("[ X ]\t");
+                i++;
+                if(i % 10 == 0){
+                    printf("\n");
+                }
+            }
+        }
     }
 }
