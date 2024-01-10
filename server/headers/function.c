@@ -68,6 +68,11 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
     {
         sendMessage(connfd,displayPremieredTime(pt));
     }
+    else if(strcmp(type, "SHOW_POST_FILM") == 0){
+        sendMessage(connfd, displayFilm(f));
+        sendMessage(connfd, displayCinema(ci));
+        sendMessage(connfd, displayPremieredTime(pt));
+    }
     else if (strcmp(type, "NEW_FILM") == 0)
     {
         handleAddNewFilm(conn, connfd, f, c);
@@ -82,8 +87,9 @@ void handleRequest(MYSQL *conn, char *type, int connfd, listLoginedAccount arr, 
     else if (strcmp(type, "BROWSE_PREMIERED_TIME") == 0){
         handleBrowseFollowPremieredTime(connfd, f, pt, ptf);
     }
-    else if (strcmp(type, "POST") == 0)
+    else if (strcmp(type, "POST_FILM") == 0)
     {
+        handleAnnouncingFilm(conn, connfd, f, ci, pt, ptf);
     }
     else if (strcmp(type, "EDIT") == 0)
     {
@@ -214,6 +220,7 @@ void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c)
     }
 }
 
+//begin chuc nang admin
 void handleAddNewFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCategory c)
 {   
     displayCategory(c);
@@ -247,6 +254,44 @@ void handleAddNewFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCategory c)
         sendResult(connfd, ADD_FILM_SUCCESS);
     }
 }
+
+void handleAnnouncingFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCinema ci, nodePremieredTime pt, nodePremieredTimeFilm ptf)
+{   
+    char *film_id, *cinema_id, *premiered_time_id, *date;
+    film_id = (char *)malloc(255 * sizeof(char));
+    cinema_id = (char *)malloc(255 * sizeof(char));
+    premiered_time_id = (char *)malloc(255 * sizeof(char));
+    date = (char *)malloc(255 * sizeof(char));
+    getAnnounceFilmMessage(&film_id, &cinema_id, &premiered_time_id, &date);
+    printf("%s\n", date);
+
+    unsigned long film_id_search = strtoul(film_id, NULL, 10);
+    unsigned long cinema_id_search = strtoul(cinema_id, NULL, 10);
+    unsigned long premiered_time_search = strtoul(premiered_time_id, NULL, 10);
+
+    int seru = searchPremieredTimeFilmToPost(ptf, film_id_search, cinema_id_search, premiered_time_search, date);
+    if (seru != 0)
+    {
+        sendResult(connfd, POST_FILM_FAIL);
+    }
+    else
+    {
+        premieredTimeFilm newPremieredTimeFilm;
+
+        newPremieredTimeFilm.film_id = film_id_search;
+        newPremieredTimeFilm.cinema_id = cinema_id_search;
+        newPremieredTimeFilm.premiered_time_id = premiered_time_search;
+        strcpy(newPremieredTimeFilm.date, date);
+
+        addNodePremieredTimeFilm(&ptf, newPremieredTimeFilm);
+
+        addPremieredTimeFilm(conn, newPremieredTimeFilm);
+
+        sendResult(connfd, POST_FILM_SUCCESS);
+    }
+}
+
+//end chuc nang admin
 
 
 //begin duyet phim theo 3 cach
@@ -338,3 +383,4 @@ void handleBrowseFollowPremieredTime(int connfd, nodeFilm f, nodePremieredTime p
 }
 
 // end duyet phim
+

@@ -54,6 +54,7 @@ CREATE TABLE premiered_time_film (
     film_id bigint(20) UNSIGNED NOT NULL,
     premiered_time_id bigint(20) UNSIGNED NOT NULL,
     cinema_id bigint(20) UNSIGNED NOT NULL,
+    date varchar(255) NOT NULL,
     FOREIGN KEY (film_id) REFERENCES films(id),
     FOREIGN KEY (premiered_time_id) REFERENCES premiered_time(id),
     FOREIGN KEY (cinema_id) REFERENCES cinemas(id)

@@ -21,6 +21,8 @@ void handleBrowseFilm(int sockfd);
 
 void handleAddNewFilm(int sockfd);
 
+void handleAnnouncingFilm(int sockfd);
+
 void handleLogin(int sockfd, char *username, char *password, char *message, int *login_status){
     viewLogin(username, password);
     makeLoginMessage(username, password, message);
@@ -83,11 +85,11 @@ void handleRequestAdmin(int sockfd, char *username, char *password, char *messag
                 break;
             }
             case 2:{
-                //handleAnnouncingFilm();
+                handleAnnouncingFilm(sockfd);   // bat dau 23h
                 break;
             }
             case 3:{
-                //handleEditAnnouncedFilm();
+               // handleEditAnnouncedFilm(sockfd);    // bat dau 8h30
                 break;
             }
             case 4: {
@@ -195,6 +197,50 @@ void handleAddNewFilm(int sockfd){
         printf("%s\n", ADD_FILM_FAIL_MESSAGE);
     }
 }
+
+
+void handleAnnouncingFilm(int sockfd) {
+        char *film_id, *cinema_id, *premiered_time_id, *day, *month, *year, *date, *message;
+        film_id = (char *)malloc(255 * sizeof(char));
+        cinema_id = (char *)malloc(255 * sizeof(char));
+        premiered_time_id = (char *)malloc(255 * sizeof(char));
+        day = (char *)malloc(255 * sizeof(char));
+        month = (char *)malloc(255 * sizeof(char));
+        year = (char *)malloc(255 * sizeof(char));
+        date = (char *)malloc(255 * sizeof(char));
+        message = (char *)malloc(255 * sizeof(char));
+        
+        makeShowPostFilmMessage(message);
+        sendMessage(sockfd, message);
+
+        recvMessage(sockfd, message);
+        printf("%s", message);
+        getAnnouncementFilmID(film_id);
+
+        recvMessage(sockfd, message);
+        printf("%s", message);
+        getAnnouncementCinemaID(cinema_id);
+
+        recvMessage(sockfd, message);
+        printf("%s", message);
+        getAnnouncementPreTimeID(premiered_time_id);
+
+        getAnnouncementDate(day, month, year, date);
+
+        printf("%s\n", date);
+
+        makeAnnounceFilmMessage(film_id, cinema_id, premiered_time_id, date, message);
+        printf("%s\n", message);
+        sendMessage(sockfd, message);
+
+        int result = recvResult(sockfd);
+        if(result == POST_FILM_SUCCESS){
+            printf("%s\n", POST_FILM_SUCCESS_MESSAGE);
+        }else if(result == POST_FILM_FAIL){
+            printf("%s\n", POST_FILM_FAIL_MESSAGE);
+        }
+    }
+
 
 void handleBrowseFollowCategory(int sockfd){
     char *category_id, *message;

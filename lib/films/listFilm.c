@@ -162,3 +162,36 @@ char *searchFilmFollowID(nodeFilm head, int id)
         return message;
     }
 }
+
+char *displayFilm(nodeFilm head)
+{
+    if (checkEmptyListFilm(head))
+    {
+        printf("Empty list\n");
+        return "Empty list\n";
+    }
+    else
+    {
+        struct NodeFilm *p = head;
+        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        char *message = (char *)malloc(bufferSize * sizeof(char));
+
+        // Khởi tạo chuỗi message
+        strcpy(message, "STT\tTitle\tShow time\tDescription\n");
+
+        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
+
+        while (p != NULL)
+        {
+            // Nối thông tin từ mỗi node vào chuỗi message
+            char temp[4096]; // Kích thước tùy thuộc vào yêu cầu của bạn
+            sprintf(temp, "%ld\t%s\t%ld\t%s\n", p->data.id, p->data.title, p->data.show_time, p->data.description);
+            strcat(message, temp);
+
+            // Chuyển đến node tiếp theo
+            p = p->next;
+        }
+
+        return message;
+    }
+}

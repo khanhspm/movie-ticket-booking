@@ -63,6 +63,7 @@
     "message.h": "c",
     "mysql.h": "c",
     "premieredtime.h": "c",
-    "cinema.h": "c"
+    "cinema.h": "c",
+    "listpremieredtimefilm.h": "c"
   }
 }

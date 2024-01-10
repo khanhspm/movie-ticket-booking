@@ -90,6 +90,45 @@ void addNewFilm(int sockfd, char title[], char category_id[], char show_time[], 
     
 }
 
+void getAnnouncementFilmID(char film_id[]) {
+    printf("Film ID: ");
+    film_id[0] = '\0';
+    fgets(film_id, 255, stdin);
+}
+
+void getAnnouncementCinemaID(char cinema_id[]){
+    printf("Cinema ID: ");
+    cinema_id[0] = '\0';
+    fgets(cinema_id, 255, stdin);
+}
+
+void getAnnouncementPreTimeID(char premiered_time_id[]){
+    printf("Premiered Time ID: ");
+    premiered_time_id[0] = '\0';
+    fgets(premiered_time_id, 255, stdin);
+}
+
+void getAnnouncementDate(char day[], char month[], char year[], char date[]){
+    day[0] = '\0';
+    month[0] = '\0';
+    year[0] = '\0';
+    date[0] = '\0';
+    printf("Day: ");
+    fgets(day, 255, stdin);
+    day[strcspn(day, "\n")] = '\0';
+    strcpy(date, day);
+    strcat(date, "/");
+    printf("Month: ");
+    fgets(month, 255, stdin);
+    month[strcspn(month, "\n")] = '\0';
+    strcat(date, month);
+    strcat(date, "/");
+    printf("Year: ");
+    fgets(year, 255, stdin);
+    year[strcspn(year, "\n")] = '\0';
+    strcat(date, year);
+}
+
 void browseFilm(){
     printf("--------------Welcome to HTV-SPM------------------\n\n");
     printf("1. Browse film follow category\n");

@@ -30,4 +30,6 @@ void handleBrowseFollowCategory(int connfd, nodeFilm f, nodeCategory c);
 void handleBrowseFollowCinema(int connfd, nodeFilm f, nodeCinema c, nodePremieredTimeFilm ptf);
 
 void handleBrowseFollowPremieredTime(int connfd, nodeFilm f, nodePremieredTime pt, nodePremieredTimeFilm ptf);
+
+void handleAnnouncingFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCinema ci, nodePremieredTime pt, nodePremieredTimeFilm ptf);
 #endif

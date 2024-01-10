@@ -76,4 +76,10 @@ void getCategoryID(char **category_id);
 void getCinemaID(char **cinema_id);
 
 void getPremieredTimeID (char **premiered_time_id);
+
+void getAnnouncementFilmID(char film_id[]);
+void getAnnouncementCinemaID(char cinema_id[]);
+void getAnnouncementPreTimeID(char premiered_time_id[]);
+void getAnnouncementDate(char day[], char month[], char year[], char date[]);
+
 #endif

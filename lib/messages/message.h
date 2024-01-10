@@ -56,6 +56,8 @@ void makeShowCategoryMessage(char *message);
 
 void makeShowCinemaMessage(char *message);
 
+void makeShowPostFilmMessage(char *message);
+
 void makeBrowseFollowCategoryMessage(char *category_id, char *message);
 
 void makeBrowseFollowCinemaMessage(char *cinema_id, char *message);
@@ -69,4 +71,8 @@ void makeShowPremieredTimeMessage(char *message);
 void makeBrowseFollowPremieredTimeMessage(char *premiered_time_id, char *message);
 
 void getPremieredTimeIDMessage(char **premiered_time_id);
+
+void makeAnnounceFilmMessage(char *film_id, char *cinema_id, char *premiered_time_id, char *date, char *message);
+
+void getAnnounceFilmMessage(char **film_id, char **cinema_id, char **premiered_time_id, char **date);
 #endif

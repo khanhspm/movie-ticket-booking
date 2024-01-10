@@ -67,6 +67,10 @@ void makeShowPremieredTimeMessage(char *message){
     strcpy(message, "SHOW_PREMIERED_TIME\r\n");
 }
 
+void makeShowPostFilmMessage(char *message){
+    strcpy(message, "SHOW_POST_FILM\r\n");
+}
+
 void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char *description ,char *message){
     strcpy(message, "NEW_FILM\r\n"); 
     strcat(message, title);
@@ -79,11 +83,30 @@ void makeAddNewFilmMessage(char *title, char *category_id, char *show_time, char
     strcat(message, "\r\n");
 }
 
+void makeAnnounceFilmMessage(char *film_id, char *cinema_id, char *premiered_time_id, char *date, char *message){
+    strcpy(message, "POST_FILM\r\n");
+    strcat(message, film_id);
+    strcat(message, "\r\n");
+    strcat(message, cinema_id);
+    strcat(message, "\r\n");
+    strcat(message, premiered_time_id);
+    strcat(message, "\r\n");
+    strcat(message, date);
+    strcat(message, "\r\n");
+}
+
 void getAddNewFilmMessage(char **title, char **category_id, char **show_time, char **description){
     *title = strtok(NULL, "\r\n");
     *category_id = strtok(NULL, "\r\n");
     *show_time = strtok(NULL, "\r\n");
     *description = strtok(NULL, "\r\n");
+}
+
+void getAnnounceFilmMessage(char **film_id, char **cinema_id, char **premiered_time_id, char **date){
+    *film_id = strtok(NULL, "\r\n");
+    *cinema_id = strtok(NULL, "\r\n");
+    *premiered_time_id = strtok(NULL, "\r\n");
+    *date = strtok(NULL, "\r\n");
 }
 
 void makeSearchFilmByTitleMessage(char *title, char *message){
