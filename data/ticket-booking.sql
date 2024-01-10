@@ -1,3 +1,4 @@
+-- SQLBook: Code
 CREATE DATABASE ticketbooking;
 
 CREATE TABLE users (

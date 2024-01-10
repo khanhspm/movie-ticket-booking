@@ -1,6 +1,8 @@
 #ifndef LISTROOM_H
 #define LISTROOM_H
 
+#include "room.h"
+
 /**
  * @function checkEmptyList: checking list of nodes is NULL
  * 

@@ -10,7 +10,16 @@
 
 #define BUFSIZE 1024
 
+/**
+ *  Main function of the HTV-SPM client.
+ * 
+ * @param argc: Number of command-line arguments.
+ * @param argv: Array of command-line arguments.
+ * 
+ * @return 0 on successful execution, non-zero on failure.
+ */
 int main(int argc, char **argv) {
+        // Check if the correct number of command-line arguments is provided
     if(argc != 3){
         printf("Usage: ./client_out <ip address> <number port>\n");
         exit(1);
@@ -19,16 +28,19 @@ int main(int argc, char **argv) {
     int sockfd;
     struct sockaddr_in servaddr;
 
+    // Create a socket
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         perror("\nERROR: ");
         return 0;
     }
 
+    // Set up the server address structure
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = inet_addr(argv[1]);
     servaddr.sin_port = htons(atoi(argv[2]));
 
+    // Connect to the server
     if (connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) == -1) {
         perror("\nERROR: ");
         return 0;
@@ -40,6 +52,8 @@ int main(int argc, char **argv) {
     int choice;
     int *login_status = 0;
     login_status = (int *)malloc(sizeof(int));
+
+    // Main loop for handling user interactions
     while (1) {
         
         do{
@@ -47,6 +61,8 @@ int main(int argc, char **argv) {
             printf("Choice: ");
             scanf("%d", &choice);
             clearKeyboardBuffer();
+
+            // Handle user choice
             switch (choice) {
                 case 1: {
                     char *username, *password, *message;
@@ -54,6 +70,8 @@ int main(int argc, char **argv) {
                     username = (char *)malloc(255 * sizeof(char));
                     password = (char *)malloc(255 * sizeof(char));
                     handleLogin(sockfd, username, password, message, login_status);
+
+                    // Check the login status and redirect accordingly
                     if(*login_status == LOGIN_SUCCESS_USER){
                         handleRequestUser(sockfd, username, password, message, login_status);
                     }else if(*login_status == LOGIN_SUCCESS_ADMIN){

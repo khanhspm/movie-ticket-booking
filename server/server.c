@@ -14,6 +14,11 @@
 
 #define BACKLOG 20
 
+/**
+ * @brief handle communication between client and server
+ * 
+ * @return void* 
+ */
 void *handleCommunicate(void *);
 
 listLoginedAccount myArray;
@@ -124,9 +129,7 @@ void *handleCommunicate(void* arg){
         if(strcmp(message, "EXIT") == 0){
             break;
         }
-        // printf("%s\n", message);
         type = getTypeMessage(message);
-        // printf("%s\n", type);
         handleRequest(conn, type, connfd, &username, password, &myArray, h, f, c, ci, pt, ptf);
     }
 

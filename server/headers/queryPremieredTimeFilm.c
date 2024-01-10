@@ -2,6 +2,14 @@
 #include <mysql/mysql.h>
 #include <string.h>
 #include "../../lib/premieredTimeFilm/listPremieredTimeFilm.h"
+
+/**
+ * @brief select all premiered time film
+ * 
+ * @param connection : connection of mysql
+ * @param h : node premiered time film
+ * @param x : premiered time film
+ */
 void selectPremieredTimeFilm(MYSQL *connection, nodePremieredTimeFilm* h, premieredTimeFilm x){
     mysql_query(connection, "SELECT * FROM premiered_time_film");
     MYSQL_RES *result = mysql_store_result(connection);
@@ -28,6 +36,12 @@ void selectPremieredTimeFilm(MYSQL *connection, nodePremieredTimeFilm* h, premie
     mysql_free_result(result);
 }
 
+/**
+ * @brief add a new premiered time film
+ * 
+ * @param connection : connection of mysql
+ * @param x : premiered time film
+ */
 void addPremieredTimeFilm(MYSQL *connection, premieredTimeFilm x){
     char query[4096];
     snprintf(query, sizeof(query), "INSERT INTO premiered_time_film(film_id, premiered_time_id, cinema_id, date) VALUES('%ld', %ld, %ld, '%s')", x.film_id, x.premiered_time_id, x.cinema_id, x.date);

@@ -40,6 +40,22 @@
 #define CHANGE_PASSWORD_SUCCESS 1110
 #define CHANGE_PASSWORD_FAIL 2110
 
+/**
+ * @function handleRequest: handle request from client
+ * 
+ * @param conn : connection to connect to mysql
+ * @param type : type of request
+ * @param connfd : the socket to connect
+ * @param username : username of client
+ * @param password : password of client
+ * @param arr : array of logined account
+ * @param h : node of list user
+ * @param f : node of list film
+ * @param c : node of list category
+ * @param ci : node of list cinema
+ * @param pt : node of list premiere time
+ * @param ptf : node of list premiere time film
+ */
 void handleRequest(MYSQL *conn, char *type, int connfd, char **username, char *password, listLoginedAccount *arr, node h, nodeFilm f, nodeCategory c, nodeCinema ci, nodePremieredTime pt, nodePremieredTimeFilm ptf){
     if(strcmp(type, "LOGIN") == 0){
         handleLogin(connfd, arr, h, username, password);
@@ -98,10 +114,18 @@ void handleRequest(MYSQL *conn, char *type, int connfd, char **username, char *p
     }
 }
 
+/**
+ * @function hanldeLogin: handle request login from user
+ * 
+ * @param connfd : the socket to connect
+ * @param arr : array of logined account
+ * @param h : node of list user
+ * @param username : username of client
+ * @param password : password of client
+ */
 void handleLogin(int connfd, listLoginedAccount *arr, node h, char **username, char *password){
     getLoginMessage(username, &password);
     int check = checkLogin(h, username, password, arr);
-    printf("%d\n", check);
     if(check == 0){
         sendResult(connfd, LOGIN_FAIL);   
     }else if(check == 1){
@@ -115,12 +139,25 @@ void handleLogin(int connfd, listLoginedAccount *arr, node h, char **username, c
     }
 }
 
+/**
+ * @function handleLogout: handle logout request from user
+ * 
+ * @param connfd : the socket to connect
+ * @param arr : array of logined account
+ * @param username : username of client
+ */
 void handleLogout(int connfd, listLoginedAccount *arr, char **username){
-    printf("%s\n", *username);
     deleteFromListLoginedAccount(arr, username);
     sendResult(connfd, LOGOUT_SUCCESS);
 }
 
+/**
+ * @function handleRegister: handle register request from user
+ * 
+ * @param conn : connection to mysql
+ * @param connfd : the socket to connect
+ * @param h : node of list user
+ */
 void handleRegister(MYSQL *conn, int connfd, node *h){
     char *name, *username, *password;
     name = (char *)malloc(255 * sizeof(char));
@@ -149,6 +186,13 @@ void handleRegister(MYSQL *conn, int connfd, node *h){
     }
 }
 
+/**
+ * @function handleChangePassword: handle change password request from user
+ * 
+ * @param connfd : the socket to connect
+ * @param conn : connection to mysql
+ * @param h : node of list user
+ */
 void handleChangePassword(int connfd, MYSQL *conn, node *h){
     char *username, *oldPassword, *newPassword;
     username = (char *)malloc(255 * sizeof(char));
@@ -169,6 +213,13 @@ void handleChangePassword(int connfd, MYSQL *conn, node *h){
     }
 }
 
+/**
+ * @function handleSearchFilm: handle search film request follow title 
+ * 
+ * @param connfd : the socket to connect
+ * @param f : node of list film
+ * @param c : node of list categories
+ */
 void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c){
     char *title;
     title = (char *)malloc(255 * sizeof(char));
@@ -194,7 +245,14 @@ void handleSearchFilm(int connfd, nodeFilm f, nodeCategory c){
     }
 }
 
-//begin chuc nang admin
+/**
+ * @function handleAddNewFilm: handle add new film request from admin
+ * 
+ * @param conn : connection to mysql
+ * @param connfd : the socket to connect
+ * @param f : node of list film
+ * @param c : node of list categories
+ */
 void handleAddNewFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCategory c)
 {   
     displayCategory(c);
@@ -229,6 +287,16 @@ void handleAddNewFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCategory c)
     }
 }
 
+/**
+ * @function handleAnnouncingFilm: handle the announcement of film request
+ * 
+ * @param conn : connection to mysql
+ * @param connfd : the socket to connect
+ * @param f : node of list film
+ * @param ci : node of list cinema
+ * @param pt : node of list premiered time
+ * @param ptf : node of list premiered time film
+ */
 void handleAnnouncingFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCinema ci, nodePremieredTime pt, nodePremieredTimeFilm ptf)
 {   
     char *film_id, *cinema_id, *premiered_time_id, *date;
@@ -265,10 +333,13 @@ void handleAnnouncingFilm(MYSQL *conn, int connfd, nodeFilm f, nodeCinema ci, no
     }
 }
 
-//end chuc nang admin
-
-
-//begin duyet phim theo 3 cach
+/**
+ * @function handleBrowseFollowCategory: handle the browse film follows category request
+ * 
+ * @param connfd : the socket to connect
+ * @param f : node of list film
+ * @param c : node of list category
+ */
 void handleBrowseFollowCategory(int connfd, nodeFilm f, nodeCategory c){
     //chuyen kieu char ve unsigned long
     char *category_id;
@@ -295,6 +366,14 @@ void handleBrowseFollowCategory(int connfd, nodeFilm f, nodeCategory c){
 
 }
 
+/**
+ * @function handleBrowseFollowCinema: handle browse film follow cinema request
+ * 
+ * @param connfd : the socket to connect
+ * @param f : node of list film
+ * @param c : node of list category
+ * @param ptf : node of list premiered time film
+ */
 void handleBrowseFollowCinema(int connfd, nodeFilm f, nodeCinema c, nodePremieredTimeFilm ptf){
     //chuyen kieu char ve unsigned long
     char *cinema_id;
@@ -326,6 +405,14 @@ void handleBrowseFollowCinema(int connfd, nodeFilm f, nodeCinema c, nodePremiere
 
 }
 
+/**
+ * @function handleBrowseFollowPremieredTime: handle browse film follow time request
+ * 
+ * @param connfd : the socket to connect
+ * @param f : node of list film
+ * @param pt : node of list premiered time
+ * @param ptf : node of list premiered time film
+ */
 void handleBrowseFollowPremieredTime(int connfd, nodeFilm f, nodePremieredTime pt, nodePremieredTimeFilm ptf){
     //chuyen kieu char ve unsigned long
     char *premiered_time_id;
@@ -355,5 +442,3 @@ void handleBrowseFollowPremieredTime(int connfd, nodeFilm f, nodePremieredTime p
         free(message);
     }
 }
-
-// end duyet phim
