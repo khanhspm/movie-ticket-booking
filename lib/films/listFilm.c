@@ -75,6 +75,12 @@ int searchTitle(nodeFilm head, char title[], nodeFilm* addf){
     return a;
 }
 
+/**
+ * @function searchFilmFollowCategoryID: Search for films based on category ID.
+ * 
+ * @param head: Head of the film list.
+ * @param category_id: Category ID to search for.
+*/
 char *searchFilmFollowCategoryID(nodeFilm head, int category_id)
 {
     if (checkEmptyListFilm(head))
@@ -84,11 +90,9 @@ char *searchFilmFollowCategoryID(nodeFilm head, int category_id)
     }
     else
     {
-        // Đặt kích thước cho chuỗi message
         struct NodeFilm *p = head;
-        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        int bufferSize = 1048576; 
         char *message = (char *)malloc(bufferSize * sizeof(char));
-        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
 
         int a = 0;
 
@@ -104,7 +108,6 @@ char *searchFilmFollowCategoryID(nodeFilm head, int category_id)
                 sprintf(temp + strlen(temp), "Description: %s\n\n", p->data.description);
                 strcat(message, temp);
             }
-            // Chuyển đến node tiếp theo
             p = p->next;
         }
 
@@ -112,6 +115,12 @@ char *searchFilmFollowCategoryID(nodeFilm head, int category_id)
     }
 }
 
+/**
+ * @function searchFilmFollowID: Search for a film based on its ID.
+ * 
+ * @param head: Head of the film list.
+ * @param id: Film ID to search for.
+*/
 char *searchFilmFollowID(nodeFilm head, int id)
 {
     if (checkEmptyListFilm(head))
@@ -121,11 +130,10 @@ char *searchFilmFollowID(nodeFilm head, int id)
     }
     else
     {
-        // Đặt kích thước cho chuỗi message
         struct NodeFilm *p = head;
-        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        int bufferSize = 1048576;
         char *message = (char *)malloc(bufferSize * sizeof(char));
-        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
+
 
         int a = 0;
 
@@ -141,7 +149,6 @@ char *searchFilmFollowID(nodeFilm head, int id)
                 sprintf(temp + strlen(temp), "Description: %s\n\n", p->data.description);
                 strcat(message, temp);
             }
-            // Chuyển đến node tiếp theo
             p = p->next;
         }
 
@@ -149,6 +156,10 @@ char *searchFilmFollowID(nodeFilm head, int id)
     }
 }
 
+/**
+ * @function displayFilm: Display information about all films in the list.
+ * 
+*/
 char *displayFilm(nodeFilm head)
 {
     if (checkEmptyListFilm(head))
@@ -159,22 +170,17 @@ char *displayFilm(nodeFilm head)
     else
     {
         struct NodeFilm *p = head;
-        int bufferSize = 1048576; // Tùy thuộc vào yêu cầu của bạn
+        int bufferSize = 1048576; 
         char *message = (char *)malloc(bufferSize * sizeof(char));
 
-        // Khởi tạo chuỗi message
         strcpy(message, "STT\tTitle\tShow time\tDescription\n");
-
-        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
 
         while (p != NULL)
         {
-            // Nối thông tin từ mỗi node vào chuỗi message
-            char temp[4096]; // Kích thước tùy thuộc vào yêu cầu của bạn
+            char temp[4096]; 
             sprintf(temp, "%ld\t%s\t%ld\t%s\n", p->data.id, p->data.title, p->data.show_time, p->data.description);
             strcat(message, temp);
 
-            // Chuyển đến node tiếp theo
             p = p->next;
         }
 

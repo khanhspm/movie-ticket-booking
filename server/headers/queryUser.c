@@ -13,6 +13,13 @@
 #define REGISTER_SUCCESS "1101"
 #define REGISTER_FAIL "2102"
 
+/**
+ * @brief select all users
+ * 
+ * @param connection : connection of mysql
+ * @param h : node user
+ * @param x : user
+ */
 void selectUser(MYSQL *connection, node* h, user x){
     mysql_query(connection, "SELECT * FROM users");
     MYSQL_RES *result = mysql_store_result(connection);
@@ -32,6 +39,11 @@ void selectUser(MYSQL *connection, node* h, user x){
     mysql_free_result(result);
 }
 
+/**
+ * @brief Create a List Logined Account object
+ * 
+ * @return listLoginedAccount 
+ */
 listLoginedAccount createListLoginedAccount() {
     listLoginedAccount arr;
     arr.data = malloc(INITIAL_CAPACITY * sizeof(char *));
@@ -40,6 +52,12 @@ listLoginedAccount createListLoginedAccount() {
     return arr;
 }
 
+/**
+ * @brief add a logined account to the list of logined  accounts
+ * 
+ * @param arr : listLoginedAccount
+ * @param value : loginedAccount
+ */
 void addToListLoginedAccount(listLoginedAccount *arr, char **value) {
     if (arr->size >= arr->capacity) {
         arr->capacity += INCREMENT;
@@ -50,6 +68,11 @@ void addToListLoginedAccount(listLoginedAccount *arr, char **value) {
     arr->size++;
 }
 
+/**
+ * @brief frees memory allocated
+ * 
+ * @param arr : list to free
+ */
 void freeListLoginedAccount(listLoginedAccount *arr) {
     for (size_t i = 0; i < arr->size; i++) {
         free(arr->data[i]);
@@ -59,6 +82,13 @@ void freeListLoginedAccount(listLoginedAccount *arr) {
     arr->capacity = 0;
 }
 
+/**
+ * @brief search for a logined account
+ * 
+ * @param arr : list of logined accounts
+ * @param value : value to search
+ * @return int 
+ */
 int searchListLoginedAccount(const listLoginedAccount *arr, char **value) {
     for (size_t i = 0; i < arr->size; i++) {
         if (strcmp(arr->data[i], *value) == 0) {
@@ -68,6 +98,12 @@ int searchListLoginedAccount(const listLoginedAccount *arr, char **value) {
     return -1; 
 }
 
+/**
+ * @brief deletes the account from the list of logined accounts
+ * 
+ * @param arr : list of logined accounts
+ * @param value : account to be deleted
+ */
 void deleteFromListLoginedAccount(listLoginedAccount *arr, char **value) {
     int index = searchListLoginedAccount(arr, value);
 
@@ -79,6 +115,12 @@ void deleteFromListLoginedAccount(listLoginedAccount *arr, char **value) {
 
 }
 
+/**
+ * @brief Create a List Logined User object
+ * 
+ * @param arr 
+ * @return listLoginedAccount 
+ */
 listLoginedAccount createListLoginedUser(listLoginedAccount arr){
     freeListLoginedAccount(&arr);
     arr = createListLoginedAccount();
@@ -100,7 +142,6 @@ int checkLogin(node head, char **username, char *password, listLoginedAccount *a
 
     // Check account have loggined in different address or yet
     int check_logined = searchListLoginedAccount(arr, username);
-    printf("%d\n", check_logined);
     if(check_logined >= 0){
         return 3;
     }
@@ -123,6 +164,13 @@ int checkLogin(node head, char **username, char *password, listLoginedAccount *a
     return 0;
 }
 
+/**
+ * @brief add a user to the database
+ * 
+ * @param connection : connection of mysql
+ * @param newUser : new user
+ * @return int 
+ */
 int registerUser(MYSQL *connection, user newUser) {
     char query[1024];
 
@@ -146,8 +194,16 @@ sprintf(query, "INSERT INTO users (name, username, password, role_id) VALUES ('%
     }
 }
 
+/**
+ * @brief change the password  in the database
+ * 
+ * @param connection : connection of mysql
+ * @param username : username of the account
+ * @param oldPassword : old password of the account
+ * @param newPassword : new password of the account
+ * @return int 
+ */
 int changePassword(MYSQL *connection, char *username, char *oldPassword, char *newPassword) {
-    // Kiểm tra mật khẩu cũ có chính xác không
     char query[1024];
     sprintf(query, "SELECT password FROM users WHERE username = '%s'", username);
     mysql_query(connection, query);
@@ -155,18 +211,16 @@ int changePassword(MYSQL *connection, char *username, char *oldPassword, char *n
     MYSQL_ROW row = mysql_fetch_row(result);
     if (!row || strcmp(row[0], oldPassword) != 0) {
         mysql_free_result(result);
-        printf("fghjk");
-        return 0; // Mật khẩu cũ không chính xác
+        return 0;
     }
     printf("%s",row[0]);
     mysql_free_result(result);
 
-    // Cập nhật mật khẩu mới
     sprintf(query, "UPDATE users SET password = '%s' WHERE username = '%s'", newPassword, username);
     if (mysql_query(connection, query)) {
         printf("kkk");
-        return 0; // Thất bại
+        return 0; // failed
     }
 
-    return 1; // Thành công
+    return 1; // success
 }

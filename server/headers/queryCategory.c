@@ -2,6 +2,13 @@
 #include <string.h>
 #include "../../lib/categories/listCategory.h"
 
+/**
+ * @funtion selectCategory: select all categories
+ * 
+ * @param connection : connection of mysql
+ * @param h : node category
+ * @param x : category
+ */
 void selectCategory(MYSQL *connection, nodeCategory* h, category x){
     mysql_query(connection, "SELECT * FROM categories");
     MYSQL_RES *result = mysql_store_result(connection);

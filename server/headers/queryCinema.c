@@ -2,6 +2,13 @@
 #include <string.h>
 #include "../../lib/cinemas/listCinema.h"
 
+/**
+ * @function selectCinema: select all Cinemas
+ * 
+ * @param connection : connection of mysql
+ * @param h : node pointer cinema
+ * @param x : node cinema
+ */
 void selectCinema(MYSQL *connection, nodeCinema* h, cinema x){
     mysql_query(connection, "SELECT * FROM cinemas");
     MYSQL_RES *result = mysql_store_result(connection);

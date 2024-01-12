@@ -2,7 +2,13 @@
 #include <string.h>
 #include "../../lib/premieredTime/listPremieredTime.h"
 
-
+/**
+ * @brief select all premiered time
+ * 
+ * @param connection : connection of mysql
+ * @param h : node premiered time
+ * @param x : premiered time
+ */
 void selectPremieredTime(MYSQL *connection, nodePremieredTime* h, premieredTime x){
     mysql_query(connection, "SELECT * FROM premiered_time");
     MYSQL_RES *result = mysql_store_result(connection);

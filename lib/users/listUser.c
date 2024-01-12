@@ -51,6 +51,13 @@ void addNode(node* head, user x){
     }
 }
 
+/**
+ * @function changeNodePassword: change the node's password
+ * 
+ * @param head : the head node
+ * @param username : the username 
+ * @param newPassword : the new password to be added
+ */
 void changeNodePassword(node* head, char username[], char newPassword[]){
     if(checkEmptyList(*head)){
         printf("Empty list\n");

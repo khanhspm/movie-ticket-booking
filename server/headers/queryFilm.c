@@ -5,6 +5,13 @@
 #include "../../lib/films/listFilm.h"
 #include "../../lib/categories/category.h"
 
+/**
+ * @function selectFilm: select all film
+ * 
+ * @param connection : connection of mysql
+ * @param h : node pointer film
+ * @param x : film
+ */
 void selectFilm(MYSQL *connection, nodeFilm* h, film x){
     mysql_query(connection, "SELECT * FROM films");
     MYSQL_RES *result = mysql_store_result(connection);
@@ -23,6 +30,13 @@ void selectFilm(MYSQL *connection, nodeFilm* h, film x){
     mysql_free_result(result);
 }
 
+/**
+ * @brief Get the Category object
+ * 
+ * @param id : id to get the category
+ * @param head : head to get the category
+ * @return char* 
+ */
 char* getCategory(int id, nodeCategory head){
     struct NodeCategory* p = head;
     while(p != NULL){
@@ -33,6 +47,12 @@ char* getCategory(int id, nodeCategory head){
     return NULL;
 }
 
+/**
+ * @brief add a film to database
+ * 
+ * @param connection : connection of mysql
+ * @param x : film to add
+ */
 void addFilm(MYSQL *connection, film x)
 {
     char query[4096];

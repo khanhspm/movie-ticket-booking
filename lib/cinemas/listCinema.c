@@ -51,6 +51,14 @@ void addNodeCinema(nodeCinema* head, cinema x){
     }
 }
 
+/**
+ * @function searchCinema: Search for a cinema by name in the list.
+ * 
+ * @param head: Head of the cinema list.
+ * @param name: Name of the cinema to search for.
+ * 
+ * @return: ID of the cinema if found, -1 otherwise.
+*/
 int searchCimema(nodeCinema head, char name[])
 {
     if (checkEmptyListCinema(head))
@@ -72,6 +80,11 @@ int searchCimema(nodeCinema head, char name[])
     return -1;
 }
 
+/**
+ * @function displayCinema: Display information about cinemas in the list.
+ * 
+ * @param head: Head of the cinema list.
+*/
 char *displayCinema(nodeCinema head)
 {
     if (checkEmptyListCinema(head))
@@ -82,24 +95,17 @@ char *displayCinema(nodeCinema head)
     else
     {
         struct NodeCinema *p = head;
-        int bufferSize = 2048; // Tùy thuộc vào yêu cầu của bạn
+        int bufferSize = 2048; 
         char *message = (char *)malloc(bufferSize * sizeof(char));
 
-
-
-        // Khởi tạo chuỗi message
         strcpy(message, "");
-
-        // Duyệt danh sách và thêm thông tin từ mỗi node vào chuỗi message
 
         while (p != NULL)
         {
-            // Nối thông tin từ mỗi node vào chuỗi message
-            char temp[512]; // Kích thước tùy thuộc vào yêu cầu của bạn
+            char temp[512]; 
             sprintf(temp, "%ld %s\n", p->data.id, p->data.name);
             strcat(message, temp);
 
-            // Chuyển đến node tiếp theo
             p = p->next;
         }
 
